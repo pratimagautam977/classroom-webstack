@@ -179,3 +179,21 @@ color: #a6a6a6;
   -webkit-box-shadow: none;
   box-shadow: none;
 }
+
+/* Dashboard CSS */
+body.dashboard{
+  background-color: #F8FAFB;
+}
+
+.dashboard .container-fluid{
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+}
+
+.dashboard .sidebar{
+  background-color: #ffffff;
+  border-right: 2px solid #ECEDF2;
+  width: 60px;
+  height: 100vh;
+}
