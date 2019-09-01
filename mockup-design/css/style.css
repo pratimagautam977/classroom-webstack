@@ -191,9 +191,52 @@ body.dashboard{
   flex-direction: row;
 }
 
-.dashboard .sidebar{
+.dashboard  .container-fluid .sidebar{
   background-color: #ffffff;
   border-right: 2px solid #ECEDF2;
   width: 60px;
   height: 100vh;
+  min-width: 60px;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  padding: 7.5px 0px;
+}
+.dashboard  .container-fluid .sidebar .item{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fff;
+  margin: 7.5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+.dashboard  .container-fluid .sidebar  .feather { 
+  color:#000;
+  height: 23px;
+  width: 23px; 
+  stroke: currentColor;
+}
+
+.dashboard  .container-fluid .sidebar .item:hover{ 
+  background: rgba(0, 132, 255, .38)
+}
+.dashboard  .container-fluid .sidebar .item:hover .feather { 
+  color:#0084FF; 
+}
+.dashboard  .container-fluid .sidebar .item:active{ 
+  background: rgba(0, 132, 255, .38)
+}
+.dashboard  .container-fluid .sidebar .item:active a { 
+  color:#0084FF;
+}
+.dashboard .container-fluid .mainbar{
+  background-color: #ffffff;
+  border-bottom: 2px solid #ECEDF2;
+  height: 60px;  
+  overflow: hidden;
+  flex: 1;
 }
