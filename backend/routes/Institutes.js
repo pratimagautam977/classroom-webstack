@@ -64,7 +64,7 @@ institutes.post("/login", (req, res) => {
                 res.send(token)
             }
             else{
-                res.status(400).json({error: 'Wrong Credentials'})
+                res.status(403).json({error: 'Wrong Credentials'})
             }
         }else{
             res.status(400).json({error: 'Institute does not exists'})
