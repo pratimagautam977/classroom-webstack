@@ -14,7 +14,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-app.use('/api/user', user);
-
+// making route for institute
+var Institutes = require("./routes/Institutes");
+app.use("/institutes", Institutes);
 
 app.listen(3000, console.log('Server started at port 3000'));
