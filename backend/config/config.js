@@ -14,6 +14,5 @@ const sequelize = new Sequelize("dbclassroom", "root", "", {
     }
 }) 
 db.sequelize = sequelize
-db.Sequelize = Sequelize
 
 module.exports = db
