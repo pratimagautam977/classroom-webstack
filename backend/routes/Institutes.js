@@ -7,6 +7,8 @@ const Institute = require("../models/institute");
 const uuidv4 = require('uuid/v4');
 institutes.use(cors());
 
+const md5 = require("md5");
+
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
@@ -58,10 +60,12 @@ institutes.post("/login", (req, res) => {
     .then(institute =>{
         if(institute){
             if(bcrypt.compareSync(req.body.ins_password, institute.ins_password)){
-                let token = jwt.sign({id: institute.ins_uuid}, "icp-pokhara", {
+                var hash = md5(institute.ins_email);
+                var img = `https://www.gravatar.com/avatar/${hash}.jpg?s=500&d=identicon&d=mm`
+                let token = jwt.sign({id: institute.ins_uuid, isAdmin: true}, "icp-pokhara", {
                     expiresIn: 1440
                 })
-                res.send(token)
+                res.send({token, img : img})
             }
             else{
                 res.status(403).json({error: 'Wrong Credentials'})
