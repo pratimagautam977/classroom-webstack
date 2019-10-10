@@ -36,7 +36,7 @@ institutes.post('/register', (req, res) => {
                    res.json({ status: institute.ins_email + " Registered." });
                })
                .catch(err => {
-                   res.send(err + " ==error");
+                   res.send(err);
                });
            });
         } else {
@@ -44,7 +44,7 @@ institutes.post('/register', (req, res) => {
        }
    })
    .catch(err =>{
-       res.send(err + " -->" + req.body.ins_password + " ++error");
+       res.send(err);
    })
 });
 
