@@ -25,4 +25,8 @@ app.use("/staffs", Staffs);
 var Students = require("./routes/Students");
 app.use("/students", Students);
 
+// making route for classroom
+var Classrooms = require("./routes/Classrooms");
+app.use("/classrooms", Classrooms);
+
 app.listen(3000, console.log('Server started at port 3000'));
