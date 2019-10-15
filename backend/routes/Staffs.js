@@ -9,11 +9,36 @@ staffs.use(cors());
 
 // GET Route to retrieve all staffs <findAll>
 staffs.get("/", (req, res)=>{
-
+    Staff.findAll({
+        where: {
+            ins_uuid: '035f93a5-2f92-4cc1-9668-3103da7ce5e8'
+        },
+        attributes: ['staff_uuid', 'staff_fname', 'staff_lname' , 'staff_email', 'staff_phone', 'staff_address', 'staff_img']
+    })
+    .then(staff => {
+        res.status(200).json({status: "OK", staff})
+    })
+    .catch(err => {
+        res.send(err);
+    })
 });
 
 // GET Route to retrieve a single staff <findOne>
-staffs.get("/:id")
+staffs.get("/:id", (req, res) => {
+    Staff.findOne({
+        where: {
+            ins_uuid:'035f93a5-2f92-4cc1-9668-3103da7ce5e8',
+            staff_uuid: req.params.id
+        },
+        attributes: ['staff_uuid', 'staff_fname', 'staff_lname' , 'staff_email', 'staff_phone', 'staff_address', 'staff_img']
+    })
+    .then(staff => {
+        res.status(200).json({status: "Ok", staff})
+    })
+    .catch(err => {
+        res.send(err);
+    })
+})
 
 // POST Route create <create>
 staffs.post("/", (req, res)=> {

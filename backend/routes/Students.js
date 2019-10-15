@@ -54,6 +54,39 @@ students.post("/", (req, res) => {
     })
 })
 
+// GET ALL Students
+students.get("/", (req, res) => {
+    Student.findAll({
+        where: {
+            ins_uuid: '035f93a5-2f92-4cc1-9668-3103da7ce5e8'
+        },
+        attributes: ['stud_uuid', 'stud_fname', 'stud_lname' , 'stud_email', 'stud_phone', 'stud_img']
+    })
+    .then(student => {
+        res.status(200).json({status: "OK", student})
+    })
+    .catch(err => {
+        res.send(err);
+    })
+})
+
+// GET Route to retrieve a single staff <findOne>
+students.get("/:id", (req, res) => {
+    Student.findOne({
+        where: {
+            ins_uuid:'035f93a5-2f92-4cc1-9668-3103da7ce5e8',
+            stud_uuid: req.params.id
+        },
+        attributes: ['stud_uuid', 'stud_fname', 'stud_lname' , 'stud_email', 'stud_phone', 'stud_address', 'stud_img']
+    })
+    .then(student => {
+        res.status(200).json({status: "Ok", student})
+    })
+    .catch(err => {
+        res.send(err);
+    })
+})
+
 // POST Login Route 
 students.post('/login', (req, res) => {
     Student.findOne({
