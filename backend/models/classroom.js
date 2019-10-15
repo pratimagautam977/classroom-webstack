@@ -1,4 +1,4 @@
-const Sequalize = require("sequelize");
+const Sequelize = require("sequelize");
 const db = require("../config/config");
 
 
@@ -6,7 +6,7 @@ module.exports = db.sequelize.define(
     'tbl_classroom',
     {
         id: {
-            type: Sequalize.INTEGER,
+            type: Sequelize.INTEGER,
             autoIncrement: true
         },
         class_uuid: {
@@ -17,10 +17,10 @@ module.exports = db.sequelize.define(
             type:Sequelize.UUIDV4
         },
         class_name: {
-            type: Sequalize.STRING
+            type: Sequelize.STRING
         },
         class_created_at: {
-            type: Sequalize.DATE
+            type: Sequelize.DATE
         }
     },    
 

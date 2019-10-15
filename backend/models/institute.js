@@ -1,4 +1,4 @@
-const Sequalize = require("sequelize");
+const Sequelize = require("sequelize");
 const db = require("../config/config");
 
 
@@ -6,39 +6,39 @@ module.exports = db.sequelize.define(
     'tbl_institute',
     {
         id: {
-            type: Sequalize.INTEGER,
+            type: Sequelize.INTEGER,
             autoIncrement: true
         },
         ins_uuid: {
-            type: Sequalize.UUIDV4,
+            type: Sequelize.UUIDV4,
             primaryKey: true,
         },
         ins_logo: {
-            type: Sequalize.STRING
+            type: Sequelize.STRING
         },
         ins_email: {
-            type: Sequalize.STRING,
+            type: Sequelize.STRING,
             allowNull: false,
             unique: true
         },
         ins_address: {
-            type:Sequalize.STRING
+            type:Sequelize.STRING
         },
         ins_type: {
-            type: Sequalize.STRING
+            type: Sequelize.STRING
         },
         ins_phone: {
-            type:Sequalize.INTEGER
+            type:Sequelize.INTEGER
         },
         ins_password: {
-            type: Sequalize.STRING
+            type: Sequelize.STRING
         },
         ins_uname: {
-            type: Sequalize.STRING,
+            type: Sequelize.STRING,
             unique: true
         },
         created_at: {
-            type: Sequalize.DATE
+            type: Sequelize.DATE
         }
     },    
 
