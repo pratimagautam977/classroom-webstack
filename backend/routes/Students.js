@@ -25,7 +25,7 @@ students.post("/", (req, res) => {
     Student.findOne({
         where: {
             stud_email: req.body.email,
-            ins_uuid: "035f93a5-2f92-4cc1-9668-3103da7ce5e8"
+            ins_uuid: studentData.ins_uuid
         }
     })
     .then(student => {
