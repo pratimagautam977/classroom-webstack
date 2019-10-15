@@ -34,7 +34,7 @@ staffs.post("/", (req, res)=> {
     Staff.findOne({
         where: {
             staff_email: req.body.email,
-            ins_uuid: "035f93a5-2f92-4cc1-9668-3103da7ce5e8"
+            ins_uuid: staffData.ins_uuid
         }
     })
     .then(staff => {
