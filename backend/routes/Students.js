@@ -70,7 +70,7 @@ students.get("/", (req, res) => {
     })
 })
 
-// GET Route to retrieve a single staff <findOne>
+// GET Route to retrieve a single student <findOne>
 students.get("/:id", (req, res) => {
     Student.findOne({
         where: {
