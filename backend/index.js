@@ -15,18 +15,18 @@ app.use(bodyParser.json())
 
 // making route for institute
 var Institutes = require("./routes/Institutes");
-app.use("/institutes", Institutes);
+app.use("/institute", Institutes);
 
 // making route for staff
 var Staffs = require("./routes/Staffs");
-app.use("/staffs", Staffs);
+app.use("/staff", Staffs);
 
 // making route for student
 var Students = require("./routes/Students");
-app.use("/students", Students);
+app.use("/student", Students);
 
 // making route for classroom
 var Classrooms = require("./routes/Classrooms");
-app.use("/classrooms", Classrooms);
+app.use("/classroom", Classrooms);
 
 app.listen(3000, console.log('Server started at port 3000'));
