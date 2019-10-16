@@ -7,35 +7,33 @@ const Institute = require("../models/institute");
 const uuidv4 = require('uuid/v4');
 institutes.use(cors());
 
-const md5 = require("md5");
-
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 // Register Institute
 institutes.post('/register', (req, res) => {
    const instituteData = {
-       ins_uuid: "",
-       ins_email: req.body.ins_email,
-       ins_phone: req.body.ins_phone,
-       ins_uname: req.body.ins_uname,
-       ins_password: req.body.ins_password
+       ID: "",
+       email: req.body.email,
+       phone: req.body.phone,
+       uname: req.body.uname,
+       password: req.body.password
    }
 
    Institute.findOne({
        where: {
-           [Op.or]: [{ins_email: req.body.ins_email}, {ins_uname: req.body.ins_uname}]
-           //SELECT * FROM post WHERE ins_email = req.body.ins_email OR ins_uname = req.body.ins_uname;
+           [Op.or]: [{email: req.body.email}, {uname: req.body.uname}]
+           //SELECT * FROM post WHERE email = req.body.email OR uname = req.body.uname;
        }
    })
    .then(institute => {
        if(!institute){
-           bcrypt.hash(req.body.ins_password, 10, (err, hash) =>{
-               instituteData.ins_password = hash;
-               instituteData.ins_uuid = uuidv4(); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
+           bcrypt.hash(req.body.password, 10, (err, hash) =>{
+               instituteData.password = hash;
+               instituteData.ID = uuidv4(); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
                Institute.create(instituteData)
                .then(institute => {
-                   res.json({ status: institute.ins_email + " Registered." });
+                   res.json({ status: institute.email + " Registered." });
                })
                .catch(err => {
                    res.send(err);
@@ -54,18 +52,16 @@ institutes.post('/register', (req, res) => {
 institutes.post("/login", (req, res) => {
     Institute.findOne({
         where: {
-            ins_email: req.body.ins_email
+            email: req.body.email
         }
     })
     .then(institute =>{
         if(institute){
-            if(bcrypt.compareSync(req.body.ins_password, institute.ins_password)){
-                var hash = md5(institute.ins_email);
-                var img = `https://www.gravatar.com/avatar/${hash}.jpg?s=500&d=identicon&d=mm`
-                let token = jwt.sign({id: institute.ins_uuid, isAdmin: true}, "icp-pokhara", {
+            if(bcrypt.compareSync(req.body.password, institute.password)){                
+                let token = jwt.sign({id: institute.ID, isAdmin: true}, process.env.APP_SECRET, {
                     expiresIn: 1440
                 })
-                res.send({token, img : img})
+                res.send({token})
             }
             else{
                 res.status(403).json({error: 'Wrong Credentials'})
