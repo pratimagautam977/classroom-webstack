@@ -103,7 +103,7 @@ students.post('/login', (req, res) => {
         if (student) {
             if(bcrypt.compareSync(req.body.password, student.password)){
                 let token = jwt.sign({id: student.uuid, isAdmin: false, isStaff: false, isStudent: true}, process.env.APP_SECRET, {
-                    expiresIn: 1440
+                    expiresIn: 86400
                 })
                 res.send({token});
             } else{
