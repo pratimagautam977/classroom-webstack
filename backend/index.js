@@ -2,6 +2,8 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const app = express();
 
@@ -28,5 +30,11 @@ app.use("/student", Students);
 // making route for classroom
 var Classrooms = require("./routes/Classrooms");
 app.use("/classroom", Classrooms);
+
+// TEST DATA
+app.get('/test',(req,res)=>{
+    res.status(200).json({status: "okay"})
+})
+// END OF TEST DATA
 
 app.listen(3000, console.log('Server started at port 3000'));
