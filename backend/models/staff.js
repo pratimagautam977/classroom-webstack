@@ -8,40 +8,50 @@ module.exports = db.sequelize.define(
             type: Sequelize.INTEGER,
             autoIncrement: true
         }, 
-        staff_uuid: {
+        ID: {
             type: Sequelize.UUIDV4,
-            primaryKey: true
+            primaryKey: true,
+            field: "staff_uuid",
         },
         ins_uuid: {
             type:Sequelize.UUIDV4
         },
-        staff_fname: {
-            type: Sequelize.STRING
-        },
-        staff_lname: {
-            type: Sequelize.STRING
-        },
-        staff_email: {
+        fname: {
             type: Sequelize.STRING,
-            allowNull: false
+            field: "staff_fname",
         },
-        staff_address: {
-            type: Sequelize.STRING
+        lname: {
+            type: Sequelize.STRING,
+            field: "staff_lname",
         },
-        staff_phone: {
-            type: Sequelize.INTEGER
+        email: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            field: "staff_email",
         },
-        staff_img: {
-            type: Sequelize.STRING
+        address: {
+            type: Sequelize.STRING,
+            field: "staff_address",
         },
-        staff_type: {
-            type: Sequelize.STRING
+        phone: {
+            type: Sequelize.INTEGER,
+            field: "staff_phone",
         },
-        staff_added_at: {
-            type: Sequelize.DATE
+        img: {
+            type: Sequelize.STRING,
+            field: "staff_img",
         },
-        staff_password: {
-            type: Sequelize.STRING
+        type: {
+            type: Sequelize.STRING,
+            field: "staff_type",
+        },
+        added_at: {
+            type: Sequelize.DATE,
+            field: "staff_added_at",
+        },
+        password: {
+            type: Sequelize.STRING,
+            field: "staff_password",
         }
     },
     {

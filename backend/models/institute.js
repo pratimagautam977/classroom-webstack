@@ -9,33 +9,41 @@ module.exports = db.sequelize.define(
             type: Sequelize.INTEGER,
             autoIncrement: true
         },
-        ins_uuid: {
+        ID: {
             type: Sequelize.UUIDV4,
             primaryKey: true,
+            field: "ins_uuid"
         },
-        ins_logo: {
-            type: Sequelize.STRING
+        logo: {
+            type: Sequelize.STRING,
+            field: "ins_logo"
         },
-        ins_email: {
+        email: {
             type: Sequelize.STRING,
             allowNull: false,
-            unique: true
+            unique: true,
+            field: "ins_email"
         },
-        ins_address: {
-            type:Sequelize.STRING
+        address: {
+            type:Sequelize.STRING,
+            field: "ins_address"
         },
-        ins_type: {
-            type: Sequelize.STRING
-        },
-        ins_phone: {
-            type:Sequelize.INTEGER
-        },
-        ins_password: {
-            type: Sequelize.STRING
-        },
-        ins_uname: {
+        type: {
             type: Sequelize.STRING,
-            unique: true
+            field: "ins_type"
+        },
+        phone: {
+            type:Sequelize.INTEGER,
+            field: "ins_phone"
+        },
+        password: {
+            type: Sequelize.STRING,
+            field: "ins_password"
+        },
+        uname: {
+            type: Sequelize.STRING,
+            unique: true,
+            field: "ins_uname"
         },
         created_at: {
             type: Sequelize.DATE

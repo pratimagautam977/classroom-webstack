@@ -9,18 +9,21 @@ module.exports = db.sequelize.define(
             type: Sequelize.INTEGER,
             autoIncrement: true
         },
-        class_uuid: {
+        ID: {
             type: Sequelize.UUIDV4,
-            primaryKey: true
+            primaryKey: true,
+            field: 'class_uuid'
         },
         ins_uuid: {
-            type:Sequelize.UUIDV4
+            type:Sequelize.UUIDV4 
         },
-        class_name: {
-            type: Sequelize.STRING
+        name: {
+            type: Sequelize.STRING,
+            field: 'class_name'
         },
-        class_created_at: {
-            type: Sequelize.DATE
+        createdAt: {
+            type: Sequelize.DATE,
+            field: 'class_created_at'
         }
     },    
 

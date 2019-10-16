@@ -8,41 +8,51 @@ module.exports = db.sequelize.define(
             type: Sequelize.INTEGER,
             autoIncrement: true
         }, 
-        stud_uuid: {
+        uuid: {
             type: Sequelize.UUIDV4,
-            primaryKey: true
+            primaryKey: true,
+            field: "stud_uuid"
         },
         ins_uuid: {
             type:Sequelize.UUIDV4
         },
-        stud_fname: {
-            type: Sequelize.STRING
-        },
-        stud_lname: {
-            type: Sequelize.STRING
-        },
-        stud_email: {
+        fname: {
             type: Sequelize.STRING,
-            allowNull: false
+            field: "stud_fname"
         },
-        stud_address: {
-            type: Sequelize.STRING
-        },
-        stud_phone: {
-            type: Sequelize.INTEGER
-        },
-        stud_img: {
-            type: Sequelize.STRING
-        },
-        stud_added_at: {
-            type: Sequelize.DATE
-        },
-        stud_username: {
+        lname: {
             type: Sequelize.STRING,
-            allowNull: false
+            field: "stud_lname"
         },
-        stud_password: {
-            type: Sequelize.STRING
+        email: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            field: "stud_email"
+        },
+        address: {
+            type: Sequelize.STRING,
+            field: "stud_address"
+        },
+        phone: {
+            type: Sequelize.INTEGER,
+            field: "stud_phone"
+        },
+        img: {
+            type: Sequelize.STRING,
+            field: "stud_img"
+        },
+        added_at: {
+            type: Sequelize.DATE,
+            field: "stud_added_at"
+        },
+        username: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            field: "stud_username"
+        },
+        password: {
+            type: Sequelize.STRING,
+            field: "stud_password"
         }
     },
     {
