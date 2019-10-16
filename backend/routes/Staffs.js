@@ -7,13 +7,17 @@ const Staff = require("../models/staff");
 const uuidv4 = require('uuid/v4');
 staffs.use(cors());
 
+// ########  MIDDLEWARE   ########
+const midddleware = require('../config/Middleware');    //Added Middleware
+// ###############################
+
 // GET Route to retrieve all staffs <findAll>
-staffs.get("/", (req, res)=>{
+staffs.get("/", midddleware.checkToken, (req, res)=>{
     Staff.findAll({
         where: {
-            ins_uuid: '035f93a5-2f92-4cc1-9668-3103da7ce5e8'
+            ins_uuid: req.decoded.id
         },
-        attributes: ['staff_uuid', 'staff_fname', 'staff_lname' , 'staff_email', 'staff_phone', 'staff_address', 'staff_img']
+        attributes: ['ID', 'fname', 'lname' , 'email', 'phone', 'address', 'img']
     })
     .then(staff => {
         res.status(200).json({status: "OK", staff})
@@ -24,13 +28,13 @@ staffs.get("/", (req, res)=>{
 });
 
 // GET Route to retrieve a single staff <findOne>
-staffs.get("/:id", (req, res) => {
+staffs.get("/:id", midddleware.checkToken, (req, res) => {
     Staff.findOne({
         where: {
-            ins_uuid:'035f93a5-2f92-4cc1-9668-3103da7ce5e8',
-            staff_uuid: req.params.id
+            ins_uuid:req.decoded.id,
+            ID: req.params.id
         },
-        attributes: ['staff_uuid', 'staff_fname', 'staff_lname' , 'staff_email', 'staff_phone', 'staff_address', 'staff_img']
+        attributes: ['ID', 'fname', 'lname' , 'email', 'phone', 'address', 'img']
     })
     .then(staff => {
         res.status(200).json({status: "Ok", staff})
@@ -40,33 +44,33 @@ staffs.get("/:id", (req, res) => {
     })
 })
 
-// POST Route create <create>
-staffs.post("/", (req, res)=> {
+// POST Route Add Staff  <create>
+staffs.post("/", midddleware.checkToken, (req, res)=> {
 
     //object
     const staffData = {
-        staff_uuid: "",
-        ins_uuid: "035f93a5-2f92-4cc1-9668-3103da7ce5e8",
-        staff_fname: req.body.fname,
-        staff_lname: req.body.lname,
-        staff_email: req.body.email,
-        staff_address: req.body.address,
-        staff_phone: req.body.phone,
-        staff_img: "https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg",
-        staff_password: req.body.password        
+        ID: "",
+        ins_uuid: req.decoded.id,
+        fname: req.body.fname,
+        lname: req.body.lname,
+        email: req.body.email,
+        address: req.body.address,
+        phone: req.body.phone,
+        img: "https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg",
+        password: req.body.password        
     }
 
     Staff.findOne({
         where: {
-            staff_email: req.body.email,
+            email: req.body.email,
             ins_uuid: staffData.ins_uuid
         }
     })
     .then(staff => {
         if (!staff){
             bcrypt.hash(req.body.password, 10, (err, hash) =>{
-                staffData.staff_password = hash;
-                staffData.staff_uuid = uuidv4();
+                staffData.password = hash;
+                staffData.ID = uuidv4();
                 Staff.create(staffData)
                 .then(staff => {
                     res.status(200).json({ status: "Successfully Added."});
@@ -90,13 +94,13 @@ staffs.post("/", (req, res)=> {
 staffs.post('/login', (req, res) => {
     Staff.findOne({
         where: {
-            staff_email: req.body.email
+            email: req.body.email
         }
     })
     .then(staff => {
         if(staff){
-            if(bcrypt.compareSync(req.body.password, staff.staff_password)){
-                let token = jwt.sign({id: staff.staff_uuid }, "icp-staff", {
+            if(bcrypt.compareSync(req.body.password, staff.password)){
+                let token = jwt.sign({id: staff.ID,isAdmin: false, isStaff: true, isStudent: false }, process.env.APP_SECRET, {
                     expiresIn: 1440
                 })
                 res.send({token});
