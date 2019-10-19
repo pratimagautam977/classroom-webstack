@@ -13,7 +13,7 @@ const Op = Sequelize.Op;
 // Register Institute
 institutes.post('/register', (req, res) => {
    const instituteData = {
-       ID: "",
+       insID: "",
        email: req.body.email,
        phone: req.body.phone,
        uname: req.body.uname,
@@ -30,7 +30,7 @@ institutes.post('/register', (req, res) => {
        if(!institute){
            bcrypt.hash(req.body.password, 10, (err, hash) =>{
                instituteData.password = hash;
-               instituteData.ID = uuidv4(); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
+               instituteData.insID = uuidv4(); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
                Institute.create(instituteData)
                .then(institute => {
                    res.json({ status: institute.email + " Registered." });
@@ -58,7 +58,7 @@ institutes.post("/login", (req, res) => {
     .then(institute =>{
         if(institute){
             if(bcrypt.compareSync(req.body.password, institute.password)){                
-                let token = jwt.sign({id: institute.ID, isAdmin: true}, process.env.APP_SECRET, {
+                let token = jwt.sign({id: institute.insID, isAdmin: true}, process.env.APP_SECRET, {
                     expiresIn: 86400
                 })
                 res.send({token})
