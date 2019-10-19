@@ -9,7 +9,7 @@ module.exports = db.sequelize.define(
             type: Sequelize.INTEGER,
             autoIncrement: true
         },
-        ID: {
+        classID: {
             type: Sequelize.UUIDV4,
             primaryKey: true,
             field: 'class_uuid'
