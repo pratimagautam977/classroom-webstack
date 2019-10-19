@@ -2,13 +2,13 @@ const Sequelize = require("sequelize");
 const db = require("../config/config");
 
 module.exports = db.sequelize.define(
-    'tbl_student',
+    'student',
     {
         id: {
             type: Sequelize.INTEGER,
             autoIncrement: true
         }, 
-        uuid: {
+        studID: {
             type: Sequelize.UUIDV4,
             primaryKey: true,
             field: "stud_uuid"
@@ -56,6 +56,7 @@ module.exports = db.sequelize.define(
         }
     },
     {
-        freezeTableName: true
+        freezeTableName: true,
+        tableName: 'tbl_student'
     }
 );
