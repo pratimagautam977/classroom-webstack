@@ -15,7 +15,7 @@ const midddleware = require('../config/Middleware');    //Added Middleware
 // POST Registration Route (Add Student)
 students.post("/", midddleware.checkToken, (req, res) => {
     const studentData = {
-        uuid: "",
+        studID: "",
         ins_uuid: req.decoded.id,
         fname: req.body.fname,
         lname: req.body.lname,
@@ -37,7 +37,7 @@ students.post("/", midddleware.checkToken, (req, res) => {
         if(!student){
             bcrypt.hash(req.body.password, 10, (err, hash) => {
                 studentData.password = hash;
-                studentData.uuid = uuidv4();
+                studentData.studID = uuidv4();
                 Student.create(studentData)
                 .then(student => {
                     res.status(200).json({
@@ -65,7 +65,7 @@ students.get("/", midddleware.checkToken, (req, res) => {
         where: {
             ins_uuid: req.decoded.id
         },
-        attributes: ['uuid', 'fname', 'lname' , 'email', 'phone', 'img']
+        attributes: ['studID', 'fname', 'lname' , 'email', 'phone', 'img']
     })
     .then(student => {
         res.status(200).json({status: "OK", student})
@@ -80,9 +80,9 @@ students.get("/:id", midddleware.checkToken, (req, res) => {
     Student.findOne({
         where: {
             ins_uuid:req.decoded.id,
-            uuid: req.params.id
+            studID: req.params.id
         },
-        attributes: ['uuid', 'fname', 'lname' , 'email', 'phone', 'address', 'img']
+        attributes: ['studID', 'fname', 'lname' , 'email', 'phone', 'address', 'img']
     })
     .then(student => {
         res.status(200).json({status: "Ok", student})
@@ -102,7 +102,7 @@ students.post('/login', (req, res) => {
     .then(student => {
         if (student) {
             if(bcrypt.compareSync(req.body.password, student.password)){
-                let token = jwt.sign({id: student.uuid, isAdmin: false, isStaff: false, isStudent: true}, process.env.APP_SECRET, {
+                let token = jwt.sign({id: student.studID, isAdmin: false, isStaff: false, isStudent: true}, process.env.APP_SECRET, {
                     expiresIn: 86400
                 })
                 res.send({token});
