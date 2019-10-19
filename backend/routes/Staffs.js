@@ -17,7 +17,7 @@ staffs.get("/", midddleware.checkToken, (req, res)=>{
         where: {
             ins_uuid: req.decoded.id
         },
-        attributes: ['ID', 'fname', 'lname' , 'email', 'phone', 'address', 'img']
+        attributes: ['staffID', 'fname', 'lname' , 'email', 'phone', 'address', 'img']
     })
     .then(staff => {
         res.status(200).json({status: "OK", staff})
@@ -32,9 +32,9 @@ staffs.get("/:id", midddleware.checkToken, (req, res) => {
     Staff.findOne({
         where: {
             ins_uuid:req.decoded.id,
-            ID: req.params.id
+            staffID: req.params.id
         },
-        attributes: ['ID', 'fname', 'lname' , 'email', 'phone', 'address', 'img']
+        attributes: ['staffID', 'fname', 'lname' , 'email', 'phone', 'address', 'img']
     })
     .then(staff => {
         res.status(200).json({status: "Ok", staff})
@@ -49,7 +49,7 @@ staffs.post("/", midddleware.checkToken, (req, res)=> {
 
     //object
     const staffData = {
-        ID: "",
+        staffID: "",
         ins_uuid: req.decoded.id,
         fname: req.body.fname,
         lname: req.body.lname,
@@ -70,7 +70,7 @@ staffs.post("/", midddleware.checkToken, (req, res)=> {
         if (!staff){
             bcrypt.hash(req.body.password, 10, (err, hash) =>{
                 staffData.password = hash;
-                staffData.ID = uuidv4();
+                staffData.staffID = uuidv4();
                 Staff.create(staffData)
                 .then(staff => {
                     res.status(200).json({ status: "Successfully Added."});
@@ -100,7 +100,7 @@ staffs.post('/login', (req, res) => {
     .then(staff => {
         if(staff){
             if(bcrypt.compareSync(req.body.password, staff.password)){
-                let token = jwt.sign({id: staff.ID,isAdmin: false, isStaff: true, isStudent: false }, process.env.APP_SECRET, {
+                let token = jwt.sign({id: staff.staffID,isAdmin: false, isStaff: true, isStudent: false }, process.env.APP_SECRET, {
                     expiresIn: 86400
                 })
                 res.send({token});
