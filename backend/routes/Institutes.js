@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const Institute = require("../models/institute");
 const uuidv4 = require('uuid/v4');
 institutes.use(cors());
+const axios = require('axios');
 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -74,6 +75,26 @@ institutes.post("/login", (req, res) => {
         res.status(400).json(err)
         console.log(err)
     })
+})
+
+// Payment Route
+institutes.post('/payment', (req, res) => {
+    let data = {
+        token: req.body.token,
+        amount: req.body.amount
+    }
+    
+    let config = {
+        headers: {'Authorization': 'Key live_secret_key_70d7cc81b96245488185350a3ccf7768'}
+    };
+    
+    axios.post("https://khalti.com/api/v2/payment/verify/", data, config)
+    .then(response => {
+        res.send(response.data);
+    })
+    .catch(error => {
+        res.send(error.response.data);
+    });
 })
 
 module.exports = institutes;
