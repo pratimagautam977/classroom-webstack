@@ -118,4 +118,21 @@ students.post('/login', (req, res) => {
         console.log(errr);
     })
 })
+
+// DELETE Student Route
+students.delete('/:id', midddleware.checkToken, (req, res) => {
+    Student.destroy({
+        where: {
+            studID : req.params.id, 
+            ins_uuid: req.decoded.id
+        }
+    })
+    .then(student => {
+        res.status(200).json({status: "Ok"})
+    })
+    .catch(err => {
+        res.send(err);
+    })
+})
+
 module.exports = students;
