@@ -1,18 +1,31 @@
 import React from 'react';
 
 export default function AllStaffs(props) {
+    const items = props.data;
+    if (items.length === 0){
+        return <h4>You have no staff...</h4>
+    }
+    else{
     return (
-        <div className="cards">
-            <ul>
+        <div className="cards">            
             {
-                props.data.map(staff =>
+                props.data.map(staff => 
                     <div key={staff.staffID}  className="dp">
-                        <img  className="round_img" alt="" src={staff.img} width="40px" />
-                        <li >{staff.fname} {staff.lname}</li>
+                        <div className="round_img">
+                            <img  className="" alt="" src={staff.img} width="40px" />
+
+                        </div>
+                        <div className="name_area">
+                            <li >{staff.fname} {staff.lname}</li>
+                        </div>
+                        <div className="button_controller">
+                            <a className="button_table" onClick={() => props.onUpdate(staff.staffID)}><span className="icon-pencil" /></a>
+                            <a className="button_table" onClick={() => props.onDelete(staff.staffID)}><span className="icon-delete" /></a>
+                        </div>
                     </div>
                 )
             }
-            </ul>
+            
         </div>
-    )
+    )}
 }
