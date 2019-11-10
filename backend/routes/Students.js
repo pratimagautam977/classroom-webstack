@@ -135,4 +135,31 @@ students.delete('/:id', midddleware.checkToken, (req, res) => {
     })
 })
 
+//UPDATE Student Route
+students.put('/:id', midddleware.checkToken, (req, res) => {
+    password = req.body.password;
+    var StudentData = {
+        fname: req.body.fname,
+        lname: req.body.lname,
+        email: req.body.email,
+        address: req.body.address,
+        phone: req.body.phone,   
+    }    
+    if (password !== ""){
+        Object.assign(StudentData, {password});        
+    }
+    
+    Student.update(StudentData,{
+        where: {
+            studID : req.params.id
+        }
+    })
+    .then(student => {
+        res.status(200).json({student})
+    })
+    .catch(err => {
+        res.send(err);
+    })
+    
+})
 module.exports = students;
