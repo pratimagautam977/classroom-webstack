@@ -122,7 +122,20 @@ staffs.post('/login', (req, res) => {
 staffs.put("/:id");
 
 // DELETE Route <delete>
-staffs.delete("/:id");
+staffs.delete('/:id', midddleware.checkToken, (req, res) => {
+    Staff.destroy({
+        where: {
+            staffID : req.params.id, 
+            ins_uuid: req.decoded.id
+        }
+    })
+    .then(staff => {
+        res.status(200).json({status: "Ok"})
+    })
+    .catch(err => {
+        res.send(err);
+    })
+})
 
 
 module.exports = staffs;
