@@ -53,10 +53,10 @@ class Login extends React.Component{
             else{                
                 this.setState({ error: res.data.error });
             }
-            
         })
         .catch(err=>{
             console.log(err.response.data.error)
+            this.setState({type: ""})
         })
          
     }
@@ -92,9 +92,10 @@ class Login extends React.Component{
                                 <div className="form_container mb-3 p-2">
                                     {err_data}  
                                     <label >Login Type:</label>
+                                    <input type="radio" checked className="mr-1 ml-2" onChange={this.onChange} name="type" value=""/><label >None</label>
                                     <input type="radio" className="mr-1 ml-2" onChange={this.onChange} name="type" value="stud"/><label >Student</label>
                                     <input type="radio" className="mr-1 ml-2" onChange={this.onChange} name="type" value="staff"/><label >Staff</label>
-                                    <input type="radio" className="mr-1 ml-2"  onChange={this.onChange} name="type" value="ins"/><label >Institue</label>
+                                    <input type="radio" className="mr-1 ml-2" onChange={this.onChange} name="type" value="ins"/><label >Institue</label>
                                     <div className="row pl-3 pr-3">
                                         <div className="col icon_holder">
                                             <img className="" src="./images/mail.svg" alt="Mail"/>
