@@ -312,18 +312,50 @@ body.dashboard{
 
 .round_img {
   border-radius: 50%;
-  margin: 20px;
+
+  overflow:hidden;
+  width: 30px;
+  height: 30px;
+}
+.round_img img{
+  width: 30px;
+  height: auto;
+}
+.button_controller{
+  display: none;
+  max-width: 100px;
 }
 .dp{
   display: flex;
   flex-direction: row;
   align-items: center;
   min-width: 200px;
+  margin: 5px;
+  padding: 10px;
+}
+.dp:hover{
+  background: rgb(235, 235, 235);
+  cursor: pointer;
+}
+.dp:hover .button_controller{
+  display: block;
 }
 .dp li{
   list-style: none;
 }
+.name_area{
+  flex:1;
+  padding-left: 20px;
+}
 
+.button_table{
+  margin: 7.5px;
+  font-size: 20px;
+  color: #afaaaa !important;
+}
+.button_table:hover{  
+  color: #000000 !important;
+}
 ul{
   padding-inline-start: 0px;
 }
@@ -336,13 +368,21 @@ ul{
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   padding: 20px 10px;
 }
-.btn-blue{
-  padding: 10px 20px;
+.btn_holder{
+  width: 100%;
+  text-align: right;
+}
+.btn--blue{
+  padding: 3px 20px;
   margin: 10px 0;
   border-radius: 8px;
   background: #3e89fa;
   height: 100%;
   color: #fff;
+  
+}
+.modal_btn button{
+  font-size: 30px;
 }
 [class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
@@ -360,46 +400,34 @@ ul{
 
 
 /* ICON AREA  */
-.icon-edit:before {
-  content: "\e90b";
+.icon-hired:before {
+  content: "\e912";
 }
-.icon-note:before {
-  content: "\e90c";
-}
-.icon-calendar:before {
-  content: "\e90d";
-}
-.icon-file:before {
-  content: "\e90e";
-}
-.icon-result:before {
-  content: "\e90f";
-}
-.icon-conversation:before {
+.icon-interview:before {
   content: "\e910";
 }
-.icon-cloud:before {
+.icon-building:before {
   content: "\e911";
 }
-.icon-application:before {
-  content: "\e908";
+.icon-calendar:before {
+  content: "\e90e";
 }
-.icon-check-list:before {
-  content: "\e909";
+.icon-cloud:before {
+  content: "\e90f";
 }
-.icon-hired:before {
-  content: "\e90a";
+.icon-pencil:before {
+  content: "\e900";
 }
-.icon-paper-plane:before {
+.icon-note:before {
   content: "\e901";
 }
-.icon-promotion:before {
+.icon-file:before {
   content: "\e902";
 }
-.icon-idea:before {
+.icon-result:before {
   content: "\e903";
 }
-.icon-settings:before {
+.icon-conversation:before {
   content: "\e904";
 }
 .icon-id-card:before {
@@ -411,8 +439,23 @@ ul{
 .icon-blackboard:before {
   content: "\e907";
 }
-.icon-building:before {
-  content: "\e900";
+.icon-paper-plane:before {
+  content: "\e908";
+}
+.icon-promotion:before {
+  content: "\e909";
+}
+.icon-idea:before {
+  content: "\e90a";
+}
+.icon-settings:before {
+  content: "\e90b";
+}
+.icon-delete:before {
+  content: "\e90c";
+}
+.icon-edit:before {
+  content: "\e90d";
 }
 
 /* Modal CSS */
@@ -427,43 +470,102 @@ ul{
   z-index: 101;
 }
 
-.m-menu.-active .m-menu__icon path {
-  fill: #0b3895;
-}
-.m-menu.-active .m-menu__list {
-  transform: scale(1);
-}
-.m-menu__list {
-  position: absolute;
-  text-align: left;
-  top: 50%;
-  right:0;
-  z-index: 101;
-  padding: 0;
-  border-radius: 8px;
-  background-color: #fff;
+.modal_highlight{
+  position: fixed;
+  top: 0;
+  left:0;
+  height: 100vh;
+  width: 100%;
+  background-color: rgba(223, 223, 223, 0.6);
+  backdrop-filter: saturate(180%) blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   transition: 0.25s ease all;
   transform: scale(0);
   transform-origin: 0 1;
-  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
 }
-.m-menu__item {
-  display: block;
+
+.m-menu.-active .modal_highlight {
+  transform: scale(1);
+}
+.modal_main{
   width: 100%;
-  padding: 12px;
+  max-width: 700px;
+  min-height: 200px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  max-height: 80vh;
+  background-color: #ffffff;
+  text-align: left;
+  overflow: hidden;
+  
 }
-.m-menu__item:hover {
-  color: #0b3895;
-}
-.m-menu__link {
+.modal_head, .modal_body, .modal_footer{
   width: 100%;
-  padding: 4px;
-  display: inline-block;
-  white-space: pre;
+  padding: 7.5px;
+  /* margin: 7.5px */
+  
 }
-.m-menu__link:hover {
-  color: #0b3895;
-  text-decoration: none;
+.modal_head{
+  display: flex;
+  flex-direction: row;
+  background-image: linear-gradient(15deg, #13547a 0%, #80d0c7 100%);
+  padding: 0px;
+  color: #fff;
+  overflow: hidden;
+}
+.modal_head .modal_title{
+  width: 90%;
+  
+}
+
+.modal_head .modal_btn{
+  width: 10%;
+  
+}
+.modal_body{
+  overflow: hidden auto;   
+  max-height: 60vh; 
+  padding: 20px;   
+}
+/* button, button:hover{
+  outline:none;
+  border: none;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  margin: auto;
+
+} */
+.modal_main h2{
+  font-family: 'Montserrat', sans-serif;
+  margin:0;
+}
+.btn_holder{
+  width: 100%;
+  text-align: right;
+}
+.btn--blue{
+  padding: 6px 20px;
+  margin: 10px 0;
+  border-radius: 100px;
+  background: #3e89fa;
+  height: 100%;
+  color: #fff;
+  
+}
+*{
+  margin:0;
+}
+.modal_title{
+  padding: 20px 20px;
+  
+}
+.modal_btn button{
+  font-size: 30px;
+  color: #fff;
+  padding: 20px 10px;
 }
 
 /* RESPONSIVE ZONE */
