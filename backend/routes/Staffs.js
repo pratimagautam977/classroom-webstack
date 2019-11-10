@@ -8,11 +8,11 @@ const uuidv4 = require('uuid/v4');
 staffs.use(cors());
 
 // ########  MIDDLEWARE   ########
-const midddleware = require('../config/Middleware');    //Added Middleware
+const middleware = require('../config/Middleware');    //Added Middleware
 // ###############################
 
 // GET Route to retrieve all staffs <findAll>
-staffs.get("/", midddleware.checkToken, (req, res)=>{
+staffs.get("/", middleware.checkToken, (req, res)=>{
     Staff.findAll({
         where: {
             ins_uuid: req.decoded.id
@@ -28,7 +28,7 @@ staffs.get("/", midddleware.checkToken, (req, res)=>{
 });
 
 // GET Route to retrieve a single staff <findOne>
-staffs.get("/:id", midddleware.checkToken, (req, res) => {
+staffs.get("/:id", middleware.checkToken, (req, res) => {
     Staff.findOne({
         where: {
             ins_uuid:req.decoded.id,
@@ -45,7 +45,7 @@ staffs.get("/:id", midddleware.checkToken, (req, res) => {
 })
 
 // POST Route Add Staff  <create>
-staffs.post("/", midddleware.checkToken, (req, res)=> {
+staffs.post("/", middleware.checkToken, (req, res)=> {
 
     //object
     const staffData = {
@@ -122,7 +122,7 @@ staffs.post('/login', (req, res) => {
 staffs.put("/:id");
 
 // DELETE Route <delete>
-staffs.delete('/:id', midddleware.checkToken, (req, res) => {
+staffs.delete('/:id', middleware.checkToken, (req, res) => {
     Staff.destroy({
         where: {
             staffID : req.params.id, 
@@ -137,5 +137,32 @@ staffs.delete('/:id', midddleware.checkToken, (req, res) => {
     })
 })
 
+// Update Staff Route
+staffs.put('/:id', middleware.checkToken, (req, res) => {
+    password = req.body.password
+    var StaffData = {
+        fname: req.body.fname,
+        lname: req.body.lname,
+        email: req.body.email,
+        address: req.body.address,
+        phone: req.body.phone,
+    }
+    if(password !== ""){
+        password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+        Object.assign(StaffData, {password});
+    }
+
+    Staff.update(StaffData, {
+        where: {
+            staffData: req.params.id
+        }
+    })
+    .then(staff => {
+        res.status(200).json({staff})
+    })
+    .catch(err => {
+        res.send(err);
+    })
+})
 
 module.exports = staffs;
