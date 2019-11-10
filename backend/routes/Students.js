@@ -9,11 +9,11 @@ students.use(cors());
 
 
 // ########  MIDDLEWARE   ########
-const midddleware = require('../config/Middleware');    //Added Middleware
+const middleware = require('../config/Middleware');    //Added Middleware
 // ###############################
 
 // POST Registration Route (Add Student)
-students.post("/", midddleware.checkToken, (req, res) => {
+students.post("/", middleware.checkToken, (req, res) => {
     const studentData = {
         studID: "",
         ins_uuid: req.decoded.id,
@@ -60,7 +60,7 @@ students.post("/", midddleware.checkToken, (req, res) => {
 })
 
 // GET ALL Students
-students.get("/", midddleware.checkToken, (req, res) => {
+students.get("/", middleware.checkToken, (req, res) => {
     Student.findAll({
         where: {
             ins_uuid: req.decoded.id
@@ -76,7 +76,7 @@ students.get("/", midddleware.checkToken, (req, res) => {
 })
 
 // GET Route to retrieve a single student <findOne>
-students.get("/:id", midddleware.checkToken, (req, res) => {
+students.get("/:id", middleware.checkToken, (req, res) => {
     Student.findOne({
         where: {
             ins_uuid:req.decoded.id,
@@ -120,7 +120,7 @@ students.post('/login', (req, res) => {
 })
 
 // DELETE Student Route
-students.delete('/:id', midddleware.checkToken, (req, res) => {
+students.delete('/:id', middleware.checkToken, (req, res) => {
     Student.destroy({
         where: {
             studID : req.params.id, 
@@ -136,7 +136,7 @@ students.delete('/:id', midddleware.checkToken, (req, res) => {
 })
 
 //UPDATE Student Route
-students.put('/:id', midddleware.checkToken, (req, res) => {
+students.put('/:id', middleware.checkToken, (req, res) => {
     password = req.body.password;
     var StudentData = {
         fname: req.body.fname,
@@ -146,6 +146,7 @@ students.put('/:id', midddleware.checkToken, (req, res) => {
         phone: req.body.phone,   
     }    
     if (password !== ""){
+        password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
         Object.assign(StudentData, {password});        
     }
     
