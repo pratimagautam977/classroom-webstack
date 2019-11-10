@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Modal</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+        *{
+            margin: 0;
+        }
+        .modal_highlight{
+            height: 100vh;
+            width: 100%;
+            background-color: rgba(223, 223, 223, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+        }
+        .modal_main{
+            width: 100%;
+            max-width: 700px;
+            min-height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            max-height: 80vh;
+            background-color: #ffffff;
+            text-align: left;
+            
+        }
+        .modal_head, .modal_body, .modal_footer{
+            width: 100%;
+            padding: 7.5px;
+            margin: 7.5px
+        }
+        .modal_head{
+            display: flex;
+            flex-direction: row;
+            height: 40px;
+            padding: 0px;
+        }
+        .modal_head .modal_title{
+            width: 90%;
+            
+        }
+
+        .modal_head .modal_btn{
+            width: 10%;
+
+        }
+        .modal_body{
+            overflow: hidden auto;   
+            max-height: 60vh;    
+        }
+        button, button:hover{
+            outline:none;
+            border: none;
+            border-radius: 50%;
+            height: 20px;
+            width: 20px;
+            margin: auto;
+            background: #00000000;
+        }
+        
+        .modal_main h2{
+            font-family: 'Montserrat', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal_highlight">
+        <div class="modal_main">
+            <div class="modal_head">
+                <div class="modal_title">
+                    <h2>Hello, Classroom.</h2>
+                    
+                </div>
+                <div class="modal_btn">
+                    <button>X</button>
+                </div>
+            </div>
+            <div class="modal_body">
+                    <h2>Hello, Classroom.</h2> </br>
+                    <h2>Hello, Classroom.</h2> </br>
+                    <h2>Hello, Classroom.</h2> </br>
+                    <h2>Hello, Classroom.</h2> </br>
+                    <h2>Hello, Classroom.</h2> </br>
+                    <h2>Hello, Classroom.</h2> </br>
+                    
+                <p>Classroom WebStack</p>
+            </div>
+            <div class="modal_footer"></div>
+        </div>
+    </div>
+    <h1>Heading 1 </h1>
+</body>
+</html>
