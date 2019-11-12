@@ -400,6 +400,12 @@ ul{
 
 
 /* ICON AREA  */
+.icon-folder:before {
+  content: "\e913";
+}
+.icon-assignment:before {
+  content: "\e914";
+}
 .icon-hired:before {
   content: "\e912";
 }
