@@ -19,8 +19,8 @@ export default function AllStaffs(props) {
                             <li >{staff.fname} {staff.lname}</li>
                         </div>
                         <div className="button_controller">
-                            <a className="button_table" onClick={() => props.onUpdate(staff.staffID)}><span className="icon-pencil" /></a>
-                            <a className="button_table" onClick={() => props.onDelete(staff.staffID)}><span className="icon-delete" /></a>
+                            <a href=" " className="button_table" onClick={() => props.onUpdate(staff.staffID)}><span className="icon-pencil" /></a>
+                            <a href=" " className="button_table" onClick={() => props.onDelete(staff.staffID)}><span className="icon-delete" /></a>
                         </div>
                     </div>
                 )
