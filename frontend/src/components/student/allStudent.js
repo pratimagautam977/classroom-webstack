@@ -20,8 +20,8 @@ export default function Students(props) {
                             <li >{student.fname} {student.lname}</li>
                         </div>
                         <div className="button_controller">
-                            <a className="button_table" onClick={() => props.onUpdate(student.studID)}><span className="icon-pencil" /></a>
-                            <a className="button_table" onClick={() => props.onDelete(student.studID)}><span className="icon-delete" /></a>
+                            <a href=" " className="button_table" onClick={() => props.onUpdate(student.studID)}><span className="icon-pencil" /></a>
+                            <a href=" " className="button_table" onClick={() => props.onDelete(student.studID)}><span className="icon-delete" /></a>
                         </div>
                     </div>
                 )
