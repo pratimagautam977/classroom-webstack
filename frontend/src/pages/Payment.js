@@ -51,7 +51,7 @@ export default class Payment extends Component {
             <Helmet>
               <title>Classroom WebStack | Payment</title>
             </Helmet>
-            <button className="btn-violet mt-2" onClick={() =>checkout.show({amount: 1000})}><img src="./images/khalti_logo.png" />Pay Fees</button>
+            <button className="btn-violet mt-2" onClick={() =>checkout.show({amount: 1000})}><img src="./images/khalti_logo.png"  alt="khalti"/>Pay Fees</button>
             
           </React.Fragment>
         )
