@@ -375,37 +375,62 @@ ul{
 .cards{
   border-radius: 8px;
   width: 100%;
-  margin: 15px 0;
+  margin: 15px 0 !important;
   min-height: 100px;
   background: #ffffff;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   padding: 20px 10px;
 }
-
+.cd{
+  min-width: 300px;
+  max-width: 300px;
+  overflow: hidden;
+  padding: 0;
+  margin: 0 10px
+}
+.empty{
+  height: calc(100vh - 100px);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #686868ee
+}
+.empty img{
+  max-width: 30%;
+  height: auto;
+}
 .cards_full{
   border-radius: 8px;
-  width: 100%;
-  margin: 15px 0;
+  width: 300px;
+  margin: 15px 0 !important;
   min-height: 100px;
-  overflow: none;
+  overflow: hidden;
+  min-width: 300px;
+  max-width: 300px;
   background: #ffffff;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .cards_full .cards_header{
-  padding: 10px;
-  min-height: 50px;
-  background-repeat: no-repeat;
-  background-size: cover;
+  padding: 20px 10px;
+  min-height: 70px;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  background-position: center !important;
+}
+.cards_full .cards_header h4{
+  font-size: 18px;
+  color: #fff;
+  text-shadow: 2px 2px 4px #000000;
 }
 .cards_full .card_body{
   padding: 10px;
   min-height: 50px;
 }
 .cards_full .footer{
-  
   border-top: 1px solid #e6e6e6;
-
 }
 .cards_full .footer .footer__btn{
   width:100%;
@@ -413,10 +438,17 @@ ul{
   display: flex;
   flex-direction: row-reverse;
 }
+.cards_full .footer .footer_btn:hover{
+  background: #72727225
+}
 .cards_full .footer .footer_btn{
   color: #000000;
-  margin: 7.5px;
+  margin: 7.5px 4.5px;
+  padding: 2.0px 5.5px;
   font-size: 20px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
 }
 .btn_holder{
   width: 100%;
@@ -453,8 +485,11 @@ ul{
 .icon-folder:before {
   content: "\e913";
 }
-.icon-assignment:before {
+.icon-chat:before {
   content: "\e914";
+}
+.icon-assignment:before {
+  content: "\e95c";
 }
 .icon-hired:before {
   content: "\e912";
