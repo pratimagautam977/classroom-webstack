@@ -1,12 +1,22 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink,withRouter } from "react-router-dom";
 
-export default function Topbar (props) {
+function Topbar (props) {
+  let logout = () =>{
+   localStorage.removeItem("token")
+   props.history.push('/login')
+  }
   return (
     <div className="topbar">
 
       <div className="profile">
           <img src={props.data} alt="profile"/>
+      </div>
+
+      <div className="item" onClick={logout}>
+        <button style={{ fontSize: "22px"}}>
+          <span className="icon-logout"></span>
+        </button>
       </div>
 
       <div className="item">
@@ -22,11 +32,11 @@ export default function Topbar (props) {
       </div>
 
       <div className="item">
-        <NavLink to="/notification" activeClassName="selected">
+        <NavLink to="/note" activeClassName="selected">
             <span className="icon-note"></span>
         </NavLink>
       </div>
-
     </div>
   );
 }
+export default withRouter(Topbar);
