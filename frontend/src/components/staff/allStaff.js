@@ -3,7 +3,11 @@ import React from 'react';
 export default function AllStaffs(props) {
     const items = props.data;
     if (items.length === 0){
-        return <h4>You have no staff...</h4>
+        return (
+            <div className="empty">
+                <img src="./images/no_staff.svg" alt="nostaff"/>
+                <h5 className="mt-3">No Staff Added Yet!</h5>
+            </div>)
     }
     else{
     return (
@@ -19,8 +23,8 @@ export default function AllStaffs(props) {
                             <li >{staff.fname} {staff.lname}</li>
                         </div>
                         <div className="button_controller">
-                            <a href=" " className="button_table" onClick={() => props.onUpdate(staff.staffID)}><span className="icon-pencil" /></a>
-                            <a href=" " className="button_table" onClick={() => props.onDelete(staff.staffID)}><span className="icon-delete" /></a>
+                            <button className="button_table" onClick={() => props.onUpdate(staff.staffID)}><span className="icon-pencil" /></button>
+                            <button className="button_table" onClick={() => props.onDelete(staff.staffID)}><span className="icon-delete" /></button>
                         </div>
                     </div>
                 )
