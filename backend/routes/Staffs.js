@@ -4,13 +4,48 @@ const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Staff = require("../models/staff");
+const Institute = require("../models/institute");
 const uuidv4 = require('uuid/v4');
+const Joi = require('@hapi/joi');
 staffs.use(cors());
 
 // ########  MIDDLEWARE   ########
 const middleware = require('../config/Middleware');    //Added Middleware
 // ###############################
 
+// implementing Joi schema
+const registerValidation = data => {
+    const schema = Joi.object({
+        fname: Joi.string()
+        .min(3)
+        .max(15)
+        .required()
+        .label("Input Label"),
+    
+        lname: Joi.string()
+        .min(3)
+        .max(15)
+        .required(),
+    
+        email: Joi.string()
+        .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
+    
+        password: Joi.string()
+        .pattern(/^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})/),
+
+        address: Joi.string()
+        .min(3)
+        .max(100)
+        .required(),
+
+        phone: Joi.string()
+        .required()
+        .pattern(/^[0-9]{8,14}$/),
+        
+    })
+    return schema.validate(data);
+}
+ 
 // GET Route to retrieve all staffs <findAll>
 staffs.get("/", middleware.checkToken, (req, res)=>{
     Staff.findAll({
@@ -46,7 +81,8 @@ staffs.get("/:id", middleware.checkToken, (req, res) => {
 
 // POST Route Add Staff  <create>
 staffs.post("/", middleware.checkToken, (req, res)=> {
-
+    // const {error} = registerValidation(req.body);
+    // if(error) return res.status(400).json({error: error.details[0].message});
     //object
     const staffData = {
         staffID: "",
@@ -73,7 +109,16 @@ staffs.post("/", middleware.checkToken, (req, res)=> {
                 staffData.staffID = uuidv4();
                 Staff.create(staffData)
                 .then(staff => {
-                    res.status(200).json({ status: "Successfully Added."});
+                    //res.status(200).json({ status: "Successfully Added."});
+                    //here write the mail function a common 
+                    Institute.findOne({
+                        where:{
+                            ins_uuid: staffData.ins_uuid
+                        }
+                    })
+                    .then(inst => {
+                        console.log(inst.name);
+                    })
                 })
                 .catch(err =>{
                     res.send(err);
@@ -118,9 +163,6 @@ staffs.post('/login', (req, res) => {
 
 });
 
-// PUT Route <update>
-staffs.put("/:id");
-
 // DELETE Route <delete>
 staffs.delete('/:id', middleware.checkToken, (req, res) => {
     Staff.destroy({
@@ -139,7 +181,8 @@ staffs.delete('/:id', middleware.checkToken, (req, res) => {
 
 // Update Staff Route
 staffs.put('/:id', middleware.checkToken, (req, res) => {
-    password = req.body.password
+
+    var password = req.body.password
     var StaffData = {
         fname: req.body.fname,
         lname: req.body.lname,
@@ -147,14 +190,16 @@ staffs.put('/:id', middleware.checkToken, (req, res) => {
         address: req.body.address,
         phone: req.body.phone,
     }
-    if(password !== ""){
-        password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-        Object.assign(StaffData, {password});
+    if(password !== undefined){
+        if(password.length !== 0){                                          
+            password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));        
+            Object.assign(StaffData, {password});            
+        }           
     }
 
     Staff.update(StaffData, {
         where: {
-            staffData: req.params.id
+            staffID: req.params.id
         }
     })
     .then(staff => {
