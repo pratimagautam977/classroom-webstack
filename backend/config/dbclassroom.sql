@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 19, 2019 at 07:34 AM
--- Server version: 10.4.6-MariaDB
--- PHP Version: 7.3.8
+-- Generation Time: Dec 11, 2019 at 10:46 AM
+-- Server version: 10.4.10-MariaDB
+-- PHP Version: 7.3.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -33,17 +33,18 @@ CREATE TABLE `tbl_classroom` (
   `class_uuid` varchar(100) NOT NULL,
   `ins_uuid` varchar(100) NOT NULL,
   `class_name` varchar(30) NOT NULL,
-  `class_created_at` date NOT NULL DEFAULT current_timestamp()
+  `class_created_at` date NOT NULL DEFAULT current_timestamp(),
+  `class_img` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tbl_classroom`
 --
 
-INSERT INTO `tbl_classroom` (`id`, `class_uuid`, `ins_uuid`, `class_name`, `class_created_at`) VALUES
-(4, '', '035f93a5-2f92-4cc1-9668-3103da7ce5e8', 'Big Data Analysis', '2019-10-15'),
-(3, 'a31a740a-14ca-4997-8bf9-954400b446d7', '035f93a5-2f92-4cc1-9668-3103da7ce5e8', 'Artificial Intelligence', '2019-10-15'),
-(2, 'c182178d-186a-4542-a848-0afb4e4f8a58', '035f93a5-2f92-4cc1-9668-3103da7ce5e8', 'Artificial Intelligence', '2019-10-15');
+INSERT INTO `tbl_classroom` (`id`, `class_uuid`, `ins_uuid`, `class_name`, `class_created_at`, `class_img`) VALUES
+(3, 'a31a740a-14ca-4997-8bf9-954400b446d7', '035f93a5-2f92-4cc1-9668-3103da7ce5e8', 'Machine Learning', '2019-10-15', 'https://www.acq-intl.com/wp-content/uploads/2019/11/AI.jpg'),
+(2, 'c182178d-186a-4542-a848-0afb4e4f8a58', '035f93a5-2f92-4cc1-9668-3103da7ce5e8', 'Artificial Intelligence', '2019-10-15', 'https://community.arm.com/cfs-filesystemfile/__key/communityserver-components-secureimagefileviewer/communityserver-blogs-components-weblogfiles-00-00-00-38-23/BFloat-Image-re_2D00_sized.jpg_2D00_900x506x2.jpg?_=637026725151143575'),
+(4, 'c182178d-186a-4542-a848-0afb4e4f8a78', '035f93a5-2f92-4cc1-9668-3103da7ce5e8', 'Big Data Analysis', '2019-10-15', 'https://wallpaperaccess.com/full/672249.jpg');
 
 -- --------------------------------------------------------
 
@@ -100,6 +101,7 @@ INSERT INTO `tbl_class_std` (`id`, `class_uuid`, `stud_uuid`) VALUES
 CREATE TABLE `tbl_institute` (
   `id` int(11) NOT NULL,
   `ins_uuid` varchar(100) NOT NULL,
+  `ins_name` varchar(50) NOT NULL,
   `ins_logo` text NOT NULL,
   `ins_email` varchar(50) NOT NULL,
   `ins_address` varchar(50) NOT NULL,
@@ -114,12 +116,12 @@ CREATE TABLE `tbl_institute` (
 -- Dumping data for table `tbl_institute`
 --
 
-INSERT INTO `tbl_institute` (`id`, `ins_uuid`, `ins_logo`, `ins_email`, `ins_address`, `ins_type`, `ins_phone`, `ins_password`, `ins_uname`, `created_at`) VALUES
-(4, '035f93a5-2f92-4cc1-9668-3103da7ce5e8', '', 'astuteyard1@gmail.com', '', '', 2147483647, '$2a$10$gvxmEv8CSCVtWaZPzZNjd.MwGgwR2d6kckQdFiVvFw6xbwpFpteZy', 'icpi', '2019-10-10'),
-(1, '0b2bf949-08f6-4b6b-9644-546054f0b478', '', 'astute.yard@gmail.com', '', '', 2147483647, '$2a$10$JSx.0gzuZ9e6C91BjOKsx.ur/jtIjoSKJtw7Ug/BnZEhg65WudZiq', 'icp', '2019-10-10'),
-(5, '76289d15-bf1e-44fb-9be1-dd7ca15bf9ea', '', 's@s.com', '', '', 9191, '$2a$10$gvxmEv8CSCVtWaZPzZNjd.MwGgwR2d6kckQdFiVvFw6xbwpFpteZy', 'test', '2019-10-15'),
-(3, '90081b9f-c1c8-4a10-b935-e20487c48fc1', '', 'astuteyard@gmail.com', '', '', 2147483647, '$2a$10$tLVx2hv.B8AO049X6rqizOfybI2FJt2yrla8yBOf2IFyEEe4FN3eS', 'icp1i', '2019-10-10'),
-(6, 'be2e47d2-1427-4869-a446-add0b0a71015', '', 's@ss.com', '', '', 9191, '$2a$10$NMMJ2i9K3LvtyK6coaIQnu3bylW0DWDZqvqfVbxvAldEuQLTxTuki', 'testi', '2019-10-15');
+INSERT INTO `tbl_institute` (`id`, `ins_uuid`, `ins_name`, `ins_logo`, `ins_email`, `ins_address`, `ins_type`, `ins_phone`, `ins_password`, `ins_uname`, `created_at`) VALUES
+(4, '035f93a5-2f92-4cc1-9668-3103da7ce5e8', '', '', 'astuteyard1@gmail.com', '', '', 2147483647, '$2a$10$gvxmEv8CSCVtWaZPzZNjd.MwGgwR2d6kckQdFiVvFw6xbwpFpteZy', 'icpi', '2019-10-10'),
+(1, '0b2bf949-08f6-4b6b-9644-546054f0b478', '', '', 'astute.yard@gmail.com', '', '', 2147483647, '$2a$10$JSx.0gzuZ9e6C91BjOKsx.ur/jtIjoSKJtw7Ug/BnZEhg65WudZiq', 'icp', '2019-10-10'),
+(5, '76289d15-bf1e-44fb-9be1-dd7ca15bf9ea', '', '', 's@s.com', '', '', 9191, '$2a$10$gvxmEv8CSCVtWaZPzZNjd.MwGgwR2d6kckQdFiVvFw6xbwpFpteZy', 'test', '2019-10-15'),
+(3, '90081b9f-c1c8-4a10-b935-e20487c48fc1', '', '', 'astuteyard@gmail.com', '', '', 2147483647, '$2a$10$tLVx2hv.B8AO049X6rqizOfybI2FJt2yrla8yBOf2IFyEEe4FN3eS', 'icp1i', '2019-10-10'),
+(6, 'be2e47d2-1427-4869-a446-add0b0a71015', '', '', 's@ss.com', '', '', 9191, '$2a$10$NMMJ2i9K3LvtyK6coaIQnu3bylW0DWDZqvqfVbxvAldEuQLTxTuki', 'testi', '2019-10-15');
 
 -- --------------------------------------------------------
 
@@ -292,7 +294,7 @@ ALTER TABLE `tbl_staff`
 -- AUTO_INCREMENT for table `tbl_student`
 --
 ALTER TABLE `tbl_student`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tbl_subject`
