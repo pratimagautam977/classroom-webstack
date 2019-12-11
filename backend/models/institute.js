@@ -14,6 +14,10 @@ module.exports = db.sequelize.define(
             primaryKey: true,
             field: "ins_uuid"
         },
+        name: {
+            type: Sequelize.STRING,
+            field: "ins_name"
+        },
         logo: {
             type: Sequelize.STRING,
             field: "ins_logo"
