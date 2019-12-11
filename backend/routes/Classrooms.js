@@ -11,7 +11,7 @@ const uuidv4 = require('uuid/v4');
 classrooms.use(cors());
 
 // ########  MIDDLEWARE   ########
-const midddleware = require('../config/Middleware');    //Added Middleware
+const middleware = require('../config/Middleware');    //Added Middleware
 // ###############################
 
 Classroom.belongsToMany(Student, {through: ClassStud, foreignKey: 'classID'})
@@ -20,7 +20,7 @@ Classroom.belongsToMany(Staff, {through: ClassStaff, foreignKey: 'classID'})
 Staff.belongsToMany(Classroom, {through: ClassStaff, foreignKey: 'staffID'})
 
 // POST Route 
-classrooms.post("/", midddleware.checkToken, (req, res) => {
+classrooms.post("/", middleware.checkToken, (req, res) => {
     const classData = {
         ID: "",
         ins_uuid: req.decoded.id,
@@ -40,27 +40,27 @@ classrooms.post("/", midddleware.checkToken, (req, res) => {
 })
 
 // GET Route
-classrooms.get("/", midddleware.checkToken, (req, res) => {
+classrooms.get("/", middleware.checkToken, (req, res) => {
     Classroom.findAll({
         where: {
             ins_uuid: req.decoded.id
         },
-        attributes: ['classID', 'name', 'createdAt'],
+        attributes: ['classID', 'name', 'createdAt','img'],
         include: [ 
             {
                 model: Student ,
-                where: {
-                    ins_uuid: req.decoded.id
-                },
+                // where: {
+                //     ins_uuid: req.decoded.id
+                // },
                 
                 attributes: ['studID','fname', 'lname', 'img'],
                 through: { attributes: [] }              
             },
             {
                 model: Staff,
-                where: {
-                    ins_uuid: req.decoded.id
-                },
+                // where: {
+                //     ins_uuid: req.decoded.id
+                // },
                 
                 attributes: ['staffID', 'fname', 'lname', 'img'],
                 through: { attributes: []}
@@ -77,27 +77,27 @@ classrooms.get("/", midddleware.checkToken, (req, res) => {
 })
 
 // GET Route to retrieve a single classroom <findOne>
-classrooms.get("/:id", midddleware.checkToken, (req, res) => {
+classrooms.get("/:id", middleware.checkToken, (req, res) => {
     Classroom.findOne({
         where: {
             ins_uuid: req.decoded.id,
             class_uuid: req.params.id
         },
-        attributes: ['classID', 'name', 'createdAt'],
+        attributes: ['classID', 'name', 'createdAt', 'img'],
         include: [ 
             {
                 model: Student ,
-                where: {
-                    ins_uuid: req.decoded.id
-                },
+                // where: {
+                //     ins_uuid: req.decoded.id
+                // },
                 attributes: ['studID','fname', 'lname', 'img'],
                 through: { attributes: [] }              
             },
             {
                 model: Staff,
-                where: {
-                    ins_uuid: req.decoded.id
-                },
+                // where: {
+                //     ins_uuid: req.decoded.id
+                // },
                 attributes: ['staffID', 'fname', 'lname', 'img'],
                 through: { attributes: []}
             }
@@ -113,12 +113,26 @@ classrooms.get("/:id", midddleware.checkToken, (req, res) => {
 })
 
 // PUT Route <update>
-classrooms.put('/:id', (req, res) => {
-    //for now lets skip update and start with delete 
+classrooms.put('/:id', middleware.checkToken, (req, res) => {
+    var classData = {
+        name: req.body.name
+    }
+
+    Classroom.update(ClassData, {
+        where: {
+            classData: req.params.id
+        }
+    })
+    .then(classroom => {
+        res.status(200).json({classroom})
+    })
+    .catch(err => {
+        res.send(err);
+    })
 })
 
 // DELETE Route <drop>
-classrooms.delete('/:id', midddleware.checkToken, (req, res) => {
+classrooms.delete('/:id', middleware.checkToken, (req, res) => {
     Classroom.destroy({
         where: {
             class_uuid : req.params.id, 
@@ -134,7 +148,7 @@ classrooms.delete('/:id', midddleware.checkToken, (req, res) => {
 })
 
 // GET Route for student
-classrooms.get('/student', midddleware.checkToken, (req, res) => {
+classrooms.get('/student', middleware.checkToken, (req, res) => {
     Classroom.findAll({
         where: {
             ins_uuid: req.decoded.id
@@ -160,7 +174,7 @@ classrooms.get('/student', midddleware.checkToken, (req, res) => {
 })
 
 // GET Route for staff
-classrooms.get('/staff',midddleware.checkToken, (req, res) =>{
+classrooms.get('/staff',middleware.checkToken, (req, res) =>{
     
     Classroom.findAll({
         where: {
