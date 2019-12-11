@@ -1,6 +1,7 @@
 import React from 'react';
 import {Helmet} from 'react-helmet';
-import axios from 'axios'
+import axios from 'axios';
+import {Link} from 'react-router-dom';
 
 class Login extends React.Component{
     constructor(props){
@@ -48,15 +49,18 @@ class Login extends React.Component{
                 // console.log(res.data.token)
                 localStorage.setItem("token", res.data.token )
                 this.setState({error : ""})
-                this.props.history.push('/home')
+                setTimeout(() => {
+                    this.props.history.push('/home')
+                }, 2000);                
             }
             else{                
                 this.setState({ error: res.data.error });
             }
         })
         .catch(err=>{
-            console.log(err.response.data.error)
-            this.setState({type: ""})
+            //console.log(err.response.data.error)
+            const type = this.state.type
+            this.setState({type, error: err.response.data.error })
         })
          
     }
@@ -91,11 +95,20 @@ class Login extends React.Component{
                             <form onSubmit={this.onSubmit}>
                                 <div className="form_container mb-3 p-2">
                                     {err_data}  
-                                    <label >Login Type:</label>
-                                    <input type="radio" checked className="mr-1 ml-2" onChange={this.onChange} name="type" value=""/><label >None</label>
-                                    <input type="radio" className="mr-1 ml-2" onChange={this.onChange} name="type" value="stud"/><label >Student</label>
-                                    <input type="radio" className="mr-1 ml-2" onChange={this.onChange} name="type" value="staff"/><label >Staff</label>
-                                    <input type="radio" className="mr-1 ml-2" onChange={this.onChange} name="type" value="ins"/><label >Institue</label>
+                                    
+                                    <div className="row pl-3 pr-3">
+                                        <div className="col-10">
+                                            <div className="form-group">
+                                                <label className="label_form">Login As {this.state.type} </label>
+                                                <select name="type" onChange={this.onChange} value={this.state.type}>
+                                                    <option value="">None</option>
+                                                    <option value="stud">Student</option>
+                                                    <option value="staff">Staff</option>
+                                                    <option value="ins">Institute</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div className="row pl-3 pr-3">
                                         <div className="col icon_holder">
                                             <img className="" src="./images/mail.svg" alt="Mail"/>
@@ -132,7 +145,7 @@ class Login extends React.Component{
 
                                 <div className="button">
                                     <button className="btn-blue" type="submit">Login Now</button>
-                                    <a className="btn-white" href="/signup">Create Account</a>
+                                    <Link className="btn-white" to="/signup">Create Account</Link>
                                 </div> 
                             </form>             
                         </div>
