@@ -1,5 +1,6 @@
 import React from 'react';
 import {Helmet} from 'react-helmet';
+import {Link} from 'react-router-dom';
 import axios from 'axios';
 
 class Signup extends React.Component {
@@ -138,7 +139,7 @@ class Signup extends React.Component {
 
                             <div className="button">
                                 <button className="btn-blue" type="submit">Sign Up Now</button>
-                                <a className="btn-white" href="/login">Get Login</a>
+                                <Link className="btn-white" to="/login">Get Login</Link>
                             </div>
                         </form>
                     </div>
