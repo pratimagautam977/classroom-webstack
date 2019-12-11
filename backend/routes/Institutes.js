@@ -59,7 +59,7 @@ institutes.post("/login", (req, res) => {
     .then(institute =>{
         if(institute){
             if(bcrypt.compareSync(req.body.password, institute.password)){                
-                let token = jwt.sign({id: institute.insID, isAdmin: true}, process.env.APP_SECRET, {
+                let token = jwt.sign({id: institute.insID, isAdmin: true, isStaff: false, isStudent: false}, process.env.APP_SECRET, {
                     expiresIn: 86400
                 })
                 res.send({token})
