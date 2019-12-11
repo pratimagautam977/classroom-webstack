@@ -24,6 +24,10 @@ module.exports = db.sequelize.define(
         createdAt: {
             type: Sequelize.DATE,
             field: 'class_created_at'
+        },
+        img: {
+            type: Sequelize.STRING,
+            field: 'class_img'
         }
     },    
 
