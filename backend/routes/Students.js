@@ -137,7 +137,7 @@ students.delete('/:id', middleware.checkToken, (req, res) => {
 
 //UPDATE Student Route
 students.put('/:id', middleware.checkToken, (req, res) => {
-    password = req.body.password;
+    var password = req.body.password;
     var StudentData = {
         fname: req.body.fname,
         lname: req.body.lname,
@@ -145,9 +145,11 @@ students.put('/:id', middleware.checkToken, (req, res) => {
         address: req.body.address,
         phone: req.body.phone,   
     }    
-    if (password !== ""){
-        password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-        Object.assign(StudentData, {password});        
+    if(password !== undefined){
+        if(password.length !== 0){                                          
+            password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));        
+            Object.assign(StudentData, {password});            
+        }           
     }
     
     Student.update(StudentData,{
