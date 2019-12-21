@@ -2,7 +2,6 @@ import React from 'react';
 import {Helmet} from 'react-helmet';
 import Sidebar from '../../components/Sidebar';
 import Topbar from '../../components/Topbar';
-import { Route, Switch } from "react-router-dom";
 import { withRouter} from 'react-router-dom';
 
 class Staffs extends React.Component{
