@@ -1,8 +1,6 @@
 import axios from 'axios';
 var url = "http://localhost:3000/";
 
-
-//that day u know what happened on that token problem no dear
 export const AddClass = newClass => {
     const token = localStorage.getItem("token");
     return axios.post(
@@ -29,6 +27,15 @@ export const GetClass=(id) => {
         headers: { Authorization: `Bearer ${token}`}
     }).then(res => {
         return res.data.classroom;
+    })
+}
+
+export const GetAssignment= (id) => {
+    const token  = localStorage.getItem("token");
+    return axios.post( url + `classroom/assignment/`, {id}, {
+        headers: { Authorization: `Bearer ${token}`}
+    }).then(res => {
+        return res.data;
     })
 }
 
