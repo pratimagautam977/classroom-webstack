@@ -6,6 +6,8 @@ const Staff = require("../models/staff"); // Staffs Model
 const Student = require("../models/student"); // Student Model
 const ClassStaff = require("../models/class_staff"); // Classroom and Staff Model
 const ClassStud = require("../models/class_std"); // Classroom and Student Model
+const Assignment  = require("../models/assignment"); // Assignment Model
+const db = require('../config/config');
 
 const uuidv4 = require('uuid/v4');
 classrooms.use(cors());
@@ -18,6 +20,10 @@ Classroom.belongsToMany(Student, {through: ClassStud, foreignKey: 'classID'})
 Student.belongsToMany(Classroom, {through: ClassStud, foreignKey: 'studID'})
 Classroom.belongsToMany(Staff, {through: ClassStaff, foreignKey: 'classID'})
 Staff.belongsToMany(Classroom, {through: ClassStaff, foreignKey: 'staffID'})
+// Classroom.belongsToMany(Assignment, {through: ClassStaff, foreignKey: 'staffID'})
+
+Assignment.belongsTo(Classroom)
+Assignment.belongsTo(Staff)
 
 // POST Route 
 classrooms.post("/", middleware.checkToken, (req, res) => {
@@ -64,8 +70,7 @@ classrooms.get("/", middleware.checkToken, (req, res) => {
                 
                 attributes: ['staffID', 'fname', 'lname', 'img'],
                 through: { attributes: []}
-            }          
-            
+            }              
         ]
     })
     .then(classroom => {
@@ -74,6 +79,17 @@ classrooms.get("/", middleware.checkToken, (req, res) => {
     .catch(err => {
         res.send(err);
     })
+})
+
+classrooms.post('/assignment', (req, res) =>{
+    
+    db.sequelize.query(`SELECT assignment.id, assignment.assign_name AS name, assignment.assign_details AS details, assignment.assign_date AS assignedAt, CONCAT(staff.staff_fName, " ", staff.staff_lname) AS staff_name FROM tbl_assignment assignment LEFT JOIN tbl_classroom class on class.class_uuid = assignment.class_uuid LEFT JOIN tbl_staff staff on staff.staff_uuid = assignment.staff_uuid WHERE class.class_uuid = "${req.body.id}"`,{ type: db.sequelize.QueryTypes.SELECT })
+    .then(results => {
+        res.json(results);
+     })
+    .catch( err => {
+        res.send(err)
+    });
 })
 
 // GET Route to retrieve a single classroom <findOne>
@@ -200,5 +216,4 @@ classrooms.get('/staff',middleware.checkToken, (req, res) =>{
         res.send(err)
     });
 })
-
 module.exports = classrooms;
