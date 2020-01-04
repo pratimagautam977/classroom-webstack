@@ -4,9 +4,14 @@ const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Institute = require("../models/institute");
+const Calendar = require("../models/calendar");
 const uuidv4 = require('uuid/v4');
 institutes.use(cors());
 const axios = require('axios');
+
+// ########  MIDDLEWARE   ########
+const middleware = require('../config/Middleware');    //Added Middleware
+// ###############################
 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -74,6 +79,93 @@ institutes.post("/login", (req, res) => {
     .catch(err=>{
         res.status(400).json(err)
         console.log(err)
+    })
+})
+
+//GET Route to retrieve the calendar events
+institutes.get('/calendar', middleware.checkToken, (req, res) => {
+    Calendar.findAll({
+        where: {
+            uuid:req.decoded.id
+        }
+    })
+    .then(data => {
+        res.status(200).json(data);
+    })
+    .catch(err => {
+        res.status(401).json(err)
+    })
+})
+
+//GET Route to retrieve the calendar events
+institutes.get('/calendar/:id', middleware.checkToken, (req, res) => {
+    Calendar.findOne({
+        where: {
+            uuid:req.decoded.id,
+            id: req.params.id
+        },
+        attributes: ['id', 'title', 'start', 'end']
+    })
+    .then(data => {
+        res.status(200).json(data);
+    })
+    .catch(err => {
+        res.status(401).json(err)
+    })
+})
+
+
+// CREATE Route Add Calendar Tasks <create>
+institutes.post('/calendar', middleware.checkToken, (req, res)=> {
+    const calendarData = {
+        title: req.body.title,
+        start: req.body.start,
+        end: req.body.end,
+        uuid: req.decoded.id
+    }
+
+    Calendar.create(calendarData)
+    .then(calendar => {
+        res.status(200).json({success : true});
+    })
+    .catch(err => {
+        res.send(err);
+    })
+})
+
+//DELETE Calendar Tasks
+institutes.delete('/calendar/:id', middleware.checkToken, (req, res) => {
+    Calendar.destroy({
+        where: {
+            uuid: req.decoded.id,
+            id: req.params.id
+        }
+    })
+    .then(calendar => {
+        res.status(200).json({status: "OK"})
+    })
+    .catch(err => {
+        res.send(err);
+    })
+})
+
+// UPDATE Calendar Route
+institutes.put('/calendar/:id', middleware.checkToken, (req, res) =>{
+    var CalendarData = {
+        title: req.body.title,
+        start: req.body.start,
+        end: req.body.end
+    }
+    Calendar.update(CalendarData, {
+        where: {
+            id: req.params.id
+        }
+    })
+    .then(calendar => {
+        res.status(200).json({calendar})
+    })
+    .catch(err => {
+        res.send(err);
     })
 })
 
