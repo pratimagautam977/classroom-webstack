@@ -90,7 +90,7 @@ export default function ClassroomView() {
   const [ClassData, setClassData] = useState({});
   const [AssignmentData, setAssignmentData] = useState({});
   const [View, setView] = useState(feeds);
-  // const [Toggle, setToggle] = useState("feeds");
+  const [Toggle, setToggle] = useState("feeds");
   let { id } = useParams();
 
   useEffect(() => {
@@ -108,7 +108,7 @@ export default function ClassroomView() {
   
   const changeView = (view) => {
     setView(view);
-    // setToggle(view);
+    setToggle(view);
   }
 
   return (
@@ -126,9 +126,9 @@ export default function ClassroomView() {
         </div>
       </div>
 
-      <button className="mr-2 mb-3 btn-primary btn pb-4" onClick={() => changeView(feeds)}>Feeds</button>
-      <button className="mr-2 mb-3 btn-primary btn pb-4" onClick={() => changeView(people)}>People</button>
-      <button className="mr-2 mb-3 btn-primary btn pb-4" onClick={() => changeView(assignments)}>Assignments</button>
+      <button className={`mr-2 mb-3 ${Toggle === "feeds" ? "disabled" : "btn-primary"} btn pb-4`}  onClick={() => changeView(feeds)}>Feeds</button>
+      <button className={`mr-2 mb-3 ${Toggle === "people" ? "disabled" : "btn-primary"} btn pb-4`} onClick={() => changeView(people)}>People</button>
+      <button className={`mr-2 mb-3 ${Toggle === "assignments" ? "disabled" : "btn-primary"} btn pb-4`} onClick={() => changeView(assignments)}>Assignments</button>
       {View}
 
     </div>
