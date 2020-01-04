@@ -29,7 +29,7 @@ export default function Sidebar() {
                 <NavLink to="/messenger" activeClassName="selected"><span className="icon-conversation"></span></NavLink>
             </div>
             <div className="item">
-                <NavLink to="/calendar" activeClassName="selected"><span className="icon-building"></span></NavLink>
+                <NavLink to="/calendar" activeClassName="selected"><span className="icon-calendar"></span></NavLink>
             </div>
         </div>
     )
