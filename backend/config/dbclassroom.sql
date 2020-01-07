@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 11, 2019 at 10:46 AM
+-- Generation Time: Jan 07, 2020 at 06:13 AM
 -- Server version: 10.4.10-MariaDB
 -- PHP Version: 7.3.12
 
@@ -21,6 +21,54 @@ SET time_zone = "+00:00";
 --
 -- Database: `dbclassroom`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_assignment`
+--
+
+CREATE TABLE `tbl_assignment` (
+  `id` int(11) NOT NULL,
+  `assign_name` varchar(100) NOT NULL,
+  `assign_details` text NOT NULL,
+  `staff_uuid` varchar(100) NOT NULL,
+  `class_uuid` varchar(100) NOT NULL,
+  `assign_date` date NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_assignment`
+--
+
+INSERT INTO `tbl_assignment` (`id`, `assign_name`, `assign_details`, `staff_uuid`, `class_uuid`, `assign_date`) VALUES
+(1, 'Prabhu', 'Lol not available', '104f9a33-d351-4630-9dcc-0b55fb61b72a', 'a31a740a-14ca-4997-8bf9-954400b446d7', '2019-12-13'),
+(2, 'Assignemtn 2 ', 'This is the description for assignment 2', '104f9a33-d351-4630-9dcc-0b55fb61b72a', 'c182178d-186a-4542-a848-0afb4e4f8a58', '0000-00-00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_calendar`
+--
+
+CREATE TABLE `tbl_calendar` (
+  `id` int(11) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `start` timestamp NOT NULL DEFAULT current_timestamp(),
+  `end` timestamp NOT NULL DEFAULT current_timestamp(),
+  `uuid` varchar(100) NOT NULL,
+  `type` int(1) NOT NULL,
+  `view` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_calendar`
+--
+
+INSERT INTO `tbl_calendar` (`id`, `title`, `start`, `end`, `uuid`, `type`, `view`) VALUES
+(7, 'Test Event', '2020-01-24 02:05:00', '2021-01-25 17:15:00', '035f93a5-2f92-4cc1-9668-3103da7ce5e8', 0, 0),
+(8, 'JAN-04 Event', '2020-01-03 18:15:00', '2020-01-04 17:15:00', '035f93a5-2f92-4cc1-9668-3103da7ce5e8', 0, 0),
+(9, 'JAN-06 Event', '2020-01-06 04:15:00', '2020-01-06 17:37:00', '035f93a5-2f92-4cc1-9668-3103da7ce5e8', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -149,10 +197,14 @@ CREATE TABLE `tbl_staff` (
 --
 
 INSERT INTO `tbl_staff` (`id`, `staff_uuid`, `ins_uuid`, `staff_fname`, `staff_lname`, `staff_email`, `staff_address`, `staff_phone`, `staff_img`, `staff_type`, `staff_added_at`, `staff_password`) VALUES
+(12, '0a712a1f-f346-4525-ae01-5d8374e28cf2', '035f93a5-2f92-4cc1-9668-3103da7ce5e8', 'Saumyadeep', 'Sarkar', 'saumyadeepsarkar@gmail.com', 'India', 98989898, 'https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg', '', '2019-12-30', '$2a$10$pMxWp8nYVNKJV6HcCu7VcOiaglxi4ri9X3q9bqbN0y4fqlkvT2BCC'),
 (9, '104f9a33-d351-4630-9dcc-0b55fb61b72a', '035f93a5-2f92-4cc1-9668-3103da7ce5e8', 'Baba', 'Saheb', 'baba@gmail.com', 'Nepal', 2147483647, 'https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg', '', '2019-10-15', '$2a$10$FGkqVqgaXnDAPg16oFPXNO6.mtWovm54ouTFcV2b.XXddhjVMSnhm'),
 (8, '27b1da0e-d93e-4c13-acff-334f23da48c2', '76289d15-bf1e-44fb-9be1-dd7ca15bf9ea', 'Sam', 'Patel', 's@g.com', 'Hasan', 123, 'https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg', '', '2019-10-15', '$2a$10$UI4OxH04HdoWkge7skYJ/eYfcU00CV4QXByzfOo5.qs0qLT4bfiVO'),
 (7, '3247b3a7-df95-4360-b87a-50c185601252', '035f93a5-2f92-4cc1-9668-3103da7ce5e8', 'Simran', 'Sarkar', 'simran.sarkar@gmail.com', 'Nepal', 2147483647, 'https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg', '', '2019-10-12', '$2a$10$wqCAcP77DVd1PQ/cz0/NDeD/HRFfBob2VjOpGT1W97npmYpa2yuZ6'),
-(6, '9ab9c3c4-567f-4c60-be04-b64effd8feaa', '035f93a5-2f92-4cc1-9668-3103da7ce5e8', 'Sony', 'Sarkar', 'sony.sarkar@gmail.com', 'Nepal', 2147483647, 'https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg', '', '2019-10-12', '');
+(13, '48d4ebc6-3ce2-4811-8ad1-c72d30839ac5', '035f93a5-2f92-4cc1-9668-3103da7ce5e8', 'Dummy', 'User', 'dummy@gmail.com', 'nepal', 2147483647, 'https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg', '', '2019-12-30', '$2a$10$K0TDv1GtD5bzcVKH2ve0P.HukdX5iBh7JhA3sZmwnsr.1JSPm0Bcu'),
+(10, '8d968512-a38f-41d6-991e-872c0973925f', '035f93a5-2f92-4cc1-9668-3103da7ce5e8', 'Pratima ', 'Gautam', 'pratima.gautam@gmail.com', 'phedikhola', 2147483647, 'https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg', '', '2019-12-30', '$2a$10$0.RGMbUh3Y39UOGCUPrL.uu044OYGUJ9I9A5rTmHBYi18OeLOt2Ze'),
+(6, '9ab9c3c4-567f-4c60-be04-b64effd8feaa', '035f93a5-2f92-4cc1-9668-3103da7ce5e8', 'Sony', 'Sarkar', 'sony.sarkar@gmail.com', 'Nepal', 2147483647, 'https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg', '', '2019-10-12', ''),
+(11, 'e77de4a3-216e-4594-add5-50de16927e5a', '035f93a5-2f92-4cc1-9668-3103da7ce5e8', 'TEST', 'USER', 'test@gmail.com', 'nepal', 2147483647, 'https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg', '', '2019-12-30', '$2a$10$xT3dlugCuuTZ70T2nyvJt.zJfzhjfvFc5/6KZDAq2BbPBBhBNHMeG');
 
 -- --------------------------------------------------------
 
@@ -208,6 +260,19 @@ CREATE TABLE `tbl_subject` (
 --
 
 --
+-- Indexes for table `tbl_assignment`
+--
+ALTER TABLE `tbl_assignment`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbl_calendar`
+--
+ALTER TABLE `tbl_calendar`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+--
 -- Indexes for table `tbl_classroom`
 --
 ALTER TABLE `tbl_classroom`
@@ -261,6 +326,18 @@ ALTER TABLE `tbl_subject`
 --
 
 --
+-- AUTO_INCREMENT for table `tbl_assignment`
+--
+ALTER TABLE `tbl_assignment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tbl_calendar`
+--
+ALTER TABLE `tbl_calendar`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- AUTO_INCREMENT for table `tbl_classroom`
 --
 ALTER TABLE `tbl_classroom`
@@ -288,7 +365,7 @@ ALTER TABLE `tbl_institute`
 -- AUTO_INCREMENT for table `tbl_staff`
 --
 ALTER TABLE `tbl_staff`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `tbl_student`
