@@ -189,6 +189,76 @@ classrooms.get('/student', middleware.checkToken, (req, res) => {
     });
 })
 
+// DELETE Student
+classrooms.delete('/:id/student/', middleware.checkToken, (req, res) =>{
+    ClassStud.destroy({
+        where: {
+            classID: req.params.id,
+            studID: req.body.uuid
+        }        
+    }).then(classroom => {
+        res.status(200).json({status: "OK"})
+    }).catch(err => {
+        console.log(err);
+    })
+})
+
+// ADD Student
+classrooms.post('/:id/student/', middleware.checkToken, (req, res)=>{
+    const classstudData = {
+        classID: req.params.id,
+        studID:req.body.uuid 
+    }
+    ClassStud.create(classstudData)
+    .then(classroom => {
+        res.status(200).json({status: "OK"})
+    }).catch(err => {
+        console.log(err);
+    })
+})
+
+// DELETE Staff
+classrooms.delete('/:id/staff/', middleware.checkToken, (req, res) =>{
+    ClassStaff.destroy({
+        where: {
+            classID: req.params.id,
+            staffID: req.body.uuid
+        }
+        
+    }).then(classroom => {
+        res.status(200).json({status: "OK"})
+    }).catch(err => {
+        console.log(err);
+    })
+})
+
+// ADD Staff
+classrooms.post('/:id/staff/', middleware.checkToken, (req, res)=>{
+    const classstudData = {
+        classID: req.params.id,
+        staffID:req.body.uuid 
+    }
+    ClassStud.create(classstudData).then(classroom => {
+        res.status(200).json({status: "OK"})
+    }).catch(err => {
+        console.log(err);
+    })
+})
+
+
+// filter function to filter the students
+// raw sql query except function
+// GET - show all student except in the classroom
+classrooms.get('/:id/student', middleware.checkToken, (req, res) => {
+    db.sequelize.query(`SELECT stud_uuid AS uuid, CONCAT(tbl_student.stud_fname, " ", tbl_student.stud_lname) AS name, stud_img AS img FROM tbl_student WHERE stud_uuid  NOT IN (SELECT stud_uuid FROM tbl_class_std WHERE tbl_class_std.class_uuid="${req.params.id}")`, { type: db.sequelize.QueryTypes.SELECT }) 
+    .then(results => {
+        res.json(results);
+     })
+    .catch( err => {
+        res.send(err)
+    });
+})
+
 // GET Route for staff
 classrooms.get('/staff',middleware.checkToken, (req, res) =>{
     
