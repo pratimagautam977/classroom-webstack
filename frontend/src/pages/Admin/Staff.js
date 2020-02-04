@@ -22,6 +22,7 @@ export default class Staff extends Component {
         password: "",
         c_password: ""
       },
+      load: false,
       isActiveEdit: false,
       EditValue: "",
     };
@@ -82,8 +83,8 @@ export default class Staff extends Component {
   componentDidMount() {
     GetStaffs().then(res =>{
       const staffs = res.data.staff;
-      this.setState({ staffs });
-    })
+      this.setState({ staffs, load: true });
+    }, 5000)
   }
 
   render() {
@@ -206,7 +207,14 @@ export default class Staff extends Component {
           title={"Add Staff"}
           btn={"+ Add Staff"}
         />
-        <AllStaffs onUpdate={this.UpdateStaff}  onDelete={this.DeleteStaff} data={this.state.staffs} />
+        {
+          this.state.load ?
+          <AllStaffs onUpdate={this.UpdateStaff}  onDelete={this.DeleteStaff} data={this.state.staffs} />
+          :
+          <div style={{height: "90vh", display: "flex", width: "100%", justifyContent: "center", alignItems: "center"}}>
+            <div className="loader" id="loader-1"></div>
+          </div>
+        }     
       </React.Fragment>
     );
   }

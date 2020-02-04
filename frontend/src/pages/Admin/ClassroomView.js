@@ -1,10 +1,30 @@
 import React, { useState, useEffect } from "react";
 //need state to store the JSON returns
 import { useParams } from "react-router-dom";
-import { GetClass, GetAssignment } from "../../components/classroom/ClassroomFunction";
+import { GetClass, GetAssignment, GetExcludedStudent } from "../../components/classroom/ClassroomFunction";
+import Modal from "../../components/classroom/Modal";
 
 export default function ClassroomView() {
-  
+
+  const [isStaffModal, setStaffModal] = useState(false);
+  const [isStudentModal, setStudentModal] = useState(false);
+
+  const onStaffOpen =  () => {
+    setStaffModal(true);
+  }
+
+  const onStaffClose = () => {
+    setStaffModal(false);
+  }
+
+  const onStdOpen = () => {
+    setStudentModal(true);
+  }
+
+  const onStdClose = () => {
+    setStudentModal(false);
+  }
+
   const feeds = () => {
     return (
       <div className="row">
@@ -32,11 +52,11 @@ export default function ClassroomView() {
         <div className="col-lg-4 col-md-6 col-sm-12">
           <div className="cards p-3 hg-400">   
             <h5 style={{display: "inline-block", width: "calc(100% - 32px)"}}>Staffs</h5>
-            <button className="btn btn-primary btn-sm pb-4" style={{display: "inline-block"}}><span className="icon-add-user"></span></button>
+            <button className="btn btn-primary btn-sm pb-4" onClick={onStaffOpen} style={{display: "inline-block"}}><span className="icon-add-user"></span></button>
 
             {staff && staff.map(cl => (
               <div key={cl.staffID} className="dp m-0">
-                <div className="round_img">
+                <div className="round_img" >
                     <img  className="" alt="" src={cl.img} width="40px" />
 
                 </div>
@@ -51,7 +71,7 @@ export default function ClassroomView() {
         <div className="col-lg-4 col-md-6 col-sm-12">
           <div className="cards p-3 hg-400">
             <h5 style={{display: "inline-block", width: "calc(100% - 32px)"}}>Students</h5>
-              <button className="btn btn-primary btn-sm pb-4" style={{display: "inline-block"}}><span className="icon-add-user"></span></button>
+              <button className="btn btn-primary btn-sm pb-4" onClick={onStdOpen} style={{display: "inline-block"}}><span className="icon-add-user"></span></button>
             {student && student.map((cl, index) => (
               <h6 key={index}>{cl.fname} {cl.lname}</h6>
             ))}
@@ -111,6 +131,7 @@ export default function ClassroomView() {
     setToggle(view);
   }
 
+  console.log(<GetExcludedStudent ider={id}/>)
   return (
     <div>
       <div className="row">
@@ -131,6 +152,9 @@ export default function ClassroomView() {
       <button className={`mr-2 mb-3 ${Toggle === "assignments" ? "disabled" : "btn-primary"} btn pb-4`} onClick={() => changeView(assignments)}>Assignments</button>
       {View}
 
+      {isStaffModal ? <Modal title="Add Staff" close={onStaffClose} /> : ""}
+      {isStudentModal ? <Modal title="Add Student" close={onStdClose} data={""}/>: ""}
+      
     </div>
   );
 }

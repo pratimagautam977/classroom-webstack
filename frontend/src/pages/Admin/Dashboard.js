@@ -28,7 +28,7 @@ class Institute extends React.Component{
 
                 <div className="dashboard">                
                     <div className="container-fluid">            
-                        <Sidebar/>
+                        <Sidebar value="ins"/>
                         <div className="mainbar">
                             <Topbar data={this.state.profile}/>             
                             <div className="main_body">
@@ -39,7 +39,9 @@ class Institute extends React.Component{
                                             <Route exact path="/classroom" component={Classroom}/>
                                             <Route path="/home" component={Classroom}/>
                                             <Route path="/staff" component={Staff} />
+                                            <Route path="/staff/:id"/>
                                             <Route path="/student" component={Student}/> 
+                                            <Route path="/student/:id"/>
                                             <Route path="/payment" component={Payment}/>
                                             <Route path="/calendar" component={CalendarInstitute}/>
                                             <Route exact path="/classroom/:id" component={ClassroomView}/>              
