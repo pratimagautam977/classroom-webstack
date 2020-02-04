@@ -56,3 +56,12 @@ export const DeleteClass=(id) => {
         return res.data;
     })
 }
+
+export const GetExcludedStudent=(id)=>{
+    const token = localStorage.getItem("token");
+    return axios.get( url + `classroom/${id}/student`, {
+        headers: {Authorization: `Bearer ${token}`}
+    }).then(res => {
+        return res.data;
+    })
+}
