@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function StaffChat() {
+export default function StaffCalendar() {
     return (
         <div>
-            Chat System
+            Calendar
         </div>
     )
 }

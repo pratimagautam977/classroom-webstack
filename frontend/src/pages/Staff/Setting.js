@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function StaffChat() {
+export default function StaffSetting() {
     return (
         <div>
-            Chat System
+            Settings
         </div>
     )
 }

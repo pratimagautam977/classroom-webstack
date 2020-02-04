@@ -2,7 +2,16 @@ import React from 'react';
 import {Helmet} from 'react-helmet';
 import Sidebar from '../../components/Sidebar';
 import Topbar from '../../components/Topbar';
-import { withRouter} from 'react-router-dom';
+import { Route, Switch, withRouter} from 'react-router-dom';
+import StaffClass from './Classroom';
+import NotFound from '../Admin/NotFound';
+import StaffChat from './Chat';
+import StaffCalendar from './Calendar';
+import StaffStudent from './Student';
+import StaffSetting from './Setting';
+import StudentView from './StudentView';
+import Staff from './Staff';
+import StaffFile from './File';
 
 class Staffs extends React.Component{
     constructor(props){
@@ -21,13 +30,26 @@ class Staffs extends React.Component{
 
                 <div className="dashboard">                
                     <div className="container-fluid">            
-                        <Sidebar/>
+                        <Sidebar value="staff"/>
                         <div className="mainbar">
                             <Topbar data={this.state.profile}/>             
                             <div className="main_body">
                                 <div className="container">
                                     <div className="row">
-                                        <h2>This is staff</h2>
+                                        <div className="col-12">
+                                            <Switch>
+                                                <Route exact path="/home" component={StaffClass}/>
+                                                <Route exact path="/classroom" component={StaffClass}/>
+                                                <Route path="/student" component={StaffStudent} />
+                                                <Route path="/student/:id" component={StudentView}/>
+                                                <Route path="/staff" component={Staff} />
+                                                <Route path="/calendar" component={StaffCalendar}/>
+                                                <Route path="/chat" component={StaffChat}/>
+                                                <Route path="/file" component={StaffFile}/>
+                                                <Route path="/settings" component={StaffSetting}/>
+                                                <Route component={NotFound}/>
+                                            </Switch>
+                                        </div>
                                     </div>
                                 </div>                            
                             </div>
