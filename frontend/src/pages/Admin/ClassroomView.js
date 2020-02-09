@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 //need state to store the JSON returns
 import { useParams } from "react-router-dom";
-import { GetClass, GetAssignment, GetExcludedStudent } from "../../components/classroom/ClassroomFunction";
+import { GetClass, GetAssignment, GetExcludedStudent, AddStudentToClass, GetExcludedStaff, AddStaffToClass } from "../../components/classroom/ClassroomFunction";
 import Modal from "../../components/classroom/Modal";
 
 export default function ClassroomView() {
@@ -107,12 +107,41 @@ export default function ClassroomView() {
     )
   }
 
+  
   const [ClassData, setClassData] = useState({});
   const [AssignmentData, setAssignmentData] = useState({});
+  const [Excluded, setExcluded] = useState({
+    excludedStudent: [],
+    excludedStaff: []
+  });
   const [View, setView] = useState(feeds);
   const [Toggle, setToggle] = useState("feeds");
   let { id } = useParams();
 
+  const addStudentToClass = (studid) => {
+    // alert(studid)
+    AddStudentToClass(id, studid)
+    .then(res =>{
+      // console.log(res)
+      const excludedStudent = Excluded.excludedStudent.filter(student => student.uuid !== studid);
+      setExcluded({excludedStudent})
+    })
+    .catch(err =>{
+      console.log(err.response.data)
+    })
+  }
+
+  const addStaffToClass = (staffid) => {
+    console.log(staffid)
+    AddStaffToClass(id, staffid)
+    .then(res => {
+      const excludedStaff = Excluded.excludedStaff.filter(staff => staff.uuid !== staffid);
+      setExcluded({excludedStaff})
+    })
+    .catch(err => {
+      console.log(err.response.data)
+    })
+  }
   useEffect(() => {
     GetClass(id).then(res => {
       setClassData(res);
@@ -120,6 +149,14 @@ export default function ClassroomView() {
 
     GetAssignment(id).then(res => {
       setAssignmentData(res);
+    })
+
+    GetExcludedStudent(id).then(res => {
+      setExcluded({...Excluded, excludedStudent: res});
+    })
+
+    GetExcludedStaff(id).then(res => {
+      setExcluded({...Excluded, excludedStaff: res});
     })
   }, [id]);
 
@@ -131,7 +168,7 @@ export default function ClassroomView() {
     setToggle(view);
   }
 
-  console.log(<GetExcludedStudent ider={id}/>)
+  // console.log(<GetExcludedStudent ider={id}/>)
   return (
     <div>
       <div className="row">
@@ -152,8 +189,8 @@ export default function ClassroomView() {
       <button className={`mr-2 mb-3 ${Toggle === "assignments" ? "disabled" : "btn-primary"} btn pb-4`} onClick={() => changeView(assignments)}>Assignments</button>
       {View}
 
-      {isStaffModal ? <Modal title="Add Staff" close={onStaffClose} /> : ""}
-      {isStudentModal ? <Modal title="Add Student" close={onStdClose} data={""}/>: ""}
+      {isStaffModal ? <Modal title="Add Staff" close={onStaffClose} data={Excluded.excludedStaff} Add={addStaffToClass}/> : ""}
+      {isStudentModal ? <Modal title="Add Student" close={onStdClose} data={Excluded.excludedStudent} Add={addStudentToClass}/>: ""}
       
     </div>
   );
