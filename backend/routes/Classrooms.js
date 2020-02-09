@@ -234,23 +234,35 @@ classrooms.delete('/:id/staff/', middleware.checkToken, (req, res) =>{
 
 // ADD Staff
 classrooms.post('/:id/staff/', middleware.checkToken, (req, res)=>{
-    const classstudData = {
+    const classstaffData = {
         classID: req.params.id,
         staffID:req.body.uuid 
     }
-    ClassStud.create(classstudData).then(classroom => {
+    ClassStaff.create(classstaffData).then(classroom => {
         res.status(200).json({status: "OK"})
     }).catch(err => {
         console.log(err);
     })
 })
 
-
 // filter function to filter the students
 // raw sql query except function
 // GET - show all student except in the classroom
 classrooms.get('/:id/student', middleware.checkToken, (req, res) => {
     db.sequelize.query(`SELECT stud_uuid AS uuid, CONCAT(tbl_student.stud_fname, " ", tbl_student.stud_lname) AS name, stud_img AS img FROM tbl_student WHERE stud_uuid  NOT IN (SELECT stud_uuid FROM tbl_class_std WHERE tbl_class_std.class_uuid="${req.params.id}")`, { type: db.sequelize.QueryTypes.SELECT }) 
+    .then(results => {
+        res.json(results);
+     })
+    .catch( err => {
+        res.send(err)
+    });
+})
+
+// filter function to filter the staffs
+// raw sql query except function
+// GET - show all staffs except in the classroom
+classrooms.get('/:id/staff', middleware.checkToken, (req, res) => {
+    db.sequelize.query(`SELECT staff_uuid AS uuid, CONCAT(tbl_staff.staff_fname, " ", tbl_staff.staff_lname) AS name, staff_img AS img FROM tbl_staff WHERE staff_uuid  NOT IN (SELECT staff_uuid FROM tbl_class_staff WHERE tbl_class_staff.class_uuid="${req.params.id}")`, { type: db.sequelize.QueryTypes.SELECT }) 
     .then(results => {
         res.json(results);
      })
