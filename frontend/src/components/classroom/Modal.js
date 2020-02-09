@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { AddClass } from "./ClassroomFunction";
 
 export default function Modal(props) {
   const [isToggled, setToggled] = useState(true);
+  //const [data, setData] = useState(props.data);
 
   return (
     <React.Fragment>
@@ -19,7 +21,23 @@ export default function Modal(props) {
               </div>
             </div>
             <div className="modal_body">
-              {props.data && props.data.map(std => <p>{std.name}</p>)}
+              {props.data &&
+                props.data.map((info, i) => (
+                  <div className="row" key={i}>
+                    <div className="col-10">
+                      <p>{info.name}</p>
+                    </div>
+                    <div className="col-2">
+                      <button
+                        className="btn btn-primary btn-sm pb-4"
+                        style={{ display: "inline-block" }}
+                        onClick={() => props.Add(info.uuid)}
+                      >
+                        <span className="icon-add-user"></span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
             </div>
             <div className="modal_footer"></div>
           </div>
