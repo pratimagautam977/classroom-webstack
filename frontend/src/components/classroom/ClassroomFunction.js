@@ -122,3 +122,33 @@ export const AddStaffToClass = (id, staffid) => {
       return res.data;
     });
 };
+
+export const DeleteStudent = (id, studid) => {
+  const token = localStorage.getItem("token");
+  return axios
+    .delete(
+      url + `classroom/${id}/student`,
+      {
+        headers: { Authorization: `Bearer ${token}` },  
+        data: { uuid: studid }
+      }
+    )
+    .then(res => {
+      return res.data;
+    });
+};
+
+export const DeleteStaff = (id, staffid) => {
+  const token = localStorage.getItem("token");
+  return axios
+    .delete(
+      url + `classroom/${id}/staff`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        data:{ uuid: staffid }
+      }
+    )
+    .then(res => {
+      return res.data;
+    });
+};
