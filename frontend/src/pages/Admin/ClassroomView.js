@@ -7,14 +7,16 @@ import {
   GetExcludedStudent,
   AddStudentToClass,
   GetExcludedStaff,
-  AddStaffToClass
+  AddStaffToClass,
+  DeleteStudent,
+  DeleteStaff
 } from "../../components/classroom/ClassroomFunction";
 import Modal from "../../components/classroom/Modal";
 
 export default function ClassroomView() {
   const [isStaffModal, setStaffModal] = useState(false);
   const [isStudentModal, setStudentModal] = useState(false);
-
+  let { id } = useParams();
   const onStaffOpen = () => {
     setStaffModal(true);
   };
@@ -69,6 +71,28 @@ export default function ClassroomView() {
       </div>
     );
   };
+
+  const DeleteStaffFromClass = (staffid) => {
+    //console.log(staffid)
+    DeleteStaff(id, staffid).then(
+     res => {
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err.response.data);
+      });
+  }
+
+  const DeleteStudentFromClass = (studid) => {
+    DeleteStudent(id, studid).then(
+      res => {
+         console.log(res)
+       })
+       .catch(err => {
+         console.log(err.response.data);
+       });
+  }
+
   const people = () => {
     return (
       <div className="row">
@@ -86,15 +110,20 @@ export default function ClassroomView() {
             </button>
 
             {staff &&
-              staff.map((cl, index) => (
-                <div key={index} className="dp m-0">
+              staff.map(cl => (
+                <div key={cl.staffID} className="dp m-0">
                   <div className="round_img">
                     <img className="" alt="" src={cl.img} width="40px" />
                   </div>
-                  <div className="name_area">
+                  <div className="name_area f-14">
                     <li>
                       {cl.fname} {cl.lname}
                     </li>
+                  </div>
+                  <div>
+                    <button onClick={() => DeleteStaffFromClass(cl.staffID)}>
+                      ⓧ
+                    </button>
                   </div>
                 </div>
               ))}
@@ -114,15 +143,20 @@ export default function ClassroomView() {
               <span className="icon-add-user"></span>
             </button>
             {student &&
-              student.map((cl, index) => (
-                <div key={index} className="dp m-0">
+              student.map(cl => (
+                <div key={cl.studID} className="dp m-0">
                   <div className="round_img">
                     <img className="" alt="" src={cl.img} width="40px" />
                   </div>
-                  <div className="name_area">
+                  <div className="name_area f-14">
                     <li>
                       {cl.fname} {cl.lname}
                     </li>
+                  </div>
+                  <div>
+                    <button onClick={() => DeleteStudentFromClass(cl.studID)}>
+                      ⓧ
+                    </button>
                   </div>
                 </div>
               ))}
@@ -166,7 +200,7 @@ export default function ClassroomView() {
   });
   const [View, setView] = useState(feeds);
   const [Toggle, setToggle] = useState("feeds");
-  let { id } = useParams();
+  
 
   const addStudentToClass = studid => {
     // alert(studid)
