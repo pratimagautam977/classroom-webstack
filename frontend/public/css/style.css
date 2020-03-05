@@ -376,8 +376,16 @@ body.dashboard{
   color: #000000 !important;
 }
 
+.f-18{
+  font-size: 18px;
+}
+
 .f-16{
   font-size: 16px;
+}
+
+.f-14{
+  font-size: 14px;
 }
 
 .f-12{
@@ -669,9 +677,9 @@ textarea:focus {
   color: #fff;
   overflow: hidden;
 }
+
 .modal_head .modal_title{
   width: 90%;
-  
 }
 
 .modal_head .modal_btn{
