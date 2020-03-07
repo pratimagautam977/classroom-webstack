@@ -31,10 +31,14 @@ app.use("/student", Students);
 var Classrooms = require("./routes/Classrooms");
 app.use("/classroom", Classrooms);
 
+// making route for payment
+var Payments = require("./routes/Payment");
+app.use("/pay", Payments);
+
 // TEST DATA
-app.get('/test',(req,res)=>{
-    res.status(200).json({status: "okay"})
-})
+// app.get('/test',(req,res)=>{
+//     res.status(200).json({status: "okay"})
+// })
 // END OF TEST DATA
 
 app.listen(3000, console.log('Server started at port 3000'));
