@@ -1,7 +1,6 @@
 const express = require("express");
 let payments = express.Router();
 const cors = require("cors");
-const Institute = require("../models/institute");
 const Student = require("../models/student");
 const uuidv4 = require('uuid/v4');
 const Payment = require("../models/payment");
@@ -13,16 +12,6 @@ const axios = require('axios');
 const middleware = require('../config/Middleware');    //Added Middleware
 // ###############################
 
-Payment.belongsTo(Student, {
-    foreignKey: {
-       name: 'studID'
-    }
-  });
-Student.hasMany(Payment);
-
-
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
 
 payments.post('/create', middleware.checkToken, (req, res) =>{
   
@@ -43,6 +32,13 @@ payments.post('/create', middleware.checkToken, (req, res) =>{
 
 // Getting all the request posted by institute
 payments.get('/', middleware.checkToken, (req, res) => {
+    Payment.belongsTo(Student, {
+        foreignKey: {
+           name: 'studID'
+        }
+      });
+    Student.hasMany(Payment);
+
     Payment.findAll({
         where: {
             insID: req.decoded.id
@@ -63,23 +59,58 @@ payments.get('/', middleware.checkToken, (req, res) => {
 })
 
 // Payment Route
-payments.post('/payment', (req, res) => {
+payments.post('/verify', (req, res) => {
     let data = {
         token: req.body.token,
         amount: req.body.amount
     }
     
     let config = {
-        headers: {'Authorization': 'Key live_secret_key_70d7cc81b96245488185350a3ccf7768'}
+        headers: {'Authorization': 'Key test_secret_key_d24c2b1c762a41f681786b8d6f4b6194'}
     };
     
     axios.post("https://khalti.com/api/v2/payment/verify/", data, config)
     .then(response => {
-        res.send(response.data);
+        console.log("It works")
+        Payment.update({
+            status: true
+        },
+        {
+            where: {
+                requestID :  req.body.request_id
+            }
+        })
+        .then(done =>{
+            res.status(200).json({status: "Ok", res: done})
+        })
+        .catch(err =>{
+            // console.log(err.result)
+            res.status(404).json({status: false, err});
+        })
     })
     .catch(error => {
-        res.send(error.response.data);
+        console.log("It doesn't work")
+        // res.send(error.res);
+        res.status(404).json({status: false, error});
     });
+})
+
+// call /:id request parameter id
+payments.get('/:id', (req, res) => {
+    Payment.findAll({
+        where: {
+            requestID: req.params.id
+        }
+    })
+    .then(result => { 
+        res.status(200).json({status: "Ok", res: result})
+    })
+    .catch(err => {
+        // res.status(404).json({status: false});
+        // // res.send(err.res);
+        res.status(404).json({status: false, err});
+        //console.log(res);
+    })  
 })
 
 module.exports = payments;
