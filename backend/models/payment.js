@@ -11,11 +11,11 @@ module.exports = db.sequelize.define(
             autoIncrement: true
         },
         studID: {
-            type: Sequelize.UUIDV4,
+            type: Sequelize.STRING,
             field: 'stud_uuid'
         },
         requestID: {
-            type:Sequelize.UUIDV4 ,
+            type:Sequelize.STRING ,
             field: 'request_id'
         },
         requestDate: {
