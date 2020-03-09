@@ -59,7 +59,7 @@ payments.get('/', middleware.checkToken, (req, res) => {
 })
 
 // Payment Route
-payments.post('/verify', (req, res) => {
+payments.post('/verify', middleware.checkToken, (req, res) => {
     let data = {
         token: req.body.token,
         amount: req.body.amount
@@ -96,7 +96,7 @@ payments.post('/verify', (req, res) => {
 })
 
 // call /:id request parameter id
-payments.get('/:id', (req, res) => {
+payments.get('/:id', middleware.checkToken, (req, res) => {
     Payment.findAll({
         where: {
             requestID: req.params.id
