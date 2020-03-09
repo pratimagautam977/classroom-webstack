@@ -42,7 +42,7 @@ class Institute extends React.Component{
                                             <Route path="/staff/:id"/>
                                             <Route path="/student" component={Student}/> 
                                             <Route path="/student/:id"/>
-                                            <Route path="/payment" component={Payment}/>
+                                            <Route path="/pay/:id" component={Payment}/>
                                             <Route path="/calendar" component={CalendarInstitute}/>
                                             <Route exact path="/classroom/:id" component={ClassroomView}/>              
                                             <Route component={NotFound}/> 
