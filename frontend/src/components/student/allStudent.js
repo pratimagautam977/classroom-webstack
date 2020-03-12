@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Students(props) {
+export default function AllStudents(props) {
     const items = props.data;
     if (items.length === 0){
         return (
