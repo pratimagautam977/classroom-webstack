@@ -2,6 +2,7 @@ import React from 'react';
 import jwt_decode from 'jwt-decode';
 import Institute from './Admin/Dashboard'
 import Staffs from './Staff/Dashboard';
+import Students from './Student/Dashboard';
 import {Redirect, withRouter } from "react-router-dom";
 
 function Dashboard(props) {
@@ -17,7 +18,7 @@ function Dashboard(props) {
             return <Staffs />
         }
         else if(decoded.isStudent === true){
-            return "Dear Students :) We are soon bring service for you. -By your respectful Admin"
+            return <Students />
         }
         else{
             return <Redirect to='/login'/>;
