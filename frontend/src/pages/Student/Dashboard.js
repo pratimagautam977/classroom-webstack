@@ -1,17 +1,12 @@
 import React from 'react';
 import {Helmet} from 'react-helmet';
 import NotFound from './NotFound';
-import Classroom from './Classroom';
-import Student from './Student';
-import Staff from './Staff';
-import Sidebar from '../components/Sidebar';
-import Topbar from '../components/Topbar';
+import Sidebar from '../../components/Sidebar';
+import Topbar from '../../components/Topbar';
 import { Route, Switch } from "react-router-dom";
-import Payment from './Payment';
-import ClassroomView from './ClassroomView';
 import { withRouter} from 'react-router-dom';
 
-class Dashboard extends React.Component{
+class Students extends React.Component{
     constructor(props){
         super(props)
         this.state = {
@@ -28,7 +23,7 @@ class Dashboard extends React.Component{
 
                 <div className="dashboard">                
                     <div className="container-fluid">            
-                        <Sidebar/>
+                        <Sidebar value="stud" />
                         <div className="mainbar">
                             <Topbar data={this.state.profile}/>             
                             <div className="main_body">
@@ -36,13 +31,13 @@ class Dashboard extends React.Component{
                                     <div className="row">
                                         <div className="col-lg-12 col-md-12 col-sm-12">
                                             <Switch>
-                                            <Route exact path="/classroom" component={Classroom}/>
-                                            <Route path="/home" component={Classroom}/>
-                                            <Route path="/staff" component={Staff} />
-                                            <Route path="/student" component={Student}/> 
-                                            <Route path="/payment" component={Payment}/>
-                                            <Route exact path="/classroom/:id" component={ClassroomView}/>
-                                            <Route component={NotFound}/> 
+                                                {/* <Route exact path="/classroom" component={Classroom}/>
+                                                <Route path="/home" component={Classroom}/>
+                                                <Route path="/staff" component={Staff} />
+                                                <Route path="/student" component={Student}/> 
+                                                <Route path="/payment" component={Payment}/>
+                                                <Route exact path="/classroom/:id" component={ClassroomView}/> */}
+                                                <Route component={NotFound}/> 
                                             </Switch>
                                         </div>
                                     </div>
@@ -56,4 +51,4 @@ class Dashboard extends React.Component{
     }
 }
 
-export default withRouter(Dashboard);
+export default withRouter(Students);
