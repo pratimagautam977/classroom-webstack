@@ -9,7 +9,7 @@ import Topbar from '../../components/Topbar';
 import { Route, Switch,withRouter } from "react-router-dom";
 import Payment from './Payment';
 import ClassroomView from './ClassroomView';
-import CalendarInstitute from './CalendarInstitute';
+import InstituteCalendar from './InstituteCalendar';
 
 class Institute extends React.Component{
     constructor(props){
@@ -43,7 +43,7 @@ class Institute extends React.Component{
                                             <Route path="/student" component={Student}/> 
                                             <Route path="/student/:id"/>
                                             <Route path="/pay/:id" component={Payment}/>
-                                            <Route path="/calendar" component={CalendarInstitute}/>
+                                            <Route path="/calendar" component={InstituteCalendar}/>
                                             <Route exact path="/classroom/:id" component={ClassroomView}/>              
                                             <Route component={NotFound}/> 
                                             </Switch>
