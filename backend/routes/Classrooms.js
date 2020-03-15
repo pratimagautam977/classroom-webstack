@@ -28,12 +28,13 @@ Assignment.belongsTo(Staff)
 // POST Route 
 classrooms.post("/", middleware.checkToken, (req, res) => {
     const classData = {
-        ID: "",
+        classID: uuidv4(),
         ins_uuid: req.decoded.id,
-        name: req.body.name
+        name: req.body.classroomName,
+        img : `http://localhost:3000/images/classroom${Math.floor(Math.random() * (10 - 1) + 1)}.jpg`
     }
 
-    classData.class_uuid = uuidv4();
+    //classData.class_uuid = ;
     Classroom.create(classData)
     .then(classroom => {
         res.status(200).json({
