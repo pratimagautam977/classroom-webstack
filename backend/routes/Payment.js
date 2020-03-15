@@ -95,6 +95,22 @@ payments.post('/verify', middleware.checkToken, (req, res) => {
     });
 })
 
+payments.get('/student', middleware.checkToken, (req, res) => {
+    
+    Payment.findAll({
+        where: {
+            studID: req.decoded.login
+        }
+    })
+    .then(result =>{
+        res.status(200).json(result)
+    })
+    .catch(err => {
+        console.log(err.response)
+    })
+
+})
+
 // call /:id request parameter id
 payments.get('/:id', middleware.checkToken, (req, res) => {
     Payment.findAll({
@@ -112,5 +128,7 @@ payments.get('/:id', middleware.checkToken, (req, res) => {
         //console.log(res);
     })  
 })
+
+
 
 module.exports = payments;
