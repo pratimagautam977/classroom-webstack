@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { AddClass } from "./ClassroomFunction";
 
 export default function Modal(props) {
-  const [isToggled, setToggled] = useState(true);
+  const [isToggled] = useState(true);
   //const [data, setData] = useState(props.data);
 
   return (
