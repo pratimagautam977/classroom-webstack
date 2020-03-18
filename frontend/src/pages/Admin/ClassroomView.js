@@ -76,17 +76,25 @@ export default function ClassroomView() {
     //console.log(staffid)
     DeleteStaff(id, staffid).then(
      res => {
-        console.log(res)
+        //console.log(res)
+        GetClass(id).then(res => {
+          console.log(res)
+          setClassData(res);
+        });
       })
       .catch(err => {
         console.log(err.response.data);
-      });
+      });      
   }
 
   const DeleteStudentFromClass = (studid) => {
     DeleteStudent(id, studid).then(
       res => {
-         console.log(res)
+         //console.log(res)
+         GetClass(id).then(res => {
+           console.log(res)
+          setClassData(res);
+        });
        })
        .catch(err => {
          console.log(err.response.data);
@@ -210,6 +218,10 @@ export default function ClassroomView() {
         const excludedStudent = Excluded.excludedStudent.filter(
           student => student.uuid !== studid
         );
+        GetClass(id).then(res => {
+          console.log(res)
+          setClassData(res);
+        });
         setExcluded({ excludedStudent });
       })
       .catch(err => {
@@ -224,6 +236,11 @@ export default function ClassroomView() {
         const excludedStaff = Excluded.excludedStaff.filter(
           staff => staff.uuid !== staffid
         );
+        GetClass(id).then(res => {
+          console.log(res)
+          setClassData(res);
+          console.log(ClassData)
+        });
         setExcluded({ excludedStaff });
       })
       .catch(err => {
@@ -253,7 +270,15 @@ export default function ClassroomView() {
 
   const changeView = view => {
     setView(view);
-    setToggle(view);
+    if(view === feeds){
+      return setToggle("feeds");
+    }
+    else if(view === people){
+      return setToggle("people");
+    }
+    else if(view === assignments){
+      return setToggle("assignments");
+    }    
   };
 
   // console.log(<GetExcludedStudent ider={id}/>)
