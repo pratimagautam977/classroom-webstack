@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink,withRouter } from "react-router-dom";
+import { UncontrolledTooltip } from 'reactstrap';
 
 function Topbar (props) {
   let logout = () =>{
@@ -9,32 +10,47 @@ function Topbar (props) {
   return (
     <div className="topbar">
 
-      <div className="profile">
+      <div className="profile" id="profile">
           <img src={props.data} alt="profile"/>
+          <UncontrolledTooltip placement="bottom" target="profile">
+            Profile
+          </UncontrolledTooltip>
       </div>
 
-      <div className="item" onClick={logout}>
+      <div className="item" id="logout" onClick={logout}>
         <button style={{ fontSize: "22px"}}>
           <span className="icon-logout"></span>
         </button>
+        <UncontrolledTooltip placement="bottom" target="logout">
+          Logout
+        </UncontrolledTooltip>
       </div>
 
-      <div className="item">
+      <div className="item" id="setting">
         <NavLink to="/settings" activeClassName="selected">
           <span className="icon-settings"></span>
         </NavLink>
+        <UncontrolledTooltip placement="bottom" target="setting">
+            Settings
+        </UncontrolledTooltip>
       </div>
       
-      <div className="item">
+      <div className="item" id="notification">
         <NavLink to="/notification" activeClassName="selected">
             <span className="icon-edit"></span>
         </NavLink>
+        <UncontrolledTooltip placement="bottom" target="notification">
+            Notification
+        </UncontrolledTooltip>
       </div>
 
-      <div className="item">
+      <div className="item" id="note">
         <NavLink to="/note" activeClassName="selected">
             <span className="icon-note"></span>
         </NavLink>
+        <UncontrolledTooltip placement="bottom" target="note">
+            Notes
+        </UncontrolledTooltip>
       </div>
     </div>
   );
