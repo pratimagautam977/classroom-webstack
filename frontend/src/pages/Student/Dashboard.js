@@ -5,6 +5,10 @@ import Sidebar from '../../components/Sidebar';
 import Topbar from '../../components/Topbar';
 import { Route, Switch } from "react-router-dom";
 import { withRouter} from 'react-router-dom';
+import Payment from './Payment';
+import StudentClass from './Classroom';
+import StudentCalendar from './StudentCalendar';
+import AllPayment from './AllPayment';
 
 class Students extends React.Component{
     constructor(props){
@@ -30,13 +34,12 @@ class Students extends React.Component{
                                 <div className="container">
                                     <div className="row">
                                         <div className="col-lg-12 col-md-12 col-sm-12">
-                                            <Switch>
-                                                {/* <Route exact path="/classroom" component={Classroom}/>
-                                                <Route path="/home" component={Classroom}/>
-                                                <Route path="/staff" component={Staff} />
-                                                <Route path="/student" component={Student}/> 
-                                                <Route path="/payment" component={Payment}/>
-                                                <Route exact path="/classroom/:id" component={ClassroomView}/> */}
+                                            <Switch>                                                
+                                                <Route exact path="/home" component={StudentClass}/>
+                                                <Route exact path="/classroom" component={StudentClass}/>
+                                                <Route exact path="/pay" component={AllPayment}/>
+                                                <Route path="/pay/:id" component={Payment}/>
+                                                <Route path="/calendar" component={StudentCalendar}/>
                                                 <Route component={NotFound}/> 
                                             </Switch>
                                         </div>
