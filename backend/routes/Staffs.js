@@ -9,6 +9,8 @@ const uuidv4 = require('uuid/v4');
 const Joi = require('@hapi/joi');
 staffs.use(cors());
 
+const db = require('../config/config');
+
 // ########  MIDDLEWARE   ########
 const middleware = require('../config/Middleware');    //Added Middleware
 // ###############################
@@ -62,7 +64,18 @@ staffs.get("/", middleware.checkToken, (req, res)=>{
     })
 });
 
-// GET Route to retrieve a single staff <findOne>
+// GET all the classroom of the staff
+staffs.get('/classroom', middleware.checkToken, (req, res) => {
+    db.sequelize.query(`SELECT classroom.class_uuid AS classID, classroom.class_name AS name, classroom.class_img AS img from tbl_class_staff cf LEFT JOIN tbl_staff st on st.staff_uuid = cf.staff_uuid LEFT JOIN tbl_classroom classroom on classroom.class_uuid = cf.class_uuid where cf.staff_uuid = "${req.decoded.login}"`,{ type: db.sequelize.QueryTypes.SELECT })
+    .then(results => {
+        res.json(results);
+     })
+    .catch( err => {
+        res.send(err)
+    });
+})
+
+// GET Route to retrieve a single staff <findOne>""
 staffs.get("/:id", middleware.checkToken, (req, res) => {
     Staff.findOne({
         where: {
@@ -209,5 +222,6 @@ staffs.put('/:id', middleware.checkToken, (req, res) => {
         res.send(err);
     })
 })
+
 
 module.exports = staffs;
