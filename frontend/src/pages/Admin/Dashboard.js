@@ -10,6 +10,7 @@ import { Route, Switch,withRouter } from "react-router-dom";
 import Payment from './Payment';
 import ClassroomView from './ClassroomView';
 import InstituteCalendar from './InstituteCalendar';
+import AllPayment from './AllPayment';
 
 class Institute extends React.Component{
     constructor(props){
@@ -42,6 +43,7 @@ class Institute extends React.Component{
                                             <Route path="/staff/:id"/>
                                             <Route path="/student" component={Student}/> 
                                             <Route path="/student/:id"/>
+                                            <Route exact path="/pay" component={AllPayment}/>
                                             <Route path="/pay/:id" component={Payment}/>
                                             <Route path="/calendar" component={InstituteCalendar}/>
                                             <Route exact path="/classroom/:id" component={ClassroomView}/>              
