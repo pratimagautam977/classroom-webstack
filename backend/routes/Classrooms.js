@@ -82,15 +82,38 @@ classrooms.get("/", middleware.checkToken, (req, res) => {
     })
 })
 
-classrooms.post('/assignment', (req, res) =>{
+//Getting All Asignments
+classrooms.get('/assignment/:id', middleware.checkToken,(req, res) =>{
     
-    db.sequelize.query(`SELECT assignment.id, assignment.assign_name AS name, assignment.assign_details AS details, assignment.assign_date AS assignedAt, CONCAT(staff.staff_fName, " ", staff.staff_lname) AS staff_name FROM tbl_assignment assignment LEFT JOIN tbl_classroom class on class.class_uuid = assignment.class_uuid LEFT JOIN tbl_staff staff on staff.staff_uuid = assignment.staff_uuid WHERE class.class_uuid = "${req.body.id}"`,{ type: db.sequelize.QueryTypes.SELECT })
+    db.sequelize.query(`SELECT assignment.id, assignment.assign_name AS name, assignment.assign_details AS details, assignment.assign_date AS assignedAt, CONCAT(staff.staff_fName, " ", staff.staff_lname) AS staff_name FROM tbl_assignment assignment LEFT JOIN tbl_classroom class on class.class_uuid = assignment.class_uuid LEFT JOIN tbl_staff staff on staff.staff_uuid = assignment.staff_uuid WHERE class.class_uuid = "${req.params.id}"`,{ type: db.sequelize.QueryTypes.SELECT })
     .then(results => {
         res.json(results);
      })
     .catch( err => {
         res.send(err)
     });
+})
+
+//Creating New Assignments
+classrooms.post('/assignment', middleware.checkToken, (req, res) => {
+    if(req.decoded.isStaff === true){
+        Assignment.create({
+                name: req.body.name,
+                details: req.body.details ,
+                staffID: req.decoded.login ,
+                classID: req.body.classID 
+        })
+        .then(
+            res.status(200).json({success: true})
+        )
+        .catch(err =>{
+            res.status(401).json(err.response)
+        })
+    }
+    else{
+        res.status(401).json({error: "You are not authorised to add!"})
+    }
+
 })
 
 // GET Route to retrieve a single classroom <findOne>
