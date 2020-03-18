@@ -20,7 +20,7 @@ export default function Payment() {
             setAmount(res.data.res[0].amount);
             
         })
-    }, [])
+    }, [id, t])
 
     const paymentData = (payload) =>{
         // console.log(payload);
