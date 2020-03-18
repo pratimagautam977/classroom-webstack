@@ -1,6 +1,6 @@
 ## Classroom Webstack
 
-Tooltip on hover for Nav Links 
+### Tooltip on hover for Nav Links 
 
 https://reactstrap.github.io/components/tooltips/#app
 
@@ -24,3 +24,9 @@ export default function Example() {
   );
 }
 ```
+
+### React Hook useEffect has a missing dependency: 'xxx' ? 
+
+https://github.com/facebook/create-react-app/issues/6903
+
+The linter is telling you that you're depending on external values that may change, when you set the dependencies as an empty array the effect will run just once when the component mounts.
