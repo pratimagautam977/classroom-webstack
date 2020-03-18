@@ -12,7 +12,6 @@ const axios = require('axios');
 const middleware = require('../config/Middleware');    //Added Middleware
 // ###############################
 
-
 payments.post('/create', middleware.checkToken, (req, res) =>{
   
     const paymentData = {
@@ -43,7 +42,7 @@ payments.get('/', middleware.checkToken, (req, res) => {
         where: {
             insID: req.decoded.id
         },
-        attributes: ['requestID', 'amount'],
+        attributes: ['requestID', 'requestDate', 'amount', 'status'],
         include : [{
             model: Student ,               
             attributes: ['studID','fname', 'lname', 'img']
