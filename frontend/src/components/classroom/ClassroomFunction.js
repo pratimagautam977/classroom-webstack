@@ -37,9 +37,8 @@ export const GetClass = id => {
 export const GetAssignment = id => {
   const token = localStorage.getItem("token");
   return axios
-    .post(
-      url + `classroom/assignment/`,
-      { id },
+    .get(
+      url + `classroom/assignment/`+id,
       {
         headers: { Authorization: `Bearer ${token}` }
       }
@@ -48,6 +47,24 @@ export const GetAssignment = id => {
       return res.data;
     });
 };
+
+export const PostAssignment = (id, name, details) => {
+  const token = localStorage.getItem("token");
+  return axios
+  .post(
+    url + `classroom/assignment/`,{
+      classID: id,
+      name: name,
+      details: details
+    },
+    {
+      headers: { Authorization: `Bearer ${token}` }
+    }
+  )
+  .then(res => {
+    return res.data;
+  });
+}
 
 export const UpdateClass = (data, id) => {
   const token = localStorage.getItem("token");
