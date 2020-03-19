@@ -12,6 +12,7 @@ import StaffSetting from './Setting';
 import StudentView from './StudentView';
 import Staff from './Staff';
 import StaffFile from './File';
+import ClassroomView from './ClassroomView';
 
 class Staffs extends React.Component{
     constructor(props){
@@ -43,6 +44,7 @@ class Staffs extends React.Component{
                                                 <Route path="/student" component={StaffStudent} />
                                                 <Route path="/student/:id" component={StudentView}/>
                                                 <Route path="/staff" component={Staff} />
+                                                <Route path="/classroom/:id" component={ClassroomView}/> 
                                                 <Route path="/calendar" component={StaffCalendar}/>
                                                 <Route path="/chat" component={StaffChat}/>
                                                 <Route path="/file" component={StaffFile}/>
