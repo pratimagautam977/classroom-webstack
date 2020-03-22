@@ -120,9 +120,9 @@ export default function Sidebar(props) {
     else if(props.value === 'stud'){
         return(
             <div className="sidebar">
-                <div className="_logo">
+                <div className="_logo" id="logo">
                     <img src="./images/logo_m.png" alt="classroom"/>
-                    <UncontrolledTooltip placement="right" target="classroom">
+                    <UncontrolledTooltip placement="right" target="logo">
                         Classroom Webstack
                     </UncontrolledTooltip>
                 </div>
