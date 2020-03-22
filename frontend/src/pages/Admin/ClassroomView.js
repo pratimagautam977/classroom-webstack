@@ -13,6 +13,94 @@ import {
 } from "../../components/classroom/ClassroomFunction";
 import Modal from "../../components/classroom/Modal";
 
+export const People = props => {
+  const {
+    onStaffOpen,
+    staff,
+    DeleteStaffFromClass,
+    onStdOpen,
+    student,
+    DeleteStudentFromClass
+  } = props;
+  return (
+    <div className="row">
+      <div className="col-lg-4 col-md-6 col-sm-12">
+        <div className="cards p-3 hg-400">
+          <h5 style={{ display: "inline-block", width: "calc(100% - 32px)" }}>
+            Staffs
+          </h5>
+          <button
+            className="btn btn-primary btn-sm pb-4"
+            onClick={onStaffOpen}
+            style={{ display: "inline-block" }}
+          >
+            <span className="icon-add-user"></span>
+          </button>
+
+          {staff &&
+            staff.map(cl => (
+              <div key={cl.staffID} className="dp m-0">
+                <div className="round_img">
+                  <img className="" alt="" src={cl.img} width="40px" />
+                </div>
+                <div className="name_area f-14">
+                  <li>
+                    {cl.fname} {cl.lname}
+                  </li>
+                </div>
+                <div>
+                  <button onClick={() => DeleteStaffFromClass(cl.staffID)}>
+                    ⓧ
+                  </button>
+                </div>
+              </div>
+            ))}
+        </div>
+      </div>
+
+      <div className="col-lg-4 col-md-6 col-sm-12">
+        <div className="cards p-3 hg-400">
+          <h5 style={{ display: "inline-block", width: "calc(100% - 32px)" }}>
+            Students
+          </h5>
+          <button
+            className="btn btn-primary btn-sm pb-4"
+            onClick={onStdOpen}
+            style={{ display: "inline-block" }}
+          >
+            <span className="icon-add-user"></span>
+          </button>
+          {student &&
+            student.map(cl => (
+              <div key={cl.studID} className="dp m-0">
+                <div className="round_img">
+                  <img className="" alt="" src={cl.img} width="40px" />
+                </div>
+                <div className="name_area f-14">
+                  <li>
+                    {cl.fname} {cl.lname}
+                  </li>
+                </div>
+                <div>
+                  <button onClick={() => DeleteStudentFromClass(cl.studID)}>
+                    ⓧ
+                  </button>
+                </div>
+              </div>
+            ))}
+        </div>
+      </div>
+
+      <div className="col-lg-4 col-md-6 col-sm-12">
+        <div className="cards p-3 hg-400">
+          <h5>Upcoming Events</h5>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
 export default function ClassroomView() {
   const [isStaffModal, setStaffModal] = useState(false);
   const [isStudentModal, setStudentModal] = useState(false);
@@ -72,113 +160,35 @@ export default function ClassroomView() {
     );
   };
 
-  const DeleteStaffFromClass = (staffid) => {
+  const DeleteStaffFromClass = staffid => {
     //console.log(staffid)
-    DeleteStaff(id, staffid).then(
-     res => {
+    DeleteStaff(id, staffid)
+      .then(res => {
         //console.log(res)
         GetClass(id).then(res => {
-          console.log(res)
+          console.log(res);
           setClassData(res);
         });
       })
       .catch(err => {
         console.log(err.response.data);
-      });      
-  }
+      });
+  };
 
-  const DeleteStudentFromClass = (studid) => {
-    DeleteStudent(id, studid).then(
-      res => {
-         //console.log(res)
-         GetClass(id).then(res => {
-           console.log(res)
+  const DeleteStudentFromClass = studid => {
+    DeleteStudent(id, studid)
+      .then(res => {
+        //console.log(res)
+        GetClass(id).then(res => {
+          console.log(res);
           setClassData(res);
         });
-       })
-       .catch(err => {
-         console.log(err.response.data);
-       });
-  }
-
-  const people = () => {
-    return (
-      <div className="row">
-        <div className="col-lg-4 col-md-6 col-sm-12">
-          <div className="cards p-3 hg-400">
-            <h5 style={{ display: "inline-block", width: "calc(100% - 32px)" }}>
-              Staffs
-            </h5>
-            <button
-              className="btn btn-primary btn-sm pb-4"
-              onClick={onStaffOpen}
-              style={{ display: "inline-block" }}
-            >
-              <span className="icon-add-user"></span>
-            </button>
-
-            {staff &&
-              staff.map(cl => (
-                <div key={cl.staffID} className="dp m-0">
-                  <div className="round_img">
-                    <img className="" alt="" src={cl.img} width="40px" />
-                  </div>
-                  <div className="name_area f-14">
-                    <li>
-                      {cl.fname} {cl.lname}
-                    </li>
-                  </div>
-                  <div>
-                    <button onClick={() => DeleteStaffFromClass(cl.staffID)}>
-                      ⓧ
-                    </button>
-                  </div>
-                </div>
-              ))}
-          </div>
-        </div>
-
-        <div className="col-lg-4 col-md-6 col-sm-12">
-          <div className="cards p-3 hg-400">
-            <h5 style={{ display: "inline-block", width: "calc(100% - 32px)" }}>
-              Students
-            </h5>
-            <button
-              className="btn btn-primary btn-sm pb-4"
-              onClick={onStdOpen}
-              style={{ display: "inline-block" }}
-            >
-              <span className="icon-add-user"></span>
-            </button>
-            {student &&
-              student.map(cl => (
-                <div key={cl.studID} className="dp m-0">
-                  <div className="round_img">
-                    <img className="" alt="" src={cl.img} width="40px" />
-                  </div>
-                  <div className="name_area f-14">
-                    <li>
-                      {cl.fname} {cl.lname}
-                    </li>
-                  </div>
-                  <div>
-                    <button onClick={() => DeleteStudentFromClass(cl.studID)}>
-                      ⓧ
-                    </button>
-                  </div>
-                </div>
-              ))}
-          </div>
-        </div>
-
-        <div className="col-lg-4 col-md-6 col-sm-12">
-          <div className="cards p-3 hg-400">
-            <h5>Upcoming Events</h5>
-          </div>
-        </div>
-      </div>
-    );
+      })
+      .catch(err => {
+        console.log(err.response.data);
+      });
   };
+
   const assignments = () => {
     return (
       <div className="row">
@@ -202,51 +212,50 @@ export default function ClassroomView() {
 
   const [ClassData, setClassData] = useState({});
   const [AssignmentData, setAssignmentData] = useState({});
-  const [Excluded, setExcluded] = useState({
-    excludedStudent: [],
-    excludedStaff: []
-  });
+  const [excludedStaff, setexcludedStaff] = useState([]);
+  const [excludedStudent, setexcludedStudent] = useState([]);
+
   const [View, setView] = useState(feeds);
   const [Toggle, setToggle] = useState("feeds");
-  
 
   const addStudentToClass = studid => {
     // alert(studid)
     AddStudentToClass(id, studid)
       .then(res => {
         // console.log(res)
-        const excludedStudent = Excluded.excludedStudent.filter(
+        const excludedStudents = excludedStudent.filter(
           student => student.uuid !== studid
         );
         GetClass(id).then(res => {
-          console.log(res)
+          console.log(res);
           setClassData(res);
         });
-        setExcluded({ excludedStudent });
+        setexcludedStudent(excludedStudents);
       })
       .catch(err => {
-        console.log(err.response.data);
+        console.log(err.response);
       });
   };
 
   const addStaffToClass = staffid => {
-    console.log(staffid);
+    // alert(staffid)
     AddStaffToClass(id, staffid)
       .then(res => {
-        const excludedStaff = Excluded.excludedStaff.filter(
+        // console.log(res)
+        const excludedStaffs = excludedStaff.filter(
           staff => staff.uuid !== staffid
         );
         GetClass(id).then(res => {
-          console.log(res)
+          console.log(res);
           setClassData(res);
-          console.log(ClassData)
         });
-        setExcluded({ excludedStaff });
+        setexcludedStaff(excludedStaffs);
       })
       .catch(err => {
-        console.log(err.response.data);
+        console.log(err.response);
       });
   };
+  
   useEffect(() => {
     GetClass(id).then(res => {
       setClassData(res);
@@ -256,29 +265,35 @@ export default function ClassroomView() {
       setAssignmentData(res);
     });
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [excludedStaff, excludedStudent]);
+
+  useEffect(() => {
     GetExcludedStudent(id).then(res => {
-      setExcluded({ ...Excluded, excludedStudent: res });
+      console.log(res);
+      // setExcluded({ ...Excluded, excludedStudent: res });
+      setexcludedStudent(res);
     });
 
     GetExcludedStaff(id).then(res => {
-      setExcluded({ ...Excluded, excludedStaff: res });
+      // setExcluded({ ...Excluded, excludedStaff: resi });
+      setexcludedStaff(res);
     });
-  }, [id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   let staff = ClassData.staffs;
   let student = ClassData.students;
 
   const changeView = view => {
     setView(view);
-    if(view === feeds){
+    if (view === feeds) {
       return setToggle("feeds");
-    }
-    else if(view === people){
+    } else if (view === "people") {
       return setToggle("people");
-    }
-    else if(view === assignments){
+    } else if (view === assignments) {
       return setToggle("assignments");
-    }    
+    }
   };
 
   // console.log(<GetExcludedStudent ider={id}/>)
@@ -309,7 +324,7 @@ export default function ClassroomView() {
         className={`mr-2 mb-3 ${
           Toggle === "people" ? "disabled" : "btn-primary"
         } btn pb-4`}
-        onClick={() => changeView(people)}
+        onClick={() => changeView("people")}
       >
         People
       </button>
@@ -322,12 +337,24 @@ export default function ClassroomView() {
         Assignments
       </button>
       {View}
+      {Toggle === "people" ? (
+        <People
+          onStaffOpen={onStaffOpen}
+          staff={staff}
+          DeleteStaffFromClass={DeleteStaffFromClass}
+          onStdOpen={onStdOpen}
+          student={student}
+          DeleteStudentFromClass={DeleteStudentFromClass}
+        />
+      ) : (
+        ""
+      )}
 
       {isStaffModal ? (
         <Modal
           title="Add Staff"
           close={onStaffClose}
-          data={Excluded.excludedStaff}
+          data={excludedStaff}
           Add={addStaffToClass}
         />
       ) : (
@@ -337,7 +364,7 @@ export default function ClassroomView() {
         <Modal
           title="Add Student"
           close={onStdClose}
-          data={Excluded.excludedStudent}
+          data={excludedStudent}
           Add={addStudentToClass}
         />
       ) : (
