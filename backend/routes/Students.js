@@ -7,6 +7,7 @@ const Student = require("../models/student");
 const uuidv4 = require('uuid/v4');
 students.use(cors());
 
+const db = require('../config/config');
 
 // ########  MIDDLEWARE   ########
 const middleware = require('../config/Middleware');    //Added Middleware
@@ -73,6 +74,18 @@ students.get("/", middleware.checkToken, (req, res) => {
     .catch(err => {
         res.send(err);
     })
+})
+
+// GET all the classroom of the student
+students.get('/classroom', middleware.checkToken, (req, res) => {
+    db.sequelize.query(`SELECT classroom.class_uuid AS classID, classroom.class_name AS name, classroom.class_img AS img from tbl_class_std cf LEFT JOIN tbl_student st on st.stud_uuid = cf.stud_uuid LEFT JOIN tbl_classroom classroom on classroom.class_uuid = cf.class_uuid where cf.stud_uuid = "${req.decoded.login}"`,{ type: db.sequelize.QueryTypes.SELECT })
+    
+    .then(results => {
+        res.json(results);
+     })
+    .catch( err => {
+        res.send(err)
+    });
 })
 
 // GET Route to retrieve a single student <findOne>
