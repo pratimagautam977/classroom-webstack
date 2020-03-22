@@ -441,6 +441,14 @@ textarea:focus {
   outline: none !important;
   box-shadow: 0 0 0 0.0rem rgba(0, 0, 0, 0) !important;
 }
+
+.expand{
+  z-index: 1001;
+  min-height:150px;
+  border: none !important;
+  outline: none !important;
+  box-shadow: 0 0 0 0.0rem rgba(0, 0, 0, 0) !important;
+}
 .cd{
   min-width: 310px;
   max-width: 310px;
