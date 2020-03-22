@@ -36,24 +36,42 @@ export default function Assignment(props) {
         <div className="row">
           <div className="col-12 px-3">
             <form className="col-12 cards" onSubmit={onAssignmentSubmit}>
-              <p
+              <div
                 className="lead emoji-picker-container"
                 style={{ marginTop: "1px", marginRight: "5px" }}
               >
-                <input
-                  required
-                  type="text"
-                  className="col-12 form-control textarea-control"
-                  placeholder="Assignment Title"
-                  data-emojiable="true"
-                  name="names"
-                  onChange={onAssignChange}
-                  value={assign.names}
-                ></input>
+                <div className="row">
+                  <div className="col-8">
+                    <input
+                      required
+                      type="text"
+                      className="col-12 form-control textarea-control"
+                      placeholder="Assignment Title"
+                      data-emojiable="true"
+                      name="names"
+                      onChange={onAssignChange}
+                      value={assign.names}
+                    ></input>
+                  </div>
+                  <div className="col-4">
+                    <button
+                      type="submit"
+                      className="btn btn-primary pb-4"
+                      aria-label="Left Align"
+                    >
+                      <span
+                        className="glyphicon glyphicon-align-left"
+                        aria-hidden="true"
+                      >
+                        Create an Assignment
+                      </span>
+                    </button>
+                  </div>
+                </div>
 
                 <textarea
                   required
-                  className=" col-12 form-control textarea-control"
+                  className="col-12 form-control textarea-control"
                   suppressContentEditableWarning={true}
                   rows="2"
                   placeholder="Share with your class"
@@ -62,22 +80,9 @@ export default function Assignment(props) {
                   onChange={onAssignChange}
                   value={assign.details}
                 ></textarea>
-              </p>
+              </div>
               <div className="footer d-inline">
-                <div className="footer__btn pr-2">
-                  <button
-                    type="submit"
-                    className="btn btn-primary pb-4"
-                    aria-label="Left Align"
-                  >
-                    <span
-                      class="glyphicon glyphicon-align-left"
-                      aria-hidden="true"
-                    >
-                      Create an Assignment
-                    </span>
-                  </button>
-                </div>
+                <div className="footer__btn pr-2"></div>
               </div>
             </form>
           </div>
@@ -85,7 +90,7 @@ export default function Assignment(props) {
 
         {props.AssignmentData &&
           props.AssignmentData.map(ass => (
-            <div className="card">
+            <div className="card" key={ass}>
               <div className="card-body">
                 <h5 className="card-title">{ass.name}</h5>
                 <h6 className="card-subtitle mb-2 text-muted">
