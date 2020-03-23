@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   GetClass,
-  GetAssignment
+  GetAssignment,
+  DeleteAssignment
 } from "../../components/classroom/ClassroomFunction";
 import Assignment from "./Assignment";
 
@@ -124,7 +125,13 @@ export default function ClassroomView() {
       return setToggle("assignments");
     }
   };
-
+  const onDeleteAssignment = (assID) => {
+    DeleteAssignment(assID).then(res =>{
+      GetAssignment(id).then(resi => {
+        setAssignmentData(resi);
+      });
+    })
+  }
   return (
     <div>
       <div className="row">
@@ -166,7 +173,7 @@ export default function ClassroomView() {
       </button>
       {View}
       {Toggle === "assignments" ? (
-        <Assignment AssignmentData={AssignmentData} setAssignmentData={setAssignmentData} id={id}/>
+        <Assignment AssignmentData={AssignmentData} setAssignmentData={setAssignmentData} id={id} onDeleteAssignment={onDeleteAssignment}/>
       ) : (
         ""
       )}
