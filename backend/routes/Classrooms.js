@@ -85,7 +85,7 @@ classrooms.get("/", middleware.checkToken, (req, res) => {
 //Getting All Asignments
 classrooms.get('/assignment/:id', middleware.checkToken,(req, res) =>{
     
-    db.sequelize.query(`SELECT assignment.id, assignment.assign_name AS name, assignment.assign_details AS details, assignment.assign_date AS assignedAt, CONCAT(staff.staff_fName, " ", staff.staff_lname) AS staff_name FROM tbl_assignment assignment LEFT JOIN tbl_classroom class on class.class_uuid = assignment.class_uuid LEFT JOIN tbl_staff staff on staff.staff_uuid = assignment.staff_uuid WHERE class.class_uuid = "${req.params.id}"`,{ type: db.sequelize.QueryTypes.SELECT })
+    db.sequelize.query(`SELECT assignment.id, assignment.assign_name AS name, assignment.assign_details AS details, assignment.assign_date AS assignedAt, CONCAT(staff.staff_fName, " ", staff.staff_lname) AS staff_name, staff.staff_uuid AS StaffID FROM tbl_assignment assignment LEFT JOIN tbl_classroom class on class.class_uuid = assignment.class_uuid LEFT JOIN tbl_staff staff on staff.staff_uuid = assignment.staff_uuid WHERE class.class_uuid = "${req.params.id}"`,{ type: db.sequelize.QueryTypes.SELECT })
     .then(results => {
         res.json(results);
      })
@@ -114,6 +114,22 @@ classrooms.post('/assignment', middleware.checkToken, (req, res) => {
         res.status(401).json({error: "You are not authorised to add!"})
     }
 
+})
+
+//Delete Assignment
+classrooms.delete('/assignment/:id', middleware.checkToken, (req, res) =>{
+    
+    Assignment.destroy({
+        where: {
+            id: req.params.id,
+            staffID: req.body.uuid
+        }
+        
+    }).then(classroom => {
+        res.status(200).json({status: "OK"})
+    }).catch(err => {
+        console.log(err);
+    })
 })
 
 // GET Route to retrieve a single classroom <findOne>
