@@ -1,5 +1,10 @@
 import axios from "axios";
+import jwt_decode from 'jwt-decode';
+
+
+
 var url = "http://localhost:3000/";
+
 
 export const AddClass = newClass => {
   const token = localStorage.getItem("token");
@@ -11,6 +16,8 @@ export const AddClass = newClass => {
       return res.data;
     });
 };
+
+
 
 export const GetClasses = () => {
   const token = localStorage.getItem("token");
@@ -64,6 +71,22 @@ export const PostAssignment = (id, name, details) => {
   .then(res => {
     return res.data;
   });
+}
+
+export const DeleteAssignment = id => {
+  const token = localStorage.getItem("token");
+  const token_decoded = jwt_decode(token)
+  console.log(token_decoded.login)
+  return axios.delete(url + `classroom/assignment/${id}`,{
+    headers: { Authorization: `Bearer ${token}`
+     },
+     data :{
+      uuid: token_decoded.login
+    }
+  })
+  .then(res => {
+    return res.data;
+  })
 }
 
 export const UpdateClass = (data, id) => {
