@@ -3,8 +3,13 @@ import {
   PostAssignment,
   GetAssignment
 } from "../../components/classroom/ClassroomFunction";
+import jwt_decode from 'jwt-decode';
 
 export default function Assignment(props) {
+  const t = localStorage.getItem("token");
+  const decoded_token = jwt_decode(t);
+  console.log(decoded_token.login)
+
   const [assign, setAssign] = useState({
     names: "",
     details: ""
@@ -89,8 +94,8 @@ export default function Assignment(props) {
         </div>
 
         {props.AssignmentData &&
-          props.AssignmentData.map(ass => (
-            <div className="card" key={ass}>
+          props.AssignmentData.map((ass,index) => (
+            <div className="card" key={index}>
               <div className="card-body">
                 <h5 className="card-title">{ass.name}</h5>
                 <h6 className="card-subtitle mb-2 text-muted">
@@ -98,6 +103,7 @@ export default function Assignment(props) {
                 </h6>
                 <small>{ass.assignedAt}</small>
                 <p className="card-text">{ass.details}</p>
+                {decoded_token.login === ass.StaffID ? <button className="btn btn-primary pb-4" onClick={() => props.onDeleteAssignment(ass.id)}>Delete</button> : ""}
               </div>
             </div>
           ))}
