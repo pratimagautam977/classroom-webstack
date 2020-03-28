@@ -89,6 +89,19 @@ export const DeleteAssignment = id => {
   })
 }
 
+export const UpdateAssignment = obj => {
+  const token = localStorage.getItem("token");
+  const token_decoded = jwt_decode(token)
+  console.log(token_decoded.login)
+  return axios.put(url + `classroom/assignment/${obj.id}`, obj, {
+    headers: { Authorization: `Bearer ${token}`
+     }
+  })
+  .then(res => {
+    return res.data;
+  })
+}
+
 export const UpdateClass = (data, id) => {
   const token = localStorage.getItem("token");
   return axios
