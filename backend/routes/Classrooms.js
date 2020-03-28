@@ -132,6 +132,24 @@ classrooms.delete('/assignment/:id', middleware.checkToken, (req, res) =>{
     })
 })
 
+//Update Assignment
+classrooms.put('/assignment/:id', middleware.checkToken, (req, res) => {
+    const assignmentData = {
+        name: req.body.names,
+        details: req.body.details
+    }
+    Assignment.update(assignmentData, {
+        where: {
+            id: req.params.id
+        }
+    })
+    .then(assign => {
+        res.status(200).json({status: "OK"})
+    }).catch(err => {
+        console.log(err);
+    })
+})
+
 // GET Route to retrieve a single classroom <findOne>
 classrooms.get("/:id", middleware.checkToken, (req, res) => {
     Classroom.findOne({
@@ -174,7 +192,7 @@ classrooms.put('/:id', middleware.checkToken, (req, res) => {
         name: req.body.name
     }
 
-    Classroom.update(ClassData, {
+    Classroom.update(classData, {
         where: {
             classData: req.params.id
         }
