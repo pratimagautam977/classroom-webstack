@@ -11,6 +11,7 @@ import Payment from './Payment';
 import ClassroomView from './ClassroomView';
 import InstituteCalendar from './InstituteCalendar';
 import AllPayment from './AllPayment';
+import Filemanager from './Filemanager';
 
 class Institute extends React.Component{
     constructor(props){
@@ -46,6 +47,7 @@ class Institute extends React.Component{
                                             <Route exact path="/pay" component={AllPayment}/>
                                             <Route path="/pay/:id" component={Payment}/>
                                             <Route path="/calendar" component={InstituteCalendar}/>
+                                            <Route path="/files" component={Filemanager}/>
                                             <Route exact path="/classroom/:id" component={ClassroomView}/>              
                                             <Route component={NotFound}/> 
                                             </Switch>
