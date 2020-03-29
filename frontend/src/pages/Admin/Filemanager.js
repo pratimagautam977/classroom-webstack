@@ -84,7 +84,6 @@ class Filemanager extends Component {
 
   componentDidMount() {
     const t = localStorage.getItem("token");
-
     axios
       .get("http://localhost:3000/institute/files/", {
         headers: { Authorization: `Bearer ${t}` }
@@ -98,6 +97,31 @@ class Filemanager extends Component {
         console.log(err.response);
       });
   }
+
+  deleteFile = id => {
+    const t = localStorage.getItem("token");
+    axios
+      .delete(`http://localhost:3000/institute/file/${id}`, {
+        headers: { Authorization: `Bearer ${t}` }
+      })
+      .then(result => { 
+        axios
+          .get("http://localhost:3000/institute/files/", {
+            headers: { Authorization: `Bearer ${t}` }
+          })
+          .then(result => {
+            this.setState({
+              data: result.data
+            });
+          })
+          .catch(err => {
+            console.log(err.response);
+          });
+      })
+      .catch(err => {
+        console.log(err.response);
+      });
+  };
 
   render() {
     const SuccessMessage = () => (
@@ -133,7 +157,6 @@ class Filemanager extends Component {
             </div>
             <div className="modal_body">
               <center>
-                
                 <input
                   onChange={this.handleChange}
                   ref={ref => {
@@ -163,7 +186,7 @@ class Filemanager extends Component {
                   UPLOAD
                 </button>
                 {this.state.success ? <SuccessMessage /> : null}
-                {/* {this.state.error ? <ErrorMessage /> : null} */}
+                {this.state.error ? <ErrorMessage /> : null}
               </center>
             </div>
             <div className="modal_footer">{this.props.footer}</div>
@@ -200,12 +223,19 @@ class Filemanager extends Component {
                     Some quick example text to build on the card title and make
                     up the bulk of the card's content.
                   </p>
-                  <a href="#" className="btn btn-dark btn-sm">
+                  <button
+                    type="button"
+                    className="btn btn-dark btn-sm pb-4"
+                    onClick={() => this.deleteFile(dt.uuid)}
+                  >
                     Delete
-                  </a>
-                  <a href="#" className="btn btn-info btn-sm ml-2">
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-info btn-sm pb-4 ml-2"
+                  >
                     Share
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
