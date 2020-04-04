@@ -10,6 +10,7 @@ import StudentClass from './Classroom';
 import StudentCalendar from './StudentCalendar';
 import AllPayment from './AllPayment';
 import ClassroomView from './ClassroomView';
+import NotesApp from './Notes';
 
 class Students extends React.Component{
     constructor(props){
@@ -40,6 +41,7 @@ class Students extends React.Component{
                                                 <Route exact path="/classroom" component={StudentClass}/>
                                                 <Route exact path="/pay" component={AllPayment}/>
                                                 <Route path="/pay/:id" component={Payment}/>
+                                                <Route path="/note" component={NotesApp} />
                                                 <Route path="/calendar" component={StudentCalendar}/>
                                                 <Route path="/classroom/:id" component={ClassroomView}/> 
                                                 <Route component={NotFound}/> 
