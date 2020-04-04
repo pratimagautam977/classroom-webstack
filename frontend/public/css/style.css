@@ -419,7 +419,7 @@ ul{
 }
 
 textarea{
-  position: absolute;
+  /* position: absolute; */
   min-height: 30px;
   /* height:auto;
   overflow: auto; */
@@ -434,13 +434,13 @@ textarea{
   border: none !important;
 }
 
-textarea:focus {
+/* textarea:focus {
   z-index: 1001;
   min-height:150px;
   border: none !important;
   outline: none !important;
   box-shadow: 0 0 0 0.0rem rgba(0, 0, 0, 0) !important;
-}
+} */
 
 .expand{
   z-index: 1001;
