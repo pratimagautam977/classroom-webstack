@@ -91,9 +91,14 @@ class NoteEditor extends React.Component {
 }
 
 class NotesGrid extends React.Component {
+  constructor(props) {
+    super(props);
+    this.gridRef = React.createRef();
+  }
+
   componentDidMount() {
-    var grid = this.refs.grid;
-    this.msnry = new Masonry(grid, {
+    // var grid = this.refs.grid;
+    this.msnry = new Masonry(this.gridRef.current, {
       itemSelector: ".note",
       columnWidth: 200,
       gutter: 10,
@@ -112,7 +117,7 @@ class NotesGrid extends React.Component {
     var onNoteDelete = this.props.onNoteDelete;
 
     return (
-      <div className="notes-grid" ref="grid">
+      <div className="notes-grid" ref={this.gridRef}>
         {this.props.notes.map(function(note) {
           return (
             <Note
