@@ -311,7 +311,7 @@ institutes.get("/files", middleware.checkToken, (req, res) => {
       uploader_uuid: req.decoded.id
     },
 
-    attributes: ["uuid", "filename", "filetype", "date_created"]
+    attributes: ["uuid", "filename", "filetype", "date_created", "url"]
   })
     .then(data => {
       res.status(200).json(data);

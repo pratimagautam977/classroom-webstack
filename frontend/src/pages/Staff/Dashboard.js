@@ -11,9 +11,9 @@ import StaffStudent from './Student';
 import StaffSetting from './Setting';
 import StudentView from './StudentView';
 import Staff from './Staff';
-import StaffFile from './File';
 import ClassroomView from './ClassroomView';
 import ChatJoin from './ChatJoin';
+import Filemanager from './FileManager';
 
 class Staffs extends React.Component{
     constructor(props){
@@ -49,7 +49,7 @@ class Staffs extends React.Component{
                                                 <Route path="/calendar" component={StaffCalendar}/>
                                                 <Route exact path="/chat" component={ChatJoin}/>
                                                 <Route path="/chat/:id" component={StaffChat}/>
-                                                <Route path="/file" component={StaffFile}/>
+                                                <Route path="/files" component={Filemanager}/>
                                                 <Route path="/settings" component={StaffSetting}/>
                                                 <Route component={NotFound}/>
                                             </Switch>

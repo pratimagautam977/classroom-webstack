@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 class Filemanager extends Component {
   constructor(props) {
@@ -11,7 +12,7 @@ class Filemanager extends Component {
       errorMessage: "",
       data: [],
       progress: 0,
-      toggle: false
+      toggle: false,
     };
   }
 
@@ -22,14 +23,14 @@ class Filemanager extends Component {
     this.setState({ toggle: false });
   };
 
-  handleChange = ev => {
+  handleChange = (ev) => {
     this.setState({ success: false, url: "", progress: 0 });
   };
 
-  percentageBar = d => {
+  percentageBar = (d) => {
     this.setState({ progress: d });
   };
-  handleUpload = ev => {
+  handleUpload = (ev) => {
     const percentageBar = this.percentageBar;
     const t = localStorage.getItem("token");
     let file = this.uploadInput.files[0];
@@ -40,16 +41,16 @@ class Filemanager extends Component {
     console.log("Preparing the upload");
     axios
       .post(
-        "http://localhost:3000/institute/upload/",
+        "http://localhost:3000/staff/upload/",
         {
           fileName: fileName,
-          fileType: fileType
+          fileType: fileType,
         },
         {
-          headers: { Authorization: `Bearer ${t}` }
+          headers: { Authorization: `Bearer ${t}` },
         }
       )
-      .then(response => {
+      .then((response) => {
         var returnData = response.data.data.returnData;
         var signedRequest = returnData.signedRequest;
         var url = returnData.url;
@@ -57,27 +58,27 @@ class Filemanager extends Component {
         console.log("Recieved a signed request " + signedRequest);
         const config = {
           headers: {
-            "Content-Type": fileType
+            "Content-Type": fileType,
           },
-          onUploadProgress: function(progressEvent) {
+          onUploadProgress: function (progressEvent) {
             var percentCompleted = Math.round(
               (progressEvent.loaded * 100) / progressEvent.total
             );
             percentageBar(percentCompleted);
-          }
+          },
         };
 
         axios
           .put(signedRequest, file, config)
-          .then(result => {
+          .then((result) => {
             console.log("Response from s3");
             this.setState({ success: true });
           })
-          .catch(error => {
+          .catch((error) => {
             console.log("ERROR " + JSON.stringify(error));
           });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(JSON.stringify(error));
       });
   };
@@ -85,40 +86,40 @@ class Filemanager extends Component {
   componentDidMount() {
     const t = localStorage.getItem("token");
     axios
-      .get("http://localhost:3000/institute/files/", {
-        headers: { Authorization: `Bearer ${t}` }
+      .get("http://localhost:3000/staff/files/", {
+        headers: { Authorization: `Bearer ${t}` },
       })
-      .then(result => {
+      .then((result) => {
         this.setState({
-          data: result.data
+          data: result.data,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err.response);
       });
   }
 
-  deleteFile = id => {
+  deleteFile = (id) => {
     const t = localStorage.getItem("token");
     axios
-      .delete(`http://localhost:3000/institute/file/${id}`, {
-        headers: { Authorization: `Bearer ${t}` }
+      .delete(`http://localhost:3000/staff/file/${id}`, {
+        headers: { Authorization: `Bearer ${t}` },
       })
-      .then(result => { 
+      .then((result) => {
         axios
-          .get("http://localhost:3000/institute/files/", {
-            headers: { Authorization: `Bearer ${t}` }
+          .get("http://localhost:3000/staff/files/", {
+            headers: { Authorization: `Bearer ${t}` },
           })
-          .then(result => {
+          .then((result) => {
             this.setState({
-              data: result.data
+              data: result.data,
             });
           })
-          .catch(err => {
+          .catch((err) => {
             console.log(err.response);
           });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err.response);
       });
   };
@@ -159,7 +160,7 @@ class Filemanager extends Component {
               <center>
                 <input
                   onChange={this.handleChange}
-                  ref={ref => {
+                  ref={(ref) => {
                     this.uploadInput = ref;
                   }}
                   type="file"
@@ -205,42 +206,39 @@ class Filemanager extends Component {
         {Modal}
 
         <div className="row">
-          {datas.map((dt, index) => (
-            <div className="col-lg-3 col-md-4 my-3" key={index}>
-              <div className="card">
-                <img
-                  src="/images/file-text.svg"
-                  height="50px"
-                  width="30px"
-                  className="card-img-top mt-2"
-                  alt="..."
-                />
-                <div className="card-body">
-                  <h5 className="card-title">
-                    {(dt.filename + "." + dt.filetype).substring(0, 10)}
-                  </h5>
-                  <p className="card-text">
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </p>
-                  <button
-                    type="button"
-                    className="btn btn-dark btn-sm pb-4"
-                    onClick={() => this.deleteFile(dt.uuid)}
-                  >
-                    Delete
-                  </button>
-                  <a
-                    className="btn btn-info btn-sm ml-2"
-                    target="_blank"
-                    href={dt.url}
-                  >
-                    View
-                  </a>
+          {datas &&
+            datas.map((dt, index) => (
+              <div className="col-lg-3 col-md-4 my-3" key={index}>
+                <div className="card">
+                  <img
+                    src="/images/file-text.svg"
+                    height="50px"
+                    width="30px"
+                    className="card-img-top mt-2"
+                    alt="..."
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">
+                      {(dt.filename + "." + dt.filetype).substring(0, 10)}
+                    </h5>
+                    <button
+                      type="button"
+                      className="btn btn-dark btn-sm pb-4"
+                      onClick={() => this.deleteFile(dt.uuid)}
+                    >
+                      Delete
+                    </button>
+                    <a
+                      className="btn btn-info btn-sm ml-2"
+                      target="_blank"
+                      href={dt.url}
+                    >
+                      View
+                    </a>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     );

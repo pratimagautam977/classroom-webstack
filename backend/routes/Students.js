@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Student = require("../models/student");
 const uuidv4 = require('uuid/v4');
+const Filemanager = require("../models/filemanager");
 students.use(cors());
 
 const db = require('../config/config');
@@ -12,6 +13,98 @@ const db = require('../config/config');
 // ########  MIDDLEWARE   ########
 const middleware = require('../config/Middleware');    //Added Middleware
 // ###############################
+
+var aws = require("aws-sdk");
+require("dotenv").config(); // Configure dotenv to load in the .env file
+// Configure aws with your accessKeyId and your secretAccessKey
+aws.config.update({
+  region: "us-east-1", // Put your aws region here
+  accessKeyId: process.env.AWSAccessKeyId,
+  secretAccessKey: process.env.AWSSecretKey,
+});
+
+const S3_BUCKET = process.env.bucket;
+
+
+
+// File Upload to S3
+// Now lets export this function so we can call it from somewhere else
+students.post("/upload", middleware.checkToken, (req, res) => {
+  const s3 = new aws.S3(); // Create a new instance of S3
+  const fileName = req.body.fileName;
+  const fileType = req.body.fileType;
+
+  const fileUUID = uuidv4();
+  // Set up the payload of what we are sending to the S3 api
+  const s3Params = {
+    Bucket: S3_BUCKET,
+    Key: `upload/${req.decoded.login}/` + fileUUID + "." + fileType,
+    Expires: 50,
+    ContentType: fileType,
+    ACL: "public-read"
+  };
+  // Make a request to the S3 API to get a signed URL which we can use to upload our file
+  s3.getSignedUrl("putObject", s3Params, (err, data) => {
+    if (err) {
+      console.log(err);
+      res.json({ success: false, error: err });
+    }
+    // Data payload of what we are sending back, the url of the signedRequest and a URL where we can access the content after its saved.
+    const returnData = {
+      signedRequest: data,
+      url: `https://${S3_BUCKET}.s3.amazonaws.com/upload/${req.decoded.login}/${fileUUID}.${fileType}`
+    };
+
+    var FileData = {
+      filename: fileName,
+      filetype: fileType,
+      uuid: fileUUID,
+      url: `https://${S3_BUCKET}.s3.amazonaws.com/upload/${req.decoded.login}/${fileUUID}.${fileType}`,
+      uploader_uuid: req.decoded.login
+    };
+    Filemanager.create(FileData)
+      .then(file => {
+        res.status(200).json({ success: true, data: { returnData } });
+      })
+      .catch(err => {
+        res.send(err);
+      });
+  });
+});
+
+students.delete("/file/:id", middleware.checkToken, (req, res) => {
+  Filemanager.findOne({
+    where: {
+      uuid: req.params.id
+    }
+  }).then(result => {
+    // res.status(200).json(result.uuid + "." + result.filetype);
+    var s3 = new aws.S3();
+    var params = {
+      Bucket: S3_BUCKET,
+      Key:
+        `upload/${req.decoded.login}/` + result.uuid + "." + result.filetype
+    };
+    s3.deleteObject(params, function(err, data) {
+      if (err) console.log(err, err.stack);
+      // error
+      else {
+        Filemanager.destroy({
+          where: {
+            uuid: result.uuid
+          }
+        })
+          .then(data => {
+            res.status(200).json({ status: "OK" });
+          })
+          .catch(err => {
+            res.send(err);
+          });
+      } // deleted
+    });
+  });
+});
+
 
 // POST Registration Route (Add Student)
 students.post("/", middleware.checkToken, (req, res) => {
@@ -87,6 +180,23 @@ students.get('/classroom', middleware.checkToken, (req, res) => {
         res.send(err)
     });
 })
+
+// GET ALL FILES
+students.get("/files", middleware.checkToken, (req, res) => {
+  Filemanager.findAll({
+    where: {
+      uploader_uuid: req.decoded.login,
+    },
+
+    attributes: ["uuid", "filename", "filetype", "date_created", "url"],
+  })
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
 
 // GET Route to retrieve a single student <findOne>
 students.get("/:id", middleware.checkToken, (req, res) => {
@@ -178,4 +288,5 @@ students.put('/:id', middleware.checkToken, (req, res) => {
     })
     
 })
+
 module.exports = students;

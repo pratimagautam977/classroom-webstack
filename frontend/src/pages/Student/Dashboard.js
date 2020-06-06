@@ -11,6 +11,7 @@ import StudentCalendar from './StudentCalendar';
 import AllPayment from './AllPayment';
 import ClassroomView from './ClassroomView';
 import NotesApp from './Notes';
+import Filemanager from './FileManager';
 
 class Students extends React.Component{
     constructor(props){
@@ -21,39 +22,54 @@ class Students extends React.Component{
     }
     
     render(){
-        return(
-            <React.Fragment>
-                <Helmet>
-                    <title>Classroom WebStack | Dashboard</title>
-                </Helmet>
+        return (
+          <React.Fragment>
+            <Helmet>
+              <title>Classroom WebStack | Dashboard</title>
+            </Helmet>
 
-                <div className="dashboard">                
-                    <div className="container-fluid">            
-                        <Sidebar value="stud" />
-                        <div className="mainbar">
-                            <Topbar data={this.state.profile}/>             
-                            <div className="main_body">
-                                <div className="container">
-                                    <div className="row">
-                                        <div className="col-lg-12 col-md-12 col-sm-12">
-                                            <Switch>                                                
-                                                <Route exact path="/home" component={StudentClass}/>
-                                                <Route exact path="/classroom" component={StudentClass}/>
-                                                <Route exact path="/pay" component={AllPayment}/>
-                                                <Route path="/pay/:id" component={Payment}/>
-                                                <Route path="/note" component={NotesApp} />
-                                                <Route path="/calendar" component={StudentCalendar}/>
-                                                <Route path="/classroom/:id" component={ClassroomView}/> 
-                                                <Route component={NotFound}/> 
-                                            </Switch>
-                                        </div>
-                                    </div>
-                                </div>                            
-                            </div>
-                        </div>       
-                    </div>       
-                </div>                                             
-            </React.Fragment>
+            <div className="dashboard">
+              <div className="container-fluid">
+                <Sidebar value="stud" />
+                <div className="mainbar">
+                  <Topbar data={this.state.profile} />
+                  <div className="main_body">
+                    <div className="container">
+                      <div className="row">
+                        <div className="col-lg-12 col-md-12 col-sm-12">
+                          <Switch>
+                            <Route
+                              exact
+                              path="/home"
+                              component={StudentClass}
+                            />
+                            <Route
+                              exact
+                              path="/classroom"
+                              component={StudentClass}
+                            />
+                            <Route exact path="/pay" component={AllPayment} />
+                            <Route path="/pay/:id" component={Payment} />
+                            <Route path="/note" component={NotesApp} />
+                            <Route
+                              path="/calendar"
+                              component={StudentCalendar}
+                            />
+                            <Route
+                              path="/classroom/:id"
+                              component={ClassroomView}
+                            />
+                            <Route path="/files" component={Filemanager} />
+                            <Route component={NotFound} />
+                          </Switch>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </React.Fragment>
         );
     }
 }

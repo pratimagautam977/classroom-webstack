@@ -96,7 +96,7 @@ export default function Sidebar(props) {
                     </UncontrolledTooltip>
                 </div>
                 <div className="item" id="file">
-                    <NavLink to="/file" activeClassName="selected"><span className="icon-file"></span></NavLink>
+                    <NavLink to="/files" activeClassName="selected"><span className="icon-file"></span></NavLink>
                     <UncontrolledTooltip placement="right" target="file">
                         Files
                     </UncontrolledTooltip>
@@ -132,12 +132,6 @@ export default function Sidebar(props) {
                         Classroom
                     </UncontrolledTooltip>
                 </div>
-                <div className="item" id="student">
-                    <NavLink to="/student" activeClassName="selected"><span className="icon-cap"></span></NavLink>
-                    <UncontrolledTooltip placement="right" target="student">
-                        Students
-                    </UncontrolledTooltip>
-                </div>
                 <div className="item" id="staff">
                     <NavLink to="/staff" activeClassName="selected"><span className="icon-hired"></span></NavLink>
                     <UncontrolledTooltip placement="right" target="staff">
@@ -145,7 +139,7 @@ export default function Sidebar(props) {
                     </UncontrolledTooltip>
                 </div>
                 <div className="item" id="file">
-                    <NavLink to="/file" activeClassName="selected"><span className="icon-file"></span></NavLink>
+                    <NavLink to="/files" activeClassName="selected"><span className="icon-file"></span></NavLink>
                     <UncontrolledTooltip placement="right" target="file">
                         Files
                     </UncontrolledTooltip>
