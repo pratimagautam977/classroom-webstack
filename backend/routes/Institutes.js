@@ -9,6 +9,7 @@ const Filemanager = require("../models/filemanager");
 const uuidv4 = require("uuid/v4");
 institutes.use(cors());
 const axios = require("axios");
+const sendMail = require("../mail");
 
 // ########  MIDDLEWARE   ########
 const middleware = require("../config/Middleware"); //Added Middleware
@@ -51,6 +52,20 @@ institutes.post("/register", (req, res) => {
           instituteData.insID = uuidv4(); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
           Institute.create(instituteData)
             .then(institute => {
+              const instituteInfo = `
+              <p>You have successfully registered to the Classroom Webstack</p>
+              <h3>Registration Details</h3>
+              <ul>
+                  <li>Email: ${instituteData.email}</li>
+                  <li>Institute ID: ${instituteData.uname}</li>    
+                  <li>Phone: ${instituteData.phone}</li>          
+              </ul>
+              <h3>Message</h3>
+              <p>Thanks for registering with us</p>
+              `;
+
+              // sendMail(instituteInfo, institute.email, "Successfully Confirmed");
+
               res.json({ status: institute.email + " Registered." });
             })
             .catch(err => {

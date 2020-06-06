@@ -7,6 +7,8 @@ const Staff = require("../models/staff");
 const Institute = require("../models/institute");
 const uuidv4 = require('uuid/v4');
 const Joi = require('@hapi/joi');
+const sendMail = require("../mail");
+
 staffs.use(cors());
 
 const db = require('../config/config');
@@ -130,7 +132,22 @@ staffs.post("/", middleware.checkToken, (req, res)=> {
                         }
                     })
                     .then(inst => {
+                        const staffInfo = `
+                        <p>You have been successfully added to Classroom Webstack by your institute</p>
+                        <h3>Registration Details</h3>
+                        <ul>
+                            <li>Email: ${staffData.email}</li>
+                            <li>Name: ${staffData.fname + " " + staffData.lname}</li>    
+                            <li>Phone: ${staffData.phone}</li>          
+                        </ul>
+                        <h3>Message</h3>
+                        <p>Thanks for registering with us</p>
+                        `;
+
+                        sendMail(staffInfo, staffData.email, "Successfully Confirmed");
+                            
                         console.log(inst.name);
+
                     })
                 })
                 .catch(err =>{
