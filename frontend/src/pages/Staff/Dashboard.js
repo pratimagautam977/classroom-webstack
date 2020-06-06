@@ -5,7 +5,7 @@ import Topbar from '../../components/Topbar';
 import { Route, Switch, withRouter} from 'react-router-dom';
 import StaffClass from './Classroom';
 import NotFound from '../Admin/NotFound';
-import StaffChat from './Chat';
+import StaffChat from './StaffChat';
 import StaffCalendar from './Calendar';
 import StaffStudent from './Student';
 import StaffSetting from './Setting';
@@ -13,6 +13,7 @@ import StudentView from './StudentView';
 import Staff from './Staff';
 import StaffFile from './File';
 import ClassroomView from './ClassroomView';
+import ChatJoin from './ChatJoin';
 
 class Staffs extends React.Component{
     constructor(props){
@@ -46,7 +47,8 @@ class Staffs extends React.Component{
                                                 <Route path="/staff" component={Staff} />
                                                 <Route path="/classroom/:id" component={ClassroomView}/> 
                                                 <Route path="/calendar" component={StaffCalendar}/>
-                                                <Route path="/chat" component={StaffChat}/>
+                                                <Route exact path="/chat" component={ChatJoin}/>
+                                                <Route path="/chat/:id" component={StaffChat}/>
                                                 <Route path="/file" component={StaffFile}/>
                                                 <Route path="/settings" component={StaffSetting}/>
                                                 <Route component={NotFound}/>
