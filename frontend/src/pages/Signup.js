@@ -36,7 +36,7 @@ class Signup extends React.Component {
         axios.post(`http://localhost:3000/institute/register`,data)
         .then(res => {
             console.log(res.data)
-           
+           this.props.history.push("/login/?status=success")
         })
         .catch(err=>{
             console.log(err.response.data.error)
