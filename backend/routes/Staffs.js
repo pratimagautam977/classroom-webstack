@@ -9,6 +9,7 @@ const uuidv4 = require('uuid/v4');
 const Joi = require('@hapi/joi');
 const sendMail = require("../mail");
 const Filemanager = require("../models/filemanager");
+const Calendar = require("../models/calendar");
 
 staffs.use(cors());
 
@@ -186,7 +187,91 @@ staffs.get("/files", middleware.checkToken, (req, res) => {
     });
 });
 
+//GET Route to retrieve the calendar events
+staffs.get("/calendar", middleware.checkToken, (req, res) => {
+  Calendar.findAll({
+    where: {
+      uuid: req.decoded.login
+    }
+  })
+    .then(data => {
+      res.status(200).json(data);
+    })
+    .catch(err => {
+      res.status(401).json(err);
+    });
+});
 
+//GET Route to retrieve the calendar events
+staffs.get("/calendar/:id", middleware.checkToken, (req, res) => {
+  Calendar.findOne({
+    where: {
+      uuid: req.decoded.login,
+      id: req.params.id
+    },
+    attributes: ["id", "title", "start", "end"]
+  })
+    .then(data => {
+      res.status(200).json(data);
+    })
+    .catch(err => {
+      res.status(401).json(err);
+    });
+});
+
+// CREATE Route Add Calendar Tasks <create>
+staffs.post("/calendar", middleware.checkToken, (req, res) => {
+  const calendarData = {
+    title: req.body.title,
+    start: req.body.start,
+    end: req.body.end,
+    uuid: req.decoded.login
+  };
+
+  Calendar.create(calendarData)
+    .then(calendar => {
+      res.status(200).json({ success: true });
+    })
+    .catch(err => {
+      res.send(err);
+    });
+});
+
+//DELETE Calendar Tasks
+staffs.delete("/calendar/:id", middleware.checkToken, (req, res) => {
+  Calendar.destroy({
+    where: {
+      uuid: req.decoded.login,
+      id: req.params.id
+    }
+  })
+    .then(calendar => {
+      res.status(200).json({ status: "OK" });
+    })
+    .catch(err => {
+      res.send(err);
+    });
+});
+
+// UPDATE Calendar Route
+staffs.put("/calendar/:id", middleware.checkToken, (req, res) => {
+  var CalendarData = {
+    title: req.body.title,
+    start: req.body.start,
+    end: req.body.end
+  };
+  Calendar.update(CalendarData, {
+    where: {
+      id: req.params.id
+    }
+  })
+    .then(calendar => {
+      res.status(200).json({ calendar });
+    })
+    .catch(err => {
+      res.send(err);
+    });
+});
 // GET Route to retrieve a single staff <findOne>""
 staffs.get("/:id", middleware.checkToken, (req, res) => {
     Staff.findOne({

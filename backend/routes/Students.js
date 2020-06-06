@@ -9,12 +9,14 @@ const Filemanager = require("../models/filemanager");
 students.use(cors());
 
 const db = require('../config/config');
+const Calendar = require("../models/calendar");
 
 // ########  MIDDLEWARE   ########
 const middleware = require('../config/Middleware');    //Added Middleware
 // ###############################
 
 var aws = require("aws-sdk");
+const notes = require("../models/notes");
 require("dotenv").config(); // Configure dotenv to load in the .env file
 // Configure aws with your accessKeyId and your secretAccessKey
 aws.config.update({
@@ -194,6 +196,123 @@ students.get("/files", middleware.checkToken, (req, res) => {
       res.status(200).json(data);
     })
     .catch((err) => {
+      res.send(err);
+    });
+});
+
+//GET Route to retrieve the calendar events
+students.get("/calendar", middleware.checkToken, (req, res) => {
+  Calendar.findAll({
+    where: {
+      uuid: req.decoded.login
+    }
+  })
+    .then(data => {
+      res.status(200).json(data);
+    })
+    .catch(err => {
+      res.status(401).json(err);
+    });
+});
+
+//GET Route to retrieve the calendar events
+students.get("/calendar/:id", middleware.checkToken, (req, res) => {
+  Calendar.findOne({
+    where: {
+      uuid: req.decoded.login,
+      id: req.params.id
+    },
+    attributes: ["id", "title", "start", "end"]
+  })
+    .then(data => {
+      res.status(200).json(data);
+    })
+    .catch(err => {
+      res.status(401).json(err);
+    });
+});
+
+// CREATE Route Add Calendar Tasks <create>
+students.post("/calendar", middleware.checkToken, (req, res) => {
+  const calendarData = {
+    title: req.body.title,
+    start: req.body.start,
+    end: req.body.end,
+    uuid: req.decoded.login
+  };
+
+  Calendar.create(calendarData)
+    .then(calendar => {
+      res.status(200).json({ success: true });
+    })
+    .catch(err => {
+      res.send(err);
+    });
+});
+
+// CREATE Route Add Calendar Tasks <create>
+students.post("/notes", middleware.checkToken, (req, res) => {
+  const NotesData = {
+    notes: req.body.notes,
+    uuid: req.decoded.login
+  };
+
+  notes.create(NotesData)
+    .then(Notes => {
+      res.status(200).json({ success: true });
+    })
+    .catch(err => {
+      res.send(err);
+    });
+});
+
+//Get Notes
+students.get("/notes", middleware.checkToken, (req, res) => {
+  notes.findOne({
+      where: {
+        uuid: req.decoded.login,
+      },
+    })
+    .then((data) => {
+        res.status(200).json(data);
+    })
+    .catch((err) => {
+        res.status(401).json(err);
+    });
+});
+
+//DELETE Calendar Tasks
+students.delete("/calendar/:id", middleware.checkToken, (req, res) => {
+  Calendar.destroy({
+    where: {
+      uuid: req.decoded.login,
+      id: req.params.id
+    }
+  })
+    .then(calendar => {
+      res.status(200).json({ status: "OK" });
+    })
+    .catch(err => {
+      res.send(err);
+    });
+});
+
+// UPDATE Calendar Route
+students.put("/calendar/:id", middleware.checkToken, (req, res) => {
+  var CalendarData = {
+    title: req.body.title,
+    start: req.body.start,
+    end: req.body.end
+  };
+  Calendar.update(CalendarData, {
+    where: {
+      id: req.params.id
+    }
+  })
+    .then(calendar => {
+      res.status(200).json({ calendar });
+    })
+    .catch(err => {
       res.send(err);
     });
 });

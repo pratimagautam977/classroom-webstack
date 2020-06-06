@@ -1,7 +1,8 @@
 import React from 'react';
 import {Helmet} from 'react-helmet';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
 
 class Login extends React.Component{
     constructor(props){
@@ -15,6 +16,16 @@ class Login extends React.Component{
     }
     onChange = (e) =>{
         this.setState({ [e.target.name]: e.target.value })
+    }
+    componentDidMount() {
+        const token = localStorage.getItem("token");
+        if (token != null) {
+            const decoded = jwt_decode(token)
+            if (Math.floor(Date.now() / 1000) < decoded.exp) {
+                this.props.history.push("/")
+            }
+        }
+        
     }
 
     onSubmit = (e) => {

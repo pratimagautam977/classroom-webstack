@@ -207,7 +207,7 @@ export default class Student extends Component {
           btn={"+ Add Student"}
           
         />
-        <Students onUpdate={this.UpdateStudent}  onDelete={this.DeleteStudent} data={this.state.students} />
+        <Students onUpdate={this.UpdateStudent} onDelete={this.DeleteStudent} data={this.state.students} hidden={false}/>
       </React.Fragment>
     );
   }

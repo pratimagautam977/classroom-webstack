@@ -15,7 +15,7 @@ import EditTaskModal from "../../components/calendar/EditTask";
 moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
 
-export default class StudentCalendar extends Component {
+export default class StaffCalendar extends Component {
   constructor(props) {
     super(props);
 
@@ -42,9 +42,9 @@ export default class StudentCalendar extends Component {
   onSubmit = (e) => {
     e.preventDefault();
     const task = this.state.newCalendarData;
-    AddTask(task, "student").then((res) => {
+    AddTask(task, "staff").then((res) => {
       console.log(res);
-      GetTasks("student").then((res) => {
+      GetTasks("staff").then((res) => {
         const cal_events = res.data;
         this.setState({ cal_events });
       });
@@ -67,14 +67,14 @@ export default class StudentCalendar extends Component {
   };
 
   onUpdateedit = () => {
-    GetTasks("student").then((res) => {
+    GetTasks("staff").then((res) => {
       const cal_events = res.data;
       this.setState({ cal_events });
     });
   };
 
   DeleteATask = (id) => {
-    DeleteTask(id, "student").then((res) => {
+    DeleteTask(id, "staff").then((res) => {
       console.log(res);
       const cal_events = this.state.cal_events.filter((task) => task.id !== id);
       this.setState({ cal_events });
@@ -86,14 +86,14 @@ export default class StudentCalendar extends Component {
   };
 
   componentDidMount() {
-    GetTasks("student").then((res) => {
+    GetTasks("staff").then((res) => {
       const cal_events = res.data;
       this.setState({ cal_events });
     });
 
     const t = localStorage.getItem("token");
     axios
-      .get("http://localhost:3000/student/calendar", {
+      .get("http://localhost:3000/staff/calendar", {
         headers: { Authorization: `Bearer ${t}` },
       })
       .then((response) => {
@@ -178,7 +178,7 @@ export default class StudentCalendar extends Component {
             toggle={this.CloseModal}
             update={this.onUpdateedit}
             id={this.state.EditValue}
-            route="student"
+            route="staff"
           />
         ) : (
           ""

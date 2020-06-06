@@ -12,6 +12,7 @@ import AllPayment from './AllPayment';
 import ClassroomView from './ClassroomView';
 import NotesApp from './Notes';
 import Filemanager from './FileManager';
+import Staff from './AllStaff';
 
 class Students extends React.Component{
     constructor(props){
@@ -60,6 +61,7 @@ class Students extends React.Component{
                               component={ClassroomView}
                             />
                             <Route path="/files" component={Filemanager} />
+                            <Route path="/staff" component={Staff} />
                             <Route component={NotFound} />
                           </Switch>
                         </div>

@@ -6,7 +6,6 @@ import { Route, Switch, withRouter} from 'react-router-dom';
 import StaffClass from './Classroom';
 import NotFound from '../Admin/NotFound';
 import StaffChat from './StaffChat';
-import StaffCalendar from './Calendar';
 import StaffStudent from './Student';
 import StaffSetting from './Setting';
 import StudentView from './StudentView';
@@ -14,6 +13,7 @@ import Staff from './Staff';
 import ClassroomView from './ClassroomView';
 import ChatJoin from './ChatJoin';
 import Filemanager from './FileManager';
+import StaffCalendar from './StaffCalender';
 
 class Staffs extends React.Component{
     constructor(props){

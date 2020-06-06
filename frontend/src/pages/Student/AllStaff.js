@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
 import AllStaffs from "../../components/staff/allStaff";
-import {
-  GetStaffs
-} from "../../components/staff/StaffFunction";
+import { GetStaffs } from "../../components/staff/StaffFunction";
 
 export default class Staff extends Component {
   constructor(props) {

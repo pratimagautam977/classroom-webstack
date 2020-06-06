@@ -1,11 +1,12 @@
 import axios from 'axios';
 var url = "http://localhost:3000/"
 
-export const AddTask = newTask => {
+export const AddTask = (newTask, route) => {
+
     
     const token = localStorage.getItem("token");
     return axios
-    .post( url + "institute/calendar/", newTask, {
+    .post( url + route+"/calendar/", newTask, {
         headers: { Authorization: `Bearer ${token}`}
     }).then(res => {
         console.log(token)
@@ -16,9 +17,9 @@ export const AddTask = newTask => {
     })
 }
 
-export const GetTasks=() =>{
+export const GetTasks=(route) =>{
     const token = localStorage.getItem("token");
-    return axios.get( url + "institute/calendar/", {
+    return axios.get( url + route+"/calendar/", {
         headers: { Authorization: `Bearer ${token}`}
     }).then(res => {
         console.log(token)
@@ -27,9 +28,9 @@ export const GetTasks=() =>{
         console.log(err.response.data.error)
     });
 }
-export const GetTask=(id) =>{
+export const GetTask=(id, route) =>{
     const token = localStorage.getItem("token");
-    return axios.get( url + `institute/calendar/${id}`, {
+    return axios.get( url + route+`/calendar/${id}`, {
         headers: { Authorization: `Bearer ${token}`}
     }).then(res => {
         return res;
@@ -38,9 +39,9 @@ export const GetTask=(id) =>{
     });
 }
 
-export const UpdateTask=(data, id) =>{
+export const UpdateTask=(data, id, route) =>{
     const token = localStorage.getItem("token");
-    return axios.put( url + `institute/calendar/${id}`,data, {
+    return axios.put( url + route + `/calendar/${id}`,data, {
         headers: { Authorization: `Bearer ${token}`}
     }).then(res => {
         return res.data;
@@ -48,9 +49,9 @@ export const UpdateTask=(data, id) =>{
         console.log(err.response.data.error)
     });
 }
-export const DeleteTask=(id) =>{
+export const DeleteTask=(id, route) =>{
     const token = localStorage.getItem("token");
-    return axios.delete( url + `institute/calendar/${id}`, {
+    return axios.delete( url + route+ `/calendar/${id}`, {
         headers: { Authorization: `Bearer ${token}`}
     }).then(res => {
         return res.data;

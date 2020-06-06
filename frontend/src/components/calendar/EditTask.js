@@ -33,16 +33,16 @@ export default class EditTaskModal extends Component {
   onSubmit = e => {
     e.preventDefault();
     const editData = this.state.editData;
-    UpdateTask(editData, this.props.id).then(res => {
+    UpdateTask(editData, this.props.id, this.props.route).then((res) => {
       console.log(res);
-      this.props.toggle() //this ran 
-      this.props.update()
+      this.props.toggle(); //this ran
+      this.props.update();
     });
   };
 
   componentDidMount() {
     const id = this.props.id;
-    GetTask(id).then(res => {
+    GetTask(id, this.props.route).then(res => {
       console.log(res);
       const editData = res.data;
       this.setState({ editData, load: false});

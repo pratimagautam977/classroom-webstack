@@ -1,6 +1,7 @@
 import Masonry from "masonry-layout";
 import React from "react";
 import Helmet from "react-helmet";
+import Axios from "axios";
 
 class Note extends React.Component {
   render() {
@@ -22,11 +23,11 @@ class NoteEditor extends React.Component {
     super();
     this.state = {
       text: "",
-      color: "#FFA726"
+      color: "#FFA726",
     };
   }
 
-  handleTextChange = event => {
+  handleTextChange = (event) => {
     this.setState({ text: event.target.value });
   };
 
@@ -34,14 +35,14 @@ class NoteEditor extends React.Component {
     var newNote = {
       text: this.state.text,
       color: this.state.color,
-      id: Date.now()
+      id: Date.now(),
     };
 
     this.props.onNoteAdd(newNote);
     this.setState({ text: "" });
   };
 
-  handleColorChange = event => {
+  handleColorChange = (event) => {
     this.setState({ color: event.target.value });
   };
 
@@ -102,7 +103,7 @@ class NotesGrid extends React.Component {
       itemSelector: ".note",
       columnWidth: 200,
       gutter: 10,
-      isFitWidth: true
+      isFitWidth: true,
     });
   }
 
@@ -118,7 +119,7 @@ class NotesGrid extends React.Component {
 
     return (
       <div className="notes-grid" ref={this.gridRef}>
-        {this.props.notes.map(function(note) {
+        {this.props.notes.map(function (note) {
           return (
             <Note
               key={note.id}
@@ -135,7 +136,7 @@ class NotesGrid extends React.Component {
 }
 
 class NoteSearch extends React.Component {
-  handleSearch = event => {
+  handleSearch = (event) => {
     this.props.onSearch(event.target.value.toLowerCase());
   };
 
@@ -145,7 +146,7 @@ class NoteSearch extends React.Component {
         type="search"
         className="search-input"
         placeholder="Search..."
-        onChange={event => {
+        onChange={(event) => {
           this.handleSearch(event);
         }}
       />
@@ -159,11 +160,22 @@ export default class NotesApp extends React.Component {
     this.state = {
       notes: [],
       searchValue: "",
-      filteredNotes: []
+      filteredNotes: [],
     };
   }
   componentDidMount() {
     var localNotes = JSON.parse(localStorage.getItem("notes"));
+    // Axios.get("http://localhost:3000/student/notes", {
+    //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    // }).then((notes) => {
+    //   if (notes !== null) {
+    //     this.setState({
+    //       notes: JSON.stringify(notes),
+    //       filteredNotes: JSON.stringify(notes),
+    //     });
+    //   }
+    //   // this.setState({ notes: localNotes, filteredNotes: localNotes });
+    // });
     if (localNotes) {
       this.setState({ notes: localNotes, filteredNotes: localNotes });
     }
@@ -172,7 +184,7 @@ export default class NotesApp extends React.Component {
   // componentDidUpdate(prevProps, prevState) {//this seems not working because the updates on change takes place here
   //   if (prevState.filteredNotes !== this.state.filteredNotes) {
   //     this._updateLocalStorage();
-  //     if (this.state.searchValue !== "") { 
+  //     if (this.state.searchValue !== "") {
   //       this.setState({
   //         filteredNotes: this.state.notes.filter(
   //           note =>
@@ -183,58 +195,58 @@ export default class NotesApp extends React.Component {
   //       });
   //     } else {
   //       this.setState({
-  //         filteredNotes: this.state.notes 
+  //         filteredNotes: this.state.notes
   //       });
   //     }
   //   }
   // }
-  
 
   componentDidUpdate(prevProps, prevState) {
     this._updateLocalStorage();
-    if (this.state.searchValue !== "" && this.state.searchValue !== prevState.searchValue) {
+    if (
+      this.state.searchValue !== "" &&
+      this.state.searchValue !== prevState.searchValue
+    ) {
       this.setState({
         filteredNotes: this.state.notes.filter(
-          note =>
+          (note) =>
             note.text
               .toLowerCase()
               .indexOf(this.state.searchValue.toLowerCase()) !== -1
-        )
+        ),
       });
-    } 
-    else if(this.state.filteredNotes === this.state.notes){
-        //do nothing  
-    }
-    else if (this.state.searchValue === ""){
+    } else if (this.state.filteredNotes === this.state.notes) {
+      //do nothing
+    } else if (this.state.searchValue === "") {
       this.setState({
-        filteredNotes: this.state.notes //this was trying to call unlimited times 
+        filteredNotes: this.state.notes, //this was trying to call unlimited times
       });
     }
   }
 
-  handleNoteDelete = note => {
+  handleNoteDelete = (note) => {
     var noteId = note.id;
-    var newNotes = this.state.notes.filter(function(note) {
+    var newNotes = this.state.notes.filter(function (note) {
       return note.id !== noteId;
     });
     this.setState({ notes: newNotes });
   };
 
-  handleNoteAdd = newNote => {
+  handleNoteAdd = (newNote) => {
     var newNotes = this.state.notes.slice();
     newNotes.unshift(newNote);
     this.setState({ notes: newNotes });
   };
 
-  handleSearch = text => {
+  handleSearch = (text) => {
     this.setState({ searchValue: text });
   };
 
   render() {
     return (
       <>
-      <Helmet>
-        <style>{`
+        <Helmet>
+          <style>{`
         #mount-point {
           display: -webkit-box;
           display: -webkit-flex;
@@ -409,17 +421,16 @@ export default class NotesApp extends React.Component {
         border: 1px solid rgba(0,0,0,0.24);
       }
         `}</style>
-      </Helmet>
-      <div className="notes-app">
-
-        <NoteSearch onSearch={text => this.handleSearch(text)} />
-        <NoteEditor onNoteAdd={this.handleNoteAdd} />
-        <NotesGrid
-          //the issue is either it renders notes or filterednotes and here filternotes should be there but unfortunelty this is not updaating in thestate
-          notes={this.state.filteredNotes} //this.state.filteredNotes
-          onNoteDelete={this.handleNoteDelete}
-        />
-      </div>
+        </Helmet>
+        <div className="notes-app">
+          <NoteSearch onSearch={(text) => this.handleSearch(text)} />
+          <NoteEditor onNoteAdd={this.handleNoteAdd} />
+          <NotesGrid
+            //the issue is either it renders notes or filterednotes and here filternotes should be there but unfortunelty this is not updaating in thestate
+            notes={this.state.filteredNotes} //this.state.filteredNotes
+            onNoteDelete={this.handleNoteDelete}
+          />
+        </div>
       </>
     );
   }
@@ -427,5 +438,14 @@ export default class NotesApp extends React.Component {
   _updateLocalStorage = () => {
     var notes = JSON.stringify(this.state.notes);
     localStorage.setItem("notes", notes);
+    // Axios.get(
+    //   "http://localhost:3000/student/notes",
+    //   { notes: JSON.stringify(this.state.notes) },
+    //   {
+    //     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    //   }
+    // ).then((notes) => {
+    //   console.log("success");
+    // });
   };
 }

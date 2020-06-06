@@ -200,21 +200,37 @@ export default class Staff extends Component {
         <Helmet>
           <title>Classroom WebStack | Staffs</title>
         </Helmet>
-        { isActiveEdit ? <EditStaffModal toggle={this.CloseModal} OnUpdateSuccess={this.onUpdateSucess} id={this.state.EditValue}/> : ""}
-        
-        <AddStaffModal
-          body={bodymsg}
-          title={"Add Staff"}
-          btn={"+ Add Staff"}
-        />
-        {
-          this.state.load ?
-          <AllStaffs onUpdate={this.UpdateStaff}  onDelete={this.DeleteStaff} data={this.state.staffs} />
-          :
-          <div style={{height: "90vh", display: "flex", width: "100%", justifyContent: "center", alignItems: "center"}}>
+        {isActiveEdit ? (
+          <EditStaffModal
+            toggle={this.CloseModal}
+            OnUpdateSuccess={this.onUpdateSucess}
+            id={this.state.EditValue}
+          />
+        ) : (
+          ""
+        )}
+
+        <AddStaffModal body={bodymsg} title={"Add Staff"} btn={"+ Add Staff"} />
+        {this.state.load ? (
+          <AllStaffs
+            onUpdate={this.UpdateStaff}
+            onDelete={this.DeleteStaff}
+            data={this.state.staffs}
+            hidden={false}
+          />
+        ) : (
+          <div
+            style={{
+              height: "90vh",
+              display: "flex",
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <div className="loader" id="loader-1"></div>
           </div>
-        }     
+        )}
       </React.Fragment>
     );
   }
