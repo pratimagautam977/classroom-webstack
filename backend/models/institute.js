@@ -37,7 +37,7 @@ module.exports = db.sequelize.define(
             field: "ins_type"
         },
         phone: {
-            type:Sequelize.INTEGER,
+            type:Sequelize.BIGINT,
             field: "ins_phone"
         },
         password: {

@@ -34,7 +34,7 @@ module.exports = db.sequelize.define(
             field: "staff_address",
         },
         phone: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.BIGINT,
             field: "staff_phone",
         },
         img: {
