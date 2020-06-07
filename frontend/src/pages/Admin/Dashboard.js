@@ -15,6 +15,7 @@ import Filemanager from './Filemanager';
 import NotesApp from './Notes';
 import Settings from './Settings';
 import Axios from 'axios';
+import Broadcast from './Broadcast';
 
 class Institute extends React.Component {
   constructor(props) {
@@ -68,6 +69,7 @@ class Institute extends React.Component {
                         />
                         <Route path="/note" component={NotesApp} />
                         <Route path="/settings" component={Settings} />
+                        <Route path="/broadcast" component={Broadcast} />
                         <Route component={NotFound} />
                       </Switch>
                     </div>

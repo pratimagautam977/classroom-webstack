@@ -19,6 +19,8 @@ const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
 var aws = require("aws-sdk");
+const broadcast = require("../models/broadcast");
+
 require("dotenv").config(); // Configure dotenv to load in the .env file
 // Configure aws with your accessKeyId and your secretAccessKey
 aws.config.update({
@@ -78,6 +80,40 @@ institutes.post("/register", (req, res) => {
     })
     .catch((err) => {
       res.send(err);
+    });
+});
+
+//Post New Broadcast 
+institutes.post("/broadcast", middleware.checkToken, (req, res) => {
+  const Msg = {
+    message: req.body.message,
+    type: req.body.type,
+    uuid: req.decoded.id
+  };
+  broadcast
+    .create(Msg)
+    .then((resp) => {
+      res.status(200).json({status: true});
+      console.log("works")
+    })
+    .catch((err) => {
+      console.log("err" + err);
+    });
+});
+
+//Post New Broadcast 
+institutes.get("/broadcast", middleware.checkToken, (req, res) => {
+  broadcast
+    .findAll({
+      where: {
+        uuid: req.decoded.id,
+      },
+    })
+    .then((resp) => {
+      res.status(200).json(resp);
+    })
+    .catch((err) => {
+      console.log("err" + err);
     });
 });
 
@@ -166,7 +202,6 @@ institutes.put("/", middleware.checkToken, (req, res) => {
       var NewData = {
         name: req.body.name,
       };
-      console.log(req.decoded.id);
       Institute.update(NewData, {
         where: {
           insID: req.decoded.id,
@@ -183,7 +218,6 @@ institutes.put("/", middleware.checkToken, (req, res) => {
       var NewData = {
         email: req.body.email,
       };
-      console.log(req.decoded.id);
       Institute.update(NewData, {
         where: {
           insID: req.decoded.id,
@@ -200,7 +234,6 @@ institutes.put("/", middleware.checkToken, (req, res) => {
       if (req.body.password.length < 6) {
         res.status(401)
       }
-      console.log(req.decoded.id);
       bcrypt.hash(req.body.password, 10, (err, hash) => {
         var NewData = {
         password: hash,
