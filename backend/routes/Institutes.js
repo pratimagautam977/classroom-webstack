@@ -24,7 +24,7 @@ require("dotenv").config(); // Configure dotenv to load in the .env file
 aws.config.update({
   region: "us-east-1", // Put your aws region here
   accessKeyId: process.env.AWSAccessKeyId,
-  secretAccessKey: process.env.AWSSecretKey
+  secretAccessKey: process.env.AWSSecretKey,
 });
 
 const S3_BUCKET = process.env.bucket;
@@ -36,22 +36,22 @@ institutes.post("/register", (req, res) => {
     email: req.body.email,
     phone: req.body.phone,
     uname: req.body.uname,
-    password: req.body.password
+    password: req.body.password,
   };
 
   Institute.findOne({
     where: {
-      [Op.or]: [{ email: req.body.email }, { uname: req.body.uname }]
+      [Op.or]: [{ email: req.body.email }, { uname: req.body.uname }],
       //SELECT * FROM post WHERE email = req.body.email OR uname = req.body.uname;
-    }
+    },
   })
-    .then(institute => {
+    .then((institute) => {
       if (!institute) {
         bcrypt.hash(req.body.password, 10, (err, hash) => {
           instituteData.password = hash;
           instituteData.insID = uuidv4(); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
           Institute.create(instituteData)
-            .then(institute => {
+            .then((institute) => {
               const instituteInfo = `
               <p>You have successfully registered to the Classroom Webstack</p>
               <h3>Registration Details</h3>
@@ -68,7 +68,7 @@ institutes.post("/register", (req, res) => {
 
               res.json({ status: institute.email + " Registered." });
             })
-            .catch(err => {
+            .catch((err) => {
               res.send(err);
             });
         });
@@ -76,7 +76,7 @@ institutes.post("/register", (req, res) => {
         res.json({ error: "Institute already exists" });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.send(err);
     });
 });
@@ -85,10 +85,10 @@ institutes.post("/register", (req, res) => {
 institutes.post("/login", (req, res) => {
   Institute.findOne({
     where: {
-      email: req.body.email
-    }
+      email: req.body.email,
+    },
   })
-    .then(institute => {
+    .then((institute) => {
       if (institute) {
         if (bcrypt.compareSync(req.body.password, institute.password)) {
           let token = jwt.sign(
@@ -96,11 +96,11 @@ institutes.post("/login", (req, res) => {
               id: institute.insID,
               isAdmin: true,
               isStaff: false,
-              isStudent: false
+              isStudent: false,
             },
             process.env.APP_SECRET,
             {
-              expiresIn: 86400
+              expiresIn: 86400,
             }
           );
           res.send({ token });
@@ -111,23 +111,137 @@ institutes.post("/login", (req, res) => {
         res.status(400).json({ error: "Institute does not exists" });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(400).json(err);
       console.log(err);
     });
 });
+// UPDATE Institute Route
+institutes.put("/", middleware.checkToken, (req, res) => {
+  switch (req.body.type) {
+    case "upload":
+      const s3 = new aws.S3(); // Create a new instance of S3
+      const fileName = req.body.fileName;
+      const fileType = req.body.fileType;
 
+      const fileUUID = uuidv4();
+      // Set up the payload of what we are sending to the S3 api
+      const s3Params = {
+        Bucket: S3_BUCKET,
+        Key: `institute/${req.decoded.id}/${fileUUID}` + "." + fileType,
+        Expires: 50,
+        ContentType: fileType,
+        ACL: "public-read",
+      };
+      // Make a request to the S3 API to get a signed URL which we can use to upload our file
+      s3.getSignedUrl("putObject", s3Params, (err, data) => {
+        if (err) {
+          console.log(err);
+          res.json({ success: false, error: err });
+        }
+        // Data payload of what we are sending back, the url of the signedRequest and a URL where we can access the content after its saved.
+        const returnData = {
+          signedRequest: data,
+          url: `https://${S3_BUCKET}.s3.amazonaws.com/institute/${req.decoded.id}/${fileUUID}.${fileType}`,
+        };
+
+        var NewData = {
+          logo: `https://${S3_BUCKET}.s3.amazonaws.com/institute/${req.decoded.id}/${fileUUID}.${fileType}`,
+        };
+        console.log(req.decoded.id);
+        Institute.update(NewData, {
+          where: {
+            insID: req.decoded.id,
+          },
+        })
+          .then((update) => {
+            res.status(200).json({ success: true, data: { returnData } });
+          })
+          .catch((err) => {
+            res.send(err);
+          });
+      });
+      break;
+    case "name":
+      var NewData = {
+        name: req.body.name,
+      };
+      console.log(req.decoded.id);
+      Institute.update(NewData, {
+        where: {
+          insID: req.decoded.id,
+        },
+      })
+        .then((update) => {
+          res.status(200).json({ success: true });
+        })
+        .catch((err) => {
+          res.send(err);
+        });
+      break;
+    case "email":
+      var NewData = {
+        email: req.body.email,
+      };
+      console.log(req.decoded.id);
+      Institute.update(NewData, {
+        where: {
+          insID: req.decoded.id,
+        },
+      })
+        .then((update) => {
+          res.status(200).json({ success: true, data: { returnData } });
+        })
+        .catch((err) => {
+          res.send(err);
+        });
+      break;
+    case "password":
+      
+      console.log(req.decoded.id);
+      bcrypt.hash(req.body.password, 10, (err, hash) => {
+        var NewData = {
+        password: hash,
+      };
+        Institute.update(NewData, {
+          where: {
+            insID: req.decoded.id,
+          },
+        })
+          .then((update) => {
+            res.status(200).json({ success: true, data: { returnData } });
+          })
+          .catch((err) => {
+            res.send(err);
+          });
+      })
+      break;
+    default:
+      res.status(401);
+  }
+});
+
+institutes.get("/meta", middleware.checkToken, (req, res) => {
+  Institute.findOne({
+    where: { insID: req.decoded.id },
+    attributes: ["logo","email", "name"],
+  }).then(resp => {
+    res.status(200).json(resp)
+  }).then(err => {
+    res.status(401);
+  });
+});
 //GET Route to retrieve the calendar events
 institutes.get("/calendar", middleware.checkToken, (req, res) => {
   Calendar.findAll({
     where: {
-      uuid: req.decoded.id
-    }
+      uuid: req.decoded.id,
+    },
   })
-    .then(data => {
+    .then((data) => {
       res.status(200).json(data);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(401).json(err);
     });
 });
@@ -137,14 +251,14 @@ institutes.get("/calendar/:id", middleware.checkToken, (req, res) => {
   Calendar.findOne({
     where: {
       uuid: req.decoded.id,
-      id: req.params.id
+      id: req.params.id,
     },
-    attributes: ["id", "title", "start", "end"]
+    attributes: ["id", "title", "start", "end"],
   })
-    .then(data => {
+    .then((data) => {
       res.status(200).json(data);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(401).json(err);
     });
 });
@@ -155,14 +269,14 @@ institutes.post("/calendar", middleware.checkToken, (req, res) => {
     title: req.body.title,
     start: req.body.start,
     end: req.body.end,
-    uuid: req.decoded.id
+    uuid: req.decoded.id,
   };
 
   Calendar.create(calendarData)
-    .then(calendar => {
+    .then((calendar) => {
       res.status(200).json({ success: true });
     })
-    .catch(err => {
+    .catch((err) => {
       res.send(err);
     });
 });
@@ -172,13 +286,13 @@ institutes.delete("/calendar/:id", middleware.checkToken, (req, res) => {
   Calendar.destroy({
     where: {
       uuid: req.decoded.id,
-      id: req.params.id
-    }
+      id: req.params.id,
+    },
   })
-    .then(calendar => {
+    .then((calendar) => {
       res.status(200).json({ status: "OK" });
     })
-    .catch(err => {
+    .catch((err) => {
       res.send(err);
     });
 });
@@ -188,17 +302,17 @@ institutes.put("/calendar/:id", middleware.checkToken, (req, res) => {
   var CalendarData = {
     title: req.body.title,
     start: req.body.start,
-    end: req.body.end
+    end: req.body.end,
   };
   Calendar.update(CalendarData, {
     where: {
-      id: req.params.id
-    }
+      id: req.params.id,
+    },
   })
-    .then(calendar => {
+    .then((calendar) => {
       res.status(200).json({ calendar });
     })
-    .catch(err => {
+    .catch((err) => {
       res.send(err);
     });
 });
@@ -207,21 +321,21 @@ institutes.put("/calendar/:id", middleware.checkToken, (req, res) => {
 institutes.post("/payment", (req, res) => {
   let data = {
     token: req.body.token,
-    amount: req.body.amount
+    amount: req.body.amount,
   };
 
   let config = {
     headers: {
-      Authorization: "Key live_secret_key_70d7cc81b96245488185350a3ccf7768"
-    }
+      Authorization: "Key live_secret_key_70d7cc81b96245488185350a3ccf7768",
+    },
   };
 
   axios
     .post("https://khalti.com/api/v2/payment/verify/", data, config)
-    .then(response => {
+    .then((response) => {
       res.send(response.data);
     })
-    .catch(error => {
+    .catch((error) => {
       res.send(error.response.data);
     });
 });
@@ -240,7 +354,7 @@ institutes.post("/upload", middleware.checkToken, (req, res) => {
     Key: `upload/${req.decoded.id}/` + fileUUID + "." + fileType,
     Expires: 50,
     ContentType: fileType,
-    ACL: "public-read"
+    ACL: "public-read",
   };
   // Make a request to the S3 API to get a signed URL which we can use to upload our file
   s3.getSignedUrl("putObject", s3Params, (err, data) => {
@@ -251,7 +365,7 @@ institutes.post("/upload", middleware.checkToken, (req, res) => {
     // Data payload of what we are sending back, the url of the signedRequest and a URL where we can access the content after its saved.
     const returnData = {
       signedRequest: data,
-      url: `https://${S3_BUCKET}.s3.amazonaws.com/upload/${req.decoded.id}/${fileUUID}.${fileType}`
+      url: `https://${S3_BUCKET}.s3.amazonaws.com/upload/${req.decoded.id}/${fileUUID}.${fileType}`,
     };
 
     var FileData = {
@@ -259,13 +373,13 @@ institutes.post("/upload", middleware.checkToken, (req, res) => {
       filetype: fileType,
       uuid: fileUUID,
       url: `https://${S3_BUCKET}.s3.amazonaws.com/upload/${req.decoded.id}/${fileUUID}.${fileType}`,
-      uploader_uuid: req.decoded.id
+      uploader_uuid: req.decoded.id,
     };
     Filemanager.create(FileData)
-      .then(file => {
+      .then((file) => {
         res.status(200).json({ success: true, data: { returnData } });
       })
-      .catch(err => {
+      .catch((err) => {
         res.send(err);
       });
   });
@@ -274,29 +388,28 @@ institutes.post("/upload", middleware.checkToken, (req, res) => {
 institutes.delete("/file/:id", middleware.checkToken, (req, res) => {
   Filemanager.findOne({
     where: {
-      uuid: req.params.id
-    }
-  }).then(result => {
+      uuid: req.params.id,
+    },
+  }).then((result) => {
     // res.status(200).json(result.uuid + "." + result.filetype);
     var s3 = new aws.S3();
     var params = {
       Bucket: S3_BUCKET,
-      Key:
-        `upload/${req.decoded.id}/` + result.uuid + "." + result.filetype
+      Key: `upload/${req.decoded.id}/` + result.uuid + "." + result.filetype,
     };
-    s3.deleteObject(params, function(err, data) {
+    s3.deleteObject(params, function (err, data) {
       if (err) console.log(err, err.stack);
       // error
       else {
         Filemanager.destroy({
           where: {
-            uuid: result.uuid
-          }
+            uuid: result.uuid,
+          },
         })
-          .then(data => {
+          .then((data) => {
             res.status(200).json({ status: "OK" });
           })
-          .catch(err => {
+          .catch((err) => {
             res.send(err);
           });
       } // deleted
@@ -308,15 +421,15 @@ institutes.delete("/file/:id", middleware.checkToken, (req, res) => {
 institutes.get("/files", middleware.checkToken, (req, res) => {
   Filemanager.findAll({
     where: {
-      uploader_uuid: req.decoded.id
+      uploader_uuid: req.decoded.id,
     },
 
-    attributes: ["uuid", "filename", "filetype", "date_created", "url"]
+    attributes: ["uuid", "filename", "filetype", "date_created", "url"],
   })
-    .then(data => {
+    .then((data) => {
       res.status(200).json(data);
     })
-    .catch(err => {
+    .catch((err) => {
       res.send(err);
     });
 });
