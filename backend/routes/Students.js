@@ -111,17 +111,17 @@ students.delete("/file/:id", middleware.checkToken, (req, res) => {
 // POST Registration Route (Add Student)
 students.post("/", middleware.checkToken, (req, res) => {
     const studentData = {
-        studID: "",
-        ins_uuid: req.decoded.id,
-        fname: req.body.fname,
-        lname: req.body.lname,
-        email: req.body.email,
-        address: req.body.address,
-        phone: req.body.phone,
-        img: "https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg",
-        username: req.body.username,
-        password: req.body.password,
-    }
+      studID: "",
+      ins_uuid: req.decoded.id,
+      fname: req.body.fname,
+      lname: req.body.lname,
+      email: req.body.email,
+      address: req.body.address,
+      phone: req.body.phone,
+      img: "https://www.tibs.org.tw/images/default.jpg",
+      username: req.body.username,
+      password: req.body.password,
+    };
 
     Student.findOne({
         where: {

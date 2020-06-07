@@ -295,16 +295,16 @@ staffs.post("/", middleware.checkToken, (req, res)=> {
     // if(error) return res.status(400).json({error: error.details[0].message});
     //object
     const staffData = {
-        staffID: "",
-        ins_uuid: req.decoded.id,
-        fname: req.body.fname,
-        lname: req.body.lname,
-        email: req.body.email,
-        address: req.body.address,
-        phone: req.body.phone,
-        img: "https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg",
-        password: req.body.password        
-    }
+      staffID: "",
+      ins_uuid: req.decoded.id,
+      fname: req.body.fname,
+      lname: req.body.lname,
+      email: req.body.email,
+      address: req.body.address,
+      phone: req.body.phone,
+      img: "https://www.tibs.org.tw/images/default.jpg",
+      password: req.body.password,
+    };
 
     Staff.findOne({
         where: {
