@@ -197,7 +197,9 @@ institutes.put("/", middleware.checkToken, (req, res) => {
         });
       break;
     case "password":
-      
+      if (req.body.password.length < 6) {
+        res.status(401)
+      }
       console.log(req.decoded.id);
       bcrypt.hash(req.body.password, 10, (err, hash) => {
         var NewData = {
@@ -433,5 +435,7 @@ institutes.get("/files", middleware.checkToken, (req, res) => {
       res.send(err);
     });
 });
+
+
 
 module.exports = institutes;

@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const db = require("../config/config");
 
 module.exports = db.sequelize.define(
-    'tbl_notes',
+    'tbl_broadcast',
     {
         id: {
             type: Sequelize.INTEGER,
@@ -13,8 +13,11 @@ module.exports = db.sequelize.define(
             type:Sequelize.UUIDV4, 
             field: "uuid" 
         },
-        notes: {
+        message: {
             type: Sequelize.STRING
+        },
+        type: {
+            type: Sequelize.INTEGER
         }
         
     },    
