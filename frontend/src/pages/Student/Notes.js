@@ -1,7 +1,6 @@
 import Masonry from "masonry-layout";
 import React from "react";
 import Helmet from "react-helmet";
-import Axios from "axios";
 
 class Note extends React.Component {
   render() {

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import axios from "axios";
-import jwt_decode from "jwt-decode";
 
 class Filemanager extends Component {
   constructor(props) {
@@ -231,6 +230,7 @@ class Filemanager extends Component {
                     <a
                       className="btn btn-info btn-sm ml-2"
                       target="_blank"
+                      rel="noopener noreferrer"
                       href={dt.url}
                     >
                       View

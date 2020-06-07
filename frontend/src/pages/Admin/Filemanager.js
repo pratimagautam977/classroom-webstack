@@ -233,6 +233,7 @@ class Filemanager extends Component {
                   <a
                     className="btn btn-info btn-sm ml-2"
                     target="_blank"
+                    rel="noopener noreferrer"
                     href={dt.url}
                   >
                     View
